@@ -5,7 +5,10 @@
 		"checkJs": true,  /* Typecheck .js files. */
 		"lib": [
 			"ES2020"
-		]
+		],
+        "paths": {
+            "@/*": ["./src/*"],
+        },
 	},
 	"exclude": [
 		"node_modules"

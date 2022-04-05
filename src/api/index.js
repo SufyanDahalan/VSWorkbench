@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 const userApi = require("./user.js")
-const BindToClass = require('../globals/functions').BindToClass
+const BindToClass = require('@/globals/functions').BindToClass
 
 
 class Api {
