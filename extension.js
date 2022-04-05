@@ -4,6 +4,7 @@ const AUTH_TOKEN_KEY = require('./src/globals/constants').AUTH_TOKEN_KEY
 const GITLAB_INSTANCE_KEY = require('./src/globals/constants').GITLAB_INSTANCE_KEY
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
+const api = Object.create(Api)
 
 function settings(globalState) {
 	// get persoanl auth token and gitlab instance
@@ -53,7 +54,10 @@ function checkGitlabInstanceAndAuthToken(globalState) {
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-	const api = new Api(context.globalState.get(AUTH_TOKEN_KEY));
+    // api.init(context.globalState.get(AUTH_TOKEN_KEY));
+    api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY))
+
+
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 
 	// context.globalState.get(AUTH_TOKEN_KEY);

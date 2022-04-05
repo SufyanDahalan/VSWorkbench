@@ -1,5 +1,6 @@
-module.exports = {
-    getStarredProjects(userID){
+
+module.exports= {
+     getStarredProjects: (userID)=>{
         return this.api.get(`users/${userID}/starred_projects`)//
     },
     getUserInfo(){
@@ -18,5 +19,6 @@ module.exports = {
     },
     async getUserGroups(){
         return await this.api.get(`groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc`)
-    }
+    },
+
 }

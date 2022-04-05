@@ -38,44 +38,42 @@
 				"command": "GitLabCode.updatePersonalAccessToken",
 				"title": "GitLabCode: Update Personal Token"
 			},
-            {
-                "command": "GitLabCode.createPersonalProject",
-                "title": "GitLabCode: Create Personal Project"
-            },
-            {
-                "command": "GitLabCode.getUserGroups",
-                "title": "GitLabCode: Get User Groups Information"
-            },
-            {
-                "command": "GitLabCode.createGroupProject",
-                "title": "GitLabCode: Create Group Project"
-            },
-            {
-                "command": "GitLabCode.createGroup",
-                "title": "GitLabCode: Create Group"
-            },
-            {
-                "command": "GitLabCode.createIssue",
-                "title": "GitLabCode: Create Issue"
-            },
-            {
-                "command": "GitLabCode.createMergeRequest",
-                "title": "GitLabCode: Create Merge Request"
-            },
-            {
-                "command": "GitLabCode.viewPipelines",
-                "title": "GitLabCode: View Pipelines"
-            },
-            {
-                "command": "GitLabCode.viewIssues",
-                "title": "GitLabCode: View Issues"
-            },
-            {
-                "command": "GitLabCode.viewGitTree",
-                "title": "GitLabCode: View Git Tree"
-            }
-
-
+			{
+				"command": "GitLabCode.createPersonalProject",
+				"title": "GitLabCode: Create Personal Project"
+			},
+			{
+				"command": "GitLabCode.getUserGroups",
+				"title": "GitLabCode: Get User Groups Information"
+			},
+			{
+				"command": "GitLabCode.createGroupProject",
+				"title": "GitLabCode: Create Group Project"
+			},
+			{
+				"command": "GitLabCode.createGroup",
+				"title": "GitLabCode: Create Group"
+			},
+			{
+				"command": "GitLabCode.createIssue",
+				"title": "GitLabCode: Create Issue"
+			},
+			{
+				"command": "GitLabCode.createMergeRequest",
+				"title": "GitLabCode: Create Merge Request"
+			},
+			{
+				"command": "GitLabCode.viewPipelines",
+				"title": "GitLabCode: View Pipelines"
+			},
+			{
+				"command": "GitLabCode.viewIssues",
+				"title": "GitLabCode: View Issues"
+			},
+			{
+				"command": "GitLabCode.viewGitTree",
+				"title": "GitLabCode: View Git Tree"
+			}
 		],
 		"viewsContainers": {
 			"activitybar": [
@@ -175,7 +173,8 @@
 		"test": "node ./test/runTest.js"
 	},
 	"dependencies": {
-		"axios": "^0.26.1"
+		"axios": "^0.26.1",
+		"deepmerge": "^4.2.2"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.2.0",

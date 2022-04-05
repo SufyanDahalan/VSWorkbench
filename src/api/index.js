@@ -1,33 +1,23 @@
 const axios = require("axios").default;
-const userApi = require("./user.js")
-const BindToClass = require('@/globals/functions').BindToClass
-
-
-class Api {
-    #api;
-    constructor(authToken, baseUrl = "https://gitlab.com/api/v4/"){
-        BindToClass(userApi, this)
-        this.api = axios.create({
-            baseURL: baseUrl,
-            timeout: 5000,
-            headers: { "PRIVATE-TOKEN": authToken },
-        })
-        
-    }
-    updateBaseURL(newBaseURL){
-        this.api.defaults.baseURL = newBaseURL; 
-    }
-    updateAuthToken(newAuthToken){
-        this.api.defaults.headers.common["PRIVATE-TOKEN"] = newAuthToken; 
-    }
+let userApi = require("./user.js");
+const groupApi = require("./group.js");
+const projectApi = require("./project.js");
+const deepmerge = require('deepmerge')
 
 
 
-
-
-
-
+const api = axios.create({
+                    baseURL: 'https://gitlab.com',
+                    timeout: 5000,
+                });
+const Api = {
+    api,
+    updateBaseURL(newBaseURL) {
+		this.api.defaults.baseURL = newBaseURL;
+	},
+	updateAuthToken(newAuthToken) {
+		this.api.defaults.headers.common["PRIVATE-TOKEN"] = newAuthToken;
+	}
 
 }
-
-module.exports =  Api;
+module.exports = deepmerge.all([Api, userApi, projectApi, groupApi]);
