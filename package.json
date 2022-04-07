@@ -80,14 +80,14 @@
 				{
 					"id": "gitLabCode-activityBar",
 					"title": "GitLabCode",
-					"icon": "media/gitlab-icon-1-color-black-rgb.svg"
+					"icon": "resources/gitlab-icon-1-color-black-rgb.svg"
 				}
 			],
 			"panel": [
 				{
 					"id": "gitlabcode-panel",
 					"title": "GitLabCode",
-					"icon": "media/gitlab-icon-1-color-black-rgb.svg"
+					"icon": "resources/gitlab-icon-1-color-black-rgb.svg"
 				}
 			]
 		},
@@ -96,7 +96,7 @@
 				{
 					"id": "authentication",
 					"name": "authentication",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "authentication",
 					"visibility": "visible",
 					"when": "!GitLabCode.authenticated"
@@ -104,7 +104,7 @@
 				{
 					"id": "Groups",
 					"name": "Groups",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "GitLabCode",
 					"visibility": "visible",
 					"when": "GitLabCode.authenticated"
@@ -112,7 +112,7 @@
 				{
 					"id": "Projects",
 					"name": "Projects",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "GitLabCode",
 					"visibility": "collapsed",
 					"when": "GitLabCode.authenticated"
@@ -120,7 +120,7 @@
 				{
 					"id": "Issues",
 					"name": "Issues",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "GitLabCode",
 					"visibility": "collapsed",
 					"when": "GitLabCode.authenticated"
@@ -128,7 +128,7 @@
 				{
 					"id": "jobs",
 					"name": "Jobs",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "GitLabCode",
 					"visibility": "collapsed",
 					"when": "GitLabCode.authenticated"
@@ -136,7 +136,7 @@
 				{
 					"id": "settings",
 					"name": "Settings",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "GitLabCode",
 					"visibility": "collapsed",
 					"when": "GitLabCode.authenticated",
@@ -147,7 +147,7 @@
 				{
 					"id": "gitlabPipelines",
 					"name": "Pipelines",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "GitLabCode",
 					"visibility": "collapsed",
 					"when": "GitLabCode.authenticated"
@@ -155,7 +155,7 @@
 				{
 					"id": "gitlabGitTree",
 					"name": "Git Tree",
-					"icon": "media/dep.svg",
+					"icon": "resources/dep.svg",
 					"contextualTitle": "GitLabCode",
 					"visibility": "visible",
 					"when": "GitLabCode.authenticated"
