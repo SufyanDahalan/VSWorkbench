@@ -1,12 +1,13 @@
 // https://devblogs.microsoft.com/typescript/announcing-typescript-2-2/
 // https://stackoverflow.com/a/45493827/16419931
-const vscode = require("vscode");
-
-const AUTH_TOKEN_KEY = require("./constants").AUTH_TOKEN_KEY;
-const GITLAB_INSTANCE_KEY = require("./constants").GITLAB_INSTANCE_KEY;
+// const vscode = require("vscode");
+import * as vscode from 'vscode';
 
 
-function settings(globalState) {
+import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY } from "./constants";
+
+
+export function settings(globalState:vscode.ExtensionContext["globalState"]) {
 	// get personal auth token and gitlab instance
 	let gitlabInstance = "",
 		gitlabAuthToken = "";
@@ -37,7 +38,7 @@ function settings(globalState) {
 	inputGitlabInstance.show();
 }
 
-function checkGitlabInstanceAndAuthToken(globalState) {
+export function checkGitlabInstanceAndAuthToken(globalState:vscode.ExtensionContext["globalState"]) {
 	console.log(`auth token from chechAuthToken: ${globalState.get(AUTH_TOKEN_KEY)}`);
 	// TODO: actually test to authenticate with the token against the gitlab instance specified
 	// AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY
@@ -49,5 +50,3 @@ function checkGitlabInstanceAndAuthToken(globalState) {
 		return false;
 	}
 }
-exports.checkGitlabInstanceAndAuthToken= checkGitlabInstanceAndAuthToken
-exports.settings=settings

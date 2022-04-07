@@ -1,5 +1,8 @@
-const vscode = require("vscode");
-const api = require("../api");
+// const vscode = require("vscode");
+import * as vscode from 'vscode';
+
+// const api = require("../api");
+import api from '../api'
 
 function createPersonalProjectCommand() {
 	let projectName = "";
@@ -30,20 +33,6 @@ function createGroupProjectCommand() {
 async function getUserGroupsCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 	console.log(await api.getUserGroups());
-} // MVP
-
-function createGroupProjectCommand() {
-	let projectName = "";
-	const inputProjectName = vscode.window.createInputBox();
-	inputProjectName.placeholder = "Please Enter Project Name";
-	inputProjectName.onDidChangeValue((input) => {
-		projectName = input;
-	});
-	inputProjectName.onDidAccept(() => {
-		inputProjectName.hide();
-		api.createGroupProject(projectName);
-	});
-	inputProjectName.show();
 } // MVP
 
 function createGroupCommand() {
