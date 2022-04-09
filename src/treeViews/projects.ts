@@ -17,7 +17,7 @@ export class ProjectNode extends vscode.TreeItem{
         resource: URL;
         parent_id: number; // to which group this project belongs
         visibility: string; //can prob be made into an enum, TODO
-        project_id: number;
+        node_id: number;
 
 	constructor(
         project_id: number, 
@@ -31,7 +31,7 @@ export class ProjectNode extends vscode.TreeItem{
 	) {
 		super(label/* , collapsibleState */);
 		this.parent_id = parent_id;
-		this.project_id = project_id;
+		this.node_id = project_id;
 		this.visibility = visibility;
 		this.resource = resource;
 	}

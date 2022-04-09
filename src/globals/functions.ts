@@ -1,6 +1,5 @@
 // https://devblogs.microsoft.com/typescript/announcing-typescript-2-2/
 // https://stackoverflow.com/a/45493827/16419931
-// const vscode = require("vscode");
 import * as vscode from 'vscode';
 
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY } from "./constants";

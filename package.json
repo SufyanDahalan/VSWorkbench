@@ -1,223 +1,286 @@
 {
-  "name": "gitlabcode",
-  "displayName": "GitLabCode",
-  "description": "",
-  "version": "0.0.1",
-  "publisher": "SufyanDahalan",
-  "engines": {
-    "vscode": "^1.66.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./dist/extension.js",
-  "contributes": {
-    "viewsWelcome": [
-        {
-            "view": "authentication",
-            "contents": "No personal access token detected!\nPlease create a personal access token [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Authenticate](command:GitLabCode.addPersonalAccessToken)"
-        },
-        {
-            "view": "settings",
-            "contents": "Update Authentication Information [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Update Perosnal Authentication Token](command:GitLabCode.updatePersonalAccessToken)"
-        }
-    ],
-    "commands": [
-      {
-        "command": "GitLabCode.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "GitLabCode.addPersonalAccessToken",
-        "title": "GitLabCode: Authenticate"
-      },
-      {
-        "command": "GitLabCode.updatePersonalAccessToken",
-        "title": "GitLabCode: Update Personal Token"
-      },
-      {
-        "command": "GitLabCode.createPersonalProject",
-        "title": "GitLabCode: Create Personal Project"
-      },
-      {
-        "command": "GitLabCode.getUserGroups",
-        "title": "GitLabCode: Get User Groups Information"
-      },
-      {
-        "command": "GitLabCode.createGroupProject",
-        "title": "GitLabCode: Create Group Project"
-      },
-      {
-        "command": "GitLabCode.createGroup",
-        "title": "GitLabCode: Create Group"
-      },
-      {
-        "command": "GitLabCode.createIssue",
-        "title": "GitLabCode: Create Issue"
-      },
-      {
-        "command": "GitLabCode.createMergeRequest",
-        "title": "GitLabCode: Create Merge Request"
-      },
-      {
-        "command": "GitLabCode.viewPipelines",
-        "title": "GitLabCode: View Pipelines"
-      },
-      {
-        "command": "GitLabCode.viewIssues",
-        "title": "GitLabCode: View Issues"
-      },
-      {
-        "command": "GitLabCode.viewGitTree",
-        "title": "GitLabCode: View Git Tree"
-      },
-      {
-          "command": "GitLabCode.refreshGroupView",
-          "title": "GitLabCode refresh Groups View"
-      },
-      {
-        "command": "GitLabCode.refreshProjectsView",
-        "title": "GitLabCode refresh Projects View"
-    },
-    {
-        "command": "GitLabCode.deleteProject",
-        "title": "GitLabCode Delete Project"
-    }
-    ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "gitLabCode-activityBar",
-          "title": "GitLabCode",
-          "icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
-        }
-      ],
-      "panel": [
-        {
-          "id": "gitlabcode-panel",
-          "title": "GitLabCode",
-          "icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
-        }
-      ]
-    },
-    "views": {
-      "gitLabCode-activityBar": [
-        {
-          "id": "authentication",
-          "name": "authentication",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "authentication",
-          "visibility": "visible",
-          "when": "!GitLabCode.authenticated"
-        },
-        {
-          "id": "groupsView",
-          "name": "Groups",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "GitLabCode",
-          "visibility": "visible",
-          "when": "GitLabCode.authenticated"
-        },
-        {
-          "id": "projectsView",
-          "name": "Projects",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "GitLabCode",
-          "visibility": "collapsed",
-          "when": "GitLabCode.authenticated"
-        },
-        {
-          "id": "Issues",
-          "name": "Issues",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "GitLabCode",
-          "visibility": "collapsed",
-          "when": "GitLabCode.authenticated"
-        },
-        {
-          "id": "jobs",
-          "name": "Jobs",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "GitLabCode",
-          "visibility": "collapsed",
-          "when": "GitLabCode.authenticated"
-        },
-        {
-          "id": "settings",
-          "name": "Settings",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "GitLabCode",
-          "visibility": "collapsed",
-          "when": "GitLabCode.authenticated",
-          "contents": "Update Personal Authentication Token [learn more](https://www.npmjs.com/).\n[Add Dependency](command:GitLabCode.updatePersonalAccessToken)"
-        }
-      ],
-      "gitlabcode-panel": [
-        {
-          "id": "gitlabPipelines",
-          "name": "Pipelines",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "GitLabCode",
-          "visibility": "collapsed",
-          "when": "GitLabCode.authenticated"
-        },
-        {
-          "id": "gitlabGitTree",
-          "name": "Git Tree",
-          "icon": "./src/assets/dep.svg",
-          "contextualTitle": "GitLabCode",
-          "visibility": "visible",
-          "when": "GitLabCode.authenticated"
-        }
-      ]
-    },
-    "menus": {
-      "view/title": [
-        {
-            "command": "GitLabCode.deleteProject",
-            "when": "view == groupsView"
-        }
-    ],
-    "view/item/context": [
-        {
-            "command": "GitLabCode.deleteProject",
-            "when": "view == groupsView && viewItem == project"
-        }
-      ]
-    }
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.0",
-    "@types/node": "14.x",
-    "@types/vscode": "^1.66.0",
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
-    "@vscode/test-electron": "^2.1.3",
-    "eslint": "^8.11.0",
-    "glob": "^7.2.0",
-    "mocha": "^9.2.2",
-    "ts-loader": "^9.2.8",
-    "typescript": "^4.5.5",
-    "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
-  },
-  "dependencies": {
-    "axios": "^0.26.1",
-    "deepmerge": "^4.2.2"
-  }
+	"name": "gitlabcode",
+	"displayName": "GitLabCode",
+	"description": "",
+	"version": "0.0.1",
+	"publisher": "SufyanDahalan",
+	"engines": {
+		"vscode": "^1.66.0"
+	},
+	"extensionKind": [
+		"ui"
+	],
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"viewsWelcome": [
+			{
+				"view": "authentication",
+				"contents": "No personal access token detected!\nPlease create a personal access token [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Authenticate](command:GitLabCode.addPersonalAccessToken)"
+			},
+			{
+				"view": "settings",
+				"contents": "Update Authentication Information [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Update Perosnal Authentication Token](command:GitLabCode.updatePersonalAccessToken)"
+			}
+		],
+		"commands": [
+            {
+                "command": "GitLabCode.GroupView.refreshEntry",
+                "title": "Refresh Group View",
+                "category": "GitLabCode"
+            },
+			{
+				"command": "GitLabCode.helloWorld",
+				"title": "Hello World",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.addPersonalAccessToken",
+				"title": "Authenticate",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.updatePersonalAccessToken",
+				"title": "Update Personal Token",
+				"category": "GitLabCode Personal"
+			},
+			{
+				"command": "GitLabCode.createPersonalProject",
+				"title": "Create Personal Project",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.getUserGroups",
+				"title": "Get User Groups Information",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.createGroupProject",
+				"title": "New Group Project",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.createGroup",
+				"title": "Create Group",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.createIssue",
+				"title": "GitLabCode: Create Issue"
+			},
+			{
+				"command": "GitLabCode.createMergeRequest",
+				"title": "Create Merge Request",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewPipelines",
+				"title": "View Pipelines",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewIssues",
+				"title": "View Issues",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewGitTree",
+				"title": "View Git Tree",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.refreshGroupView",
+				"title": "Refresh Groups View",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.refreshProjectsView",
+				"title": "Refresh Projects View",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.deleteProject",
+				"title": "Delete Project",
+				"category": "GitLabCode",
+				"icon": "$(notebook-delete-cell)"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "gitLabCode-activityBar",
+					"title": "GitLabCode",
+					"icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
+				}
+			],
+			"panel": [
+				{
+					"id": "gitlabcode-panel",
+					"title": "GitLabCode",
+					"icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
+				}
+			]
+		},
+		"views": {
+			"gitLabCode-activityBar": [
+				{
+					"id": "authentication",
+					"name": "authentication",
+					"icon": "./src/assets/dep.svg",
+					"contextualTitle": "authentication",
+					"visibility": "visible",
+					"when": "!GitLabCode.authenticated"
+				},
+				{
+					"id": "groupView",
+					"name": "Groups",
+					"icon": "$(accounts-view-bar-icon)",
+					"contextualTitle": "GitLabCode",
+					"visibility": "visible",
+					"when": "GitLabCode.authenticated"
+				},
+				{
+					"id": "issueView",
+					"name": "Issues",
+					"icon": "./src/assets/dep.svg",
+					"contextualTitle": "GitLabCode",
+					"visibility": "collapsed",
+					"when": "GitLabCode.authenticated"
+				},
+				{
+					"id": "pipelines",
+					"name": "Pipelines",
+					"icon": "./src/assets/dep.svg",
+					"contextualTitle": "GitLabCode",
+					"visibility": "collapsed",
+					"when": "GitLabCode.authenticated"
+				},
+				{
+					"id": "settings",
+					"name": "Settings",
+					"icon": "./src/assets/dep.svg",
+					"contextualTitle": "GitLabCode",
+					"visibility": "collapsed",
+					"when": "GitLabCode.authenticated",
+					"contents": "Update Personal Authentication Token [learn more](https://www.npmjs.com/).\n[Add Dependency](command:GitLabCode.updatePersonalAccessToken)"
+				}
+			],
+			"gitlabcode-panel": [
+				{
+					"id": "gitlabPipelines",
+					"name": "Pipelines",
+					"icon": "./src/assets/dep.svg",
+					"contextualTitle": "GitLabCode",
+					"visibility": "collapsed",
+					"when": "GitLabCode.authenticated"
+				},
+				{
+					"id": "gitlabGitTree",
+					"name": "Git Tree",
+					"icon": "./src/assets/dep.svg",
+					"contextualTitle": "GitLabCode",
+					"visibility": "visible",
+					"when": "GitLabCode.authenticated"
+				}
+			]
+		},
+		"menus": {
+			"submenus.GroupView": [
+				{
+					"command": "GitLabCode.createGroupProject",
+					"group": "navigation"
+				},
+				{
+					"command": "GitLabCode.createPersonalProject",
+					"when": "view == groupView && viewItem == user",
+					"group": "inline"
+				},
+				{
+					"command": "GitLabCode.deleteProject",
+					"when": "view == groupView && viewItem == group"
+				}
+			],
+            "submenus.GroupNode": [
+				{
+					"command": "GitLabCode.createGroupProject",
+					"when": "view == groupView && viewItem == group",
+					"group": "navigation"
+				},
+				{
+					"command": "GitLabCode.createPersonalProject",
+					"when": "view == groupView && viewItem == user",
+					"group": "inline"
+				},
+				{
+					"command": "GitLabCode.deleteProject",
+					"when": "view == groupView && viewItem == project"
+				}
+			],
+			"view/title": [
+                {
+                    "command": "GitLabCode.refreshGroupView",
+                    "when": "view == groupView",
+                    "group": "inline"
+                },
+                {
+                    "submenu": "submenus.GroupView",
+                    "group": "inline"
+                }
+            ],
+			"view/item/context": [
+                {
+                    "submenu": "submenus.GroupNode",
+                    "group": "inline"
+                }
+            ]
+		},
+		"submenus": [
+			{
+				"id": "submenus.GroupView",
+				"label": "somefknlabel",
+				"icon": "$(more)"
+			},
+            {
+				"id": "submenus.GroupNode",
+				"label": "somefknlabel",
+				"icon": "$(more)"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "npm run compile-tests && npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.0",
+		"@types/node": "14.x",
+		"@types/vscode": "^1.66.0",
+		"@typescript-eslint/eslint-plugin": "^5.16.0",
+		"@typescript-eslint/parser": "^5.16.0",
+		"@vscode/test-electron": "^2.1.3",
+		"eslint": "^8.11.0",
+		"glob": "^7.2.0",
+		"mocha": "^9.2.2",
+		"ts-loader": "^9.2.8",
+		"typescript": "^4.5.5",
+		"webpack": "^5.70.0",
+		"webpack-cli": "^4.9.2"
+	},
+	"dependencies": {
+		"axios": "^0.26.1",
+		"deepmerge": "^4.2.2"
+	}
 }

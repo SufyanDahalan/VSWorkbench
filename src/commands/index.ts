@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 // const api = require("../api");
 import api from '../api'
 
-function createPersonalProjectCommand() {
+export function createPersonalProjectCommand() {
 	let projectName = "";
 	const inputProjectName = vscode.window.createInputBox();
 	inputProjectName.placeholder = "Please Enter Project Name";
@@ -17,7 +17,7 @@ function createPersonalProjectCommand() {
 	});
 	inputProjectName.show();
 } // MVP
-function createGroupProjectCommand() {
+export function createGroupProjectCommand(groupID: string) {
 	let projectName = "";
 	const inputProjectName = vscode.window.createInputBox();
 	inputProjectName.placeholder = "Please Enter Project Name";
@@ -26,38 +26,39 @@ function createGroupProjectCommand() {
 	});
 	inputProjectName.onDidAccept(() => {
 		inputProjectName.hide();
-		api.createGroupProject(projectName);
+		api.createGroupProject(projectName, groupID);
 	});
 	inputProjectName.show();
 } // MVP
-async function getUserGroupsCommand() {
+export async function getUserGroupsCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 	console.log(await api.getUserGroups());
 } // MVP
 
-async function createGroupCommand() {
+export async function createGroupCommand() {
 	// vscode.window.showInformationMessage("Hello World from GitLabCode!");
     console.log("api.getUserIDAsync")
     // console.log(api.getUserIDAsync())
     console.log(api.getUserProjects(api.getUserIDAsync()))
 } // MVP
-function deleteProject (){
-	vscode.window.showInformationMessage("delete Project habibi!");
+export function deleteProject (projectID: string){
+    // api.deleteProject(context.workspaceState.get('GROUP_VIEW_FOCUS'))
+    api.deleteProject(projectID)
 }
-function createIssueCommand() {
+export function createIssueCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
-function createMergeRequestCommand() {
+export function createMergeRequestCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
-function viewPipelinesCommand() {
+export function viewPipelinesCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
-function viewIssuesCommand() {
+export function viewIssuesCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
 
-function viewGitTreeCommand() {
+export function viewGitTreeCommand() {
 	// vscode.window.showInformationMessage("Hello World from GitLabCode!");
 	// api.getme;
 } // Feature
