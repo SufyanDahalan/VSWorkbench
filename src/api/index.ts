@@ -24,11 +24,9 @@ const api = axios.create({
 const Api = {
 	api,
 	updateBaseURL(newBaseURL: string) {
-		console.log("updateBaseURL");
 		this.api.defaults.baseURL = newBaseURL;
 	},
 	updateAuthToken(newAuthToken: string) {
-		console.log("updateAuthToken1");
 		this.api.defaults.headers.common["PRIVATE-TOKEN"] = newAuthToken;
 	},
 	// #region projectApi
@@ -41,8 +39,12 @@ const Api = {
     getGroupIssues(groupID: number):any {
 		return this.api.get(`groups/${groupID}/issues`);
 	},
-	getProjectPipelines(projectID: string): any {
+	getProjectPipelines(projectID: number): any {
+        console.log("::::::::")
 		return this.api.get(`projects/${projectID}/pipelines`);
+	},
+    getPipelineJobs(projectID: number, pipeline_id: number): any {
+		return this.api.get(`projects/${projectID}/pipelines/${pipeline_id}/jobs`);
 	},
 	getPipeline(projectID: string, pipelineID: string): any {
 		return this.api.get(`projects/${projectID}/pipelines/${pipelineID}`);
@@ -63,7 +65,6 @@ const Api = {
 	},
 	createPersonalProject(projectName: string) {
 		// TODO: allow for the user to set more information, and based on that add that informtion to the request.
-		console.log("createPersonalProject");
 		// should be done in the tree view instead of a simple input
 		return this.api.post(`projects?name=${projectName}`);
 	},
@@ -71,8 +72,6 @@ const Api = {
 	// 	return this.api.delete(`projects/${projectID}`);
 	// },
 	deleteProject(projectID: string) {
-        console.log("projectID")
-        console.log(projectID)
 		return this.api.delete(`projects/${projectID}`);
 	},
 	getUserProjects(userID: string) {
@@ -88,8 +87,6 @@ const Api = {
 		return this.api.get(`namespaces`);
 	},
 	createGroupProject(projectName: string, groupID: string) {
-        console.log("groupID")
-        console.log(groupID)
 		return this.api.post(`projects?name=${projectName}&namespace_id=${groupID}`);
 		// well, its basically a createPersonalProject but with the namespace_id specified
 	},
@@ -101,11 +98,9 @@ const Api = {
 		return this.api.get("user");
 	},
 	async getGroupById(id: string) {
-		console.log("getGroupById");
 		return await this.api.get(`groups/${id}`);
 	},
 	async getSubGroups(parentID: string) {
-		console.log("getSubGroups");
 		return await this.api.get(`groups/${parentID}/subgroups`);
 	},
 };

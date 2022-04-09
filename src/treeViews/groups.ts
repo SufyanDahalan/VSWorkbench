@@ -4,6 +4,7 @@ import api from "../api";
 import { ProjectNode } from "./projects";
 import { GROUP_VIEW_FOCUS } from "../globals";
 import {IssueView} from './issues'
+import {PipelineView} from './pipelines'
 
 
 
@@ -162,15 +163,20 @@ export class GroupView {
 		const treeDataProvider = new GroupTreeDataProvider(groupModel);
 		this.groupTreeViewer = vscode.window.createTreeView("groupView", { treeDataProvider });
 
-
 		this.groupTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
-			context.workspaceState.update(GROUP_VIEW_FOCUS, selection["selection"][0].node_id);
-			// TODO: highlight the item selected using TreeItemLabel.highlight
-			// remote-explorer-get-started, extensions-star-empty, extensions-star-full, extensions-star-half, triangle-left, arrow-left, arrow-small-left, chevron-left
-            this.groupTreeViewer.selection[0].iconPath = new vscode.ThemeIcon('extensions-star-full') // TOFIX: it simply aint working
-			console.log(this.groupTreeViewer.selection[0]);
-            treeDataProvider.refresh()
-            new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
+            // TODO: highlight the item selected using TreeItemLabel.highlight
+            // remote-explorer-get-started, extensions-star-empty, extensions-star-full, extensions-star-half, triangle-left, arrow-left, arrow-small-left, chevron-left
+            // this.groupTreeViewer.selection[0].iconPath = new vscode.ThemeIcon('extensions-star-full') // TOFIX: it simply aint working
+            // treeDataProvider.refresh()
+            if(selection["selection"][0].contextValue == "project"){
+                new PipelineView(context, selection['selection'][0].node_id)
+            }
+            if(selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project"){
+                new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
+                // FIXME: for some reason this if block gets reached once and then never gets updated again.
+                // just look for a better way of initializing and creating and disposing TreeViews
+            }//FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
+            context.workspaceState.update(GROUP_VIEW_FOCUS, selection["selection"][0].node_id);
         });
 		vscode.commands.registerCommand("GitLabCode.refreshGroupView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}

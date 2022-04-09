@@ -7,6 +7,7 @@
 	"engines": {
 		"vscode": "^1.66.0"
 	},
+	"main": "./dist/extension.js",
 	"extensionKind": [
 		"ui"
 	],
@@ -16,7 +17,6 @@
 	"activationEvents": [
 		"*"
 	],
-	"main": "./dist/extension.js",
 	"contributes": {
 		"viewsWelcome": [
 			{
@@ -29,11 +29,11 @@
 			}
 		],
 		"commands": [
-            {
-                "command": "GitLabCode.GroupView.refreshEntry",
-                "title": "Refresh Group View",
-                "category": "GitLabCode"
-            },
+			{
+				"command": "GitLabCode.GroupView.refreshEntry",
+				"title": "Refresh Group View",
+				"category": "GitLabCode"
+			},
 			{
 				"command": "GitLabCode.helloWorld",
 				"title": "Hello World",
@@ -79,13 +79,8 @@
 				"category": "GitLabCode"
 			},
 			{
-				"command": "GitLabCode.viewPipelines",
-				"title": "View Pipelines",
-				"category": "GitLabCode"
-			},
-			{
-				"command": "GitLabCode.viewIssues",
-				"title": "View Issues",
+				"command": "GitLabCode.viewIssue",
+				"title": "View Issue",
 				"category": "GitLabCode"
 			},
 			{
@@ -99,8 +94,8 @@
 				"category": "GitLabCode"
 			},
 			{
-				"command": "GitLabCode.refreshProjectsView",
-				"title": "Refresh Projects View",
+				"command": "GitLabCode.refreshPipelineView",
+				"title": "Refresh Pipelines View",
 				"category": "GitLabCode"
 			},
 			{
@@ -108,6 +103,120 @@
 				"title": "Delete Project",
 				"category": "GitLabCode",
 				"icon": "$(notebook-delete-cell)"
+			},
+			{
+				"command": "GitLabCode.createPersonalSnippet",
+				"title": "Create Personal Snippet",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.createProjectSnippet",
+				"title": "Create Project Snippet",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewIssueList",
+				"title": "View Issue List",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewIssueBoard",
+				"title": "View Issue Board",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.openProjectInGitLab",
+				"title": "Open In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(globe)"
+			},
+			{
+				"command": "GitLabCode.openGroupInGitLab",
+				"title": "Open In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(globe)"
+			},
+			{
+				"command": "GitLabCode.openGroupInGitLab",
+				"title": "Open In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(globe)"
+			},
+			{
+				"command": "GitLabCode.openIssueBoardInGitLab",
+				"title": "Open List In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(globe)"
+			},
+			{
+				"command": "GitLabCode.openIssueInGitLab",
+				"title": "Open Issue In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(globe)"
+			},
+			{
+				"command": "GitLabCode.openListInGitLab",
+				"title": "Open Board In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(globe)"
+			},
+			{
+				"command": "GitLabCode.openProjectSettingsInGitLab",
+				"title": "Open Project Settings In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(gear)"
+			},
+			{
+				"command": "GitLabCode.openGroupSettingsInGitLab",
+				"title": "Open Group Settings In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(gear)"
+			},
+			{
+				"command": "GitLabCode.openSettingsInGitLab",
+				"title": "Open Personal Settings In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(gear)"
+			},
+			{
+				"command": "GitLabCode.addMemberToProject",
+				"title": "Add Member To Project",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.addMemberToGroup",
+				"title": "Add Member To Group",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.openPipelinesInGitLab",
+				"title": "Open Pipelines In GitLab",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.openPipelineInGitLab",
+				"title": "Open Pipeline In GitLab",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.openJobInGitLab",
+				"title": "Open Job In GitLab",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewPipelines",
+				"title": "View Pipelines",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewPipeline",
+				"title": "View Pipeline",
+				"category": "GitLabCode"
+			},
+			{
+				"command": "GitLabCode.viewJob",
+				"title": "View Job",
+				"category": "GitLabCode"
 			}
 		],
 		"viewsContainers": {
@@ -153,7 +262,7 @@
 					"when": "GitLabCode.authenticated"
 				},
 				{
-					"id": "pipelines",
+					"id": "pipelineView",
 					"name": "Pipelines",
 					"icon": "./src/assets/dep.svg",
 					"contextualTitle": "GitLabCode",
@@ -168,6 +277,15 @@
 					"visibility": "collapsed",
 					"when": "GitLabCode.authenticated",
 					"contents": "Update Personal Authentication Token [learn more](https://www.npmjs.com/).\n[Add Dependency](command:GitLabCode.updatePersonalAccessToken)"
+				},
+				{
+					"id": "stars",
+					"name": "Starred Projects",
+					"icon": "./src/assets/dep.svg",
+					"contextualTitle": "GitLabCode",
+					"visibility": "collapsed",
+					"when": "GitLabCode.authenticated",
+					"contents": "@feature section for starred projects along with a couple of actions [api](https://docs.gitlab.com/ee/api/projects.html#list-user-projects), [second api](https://docs.gitlab.com/ee/api/projects.html#list-projects-starred-by-a-user)"
 				}
 			],
 			"gitlabcode-panel": [
@@ -190,22 +308,30 @@
 			]
 		},
 		"menus": {
-			"submenus.GroupView": [
-				{
-					"command": "GitLabCode.createGroupProject",
-					"group": "navigation"
-				},
-				{
-					"command": "GitLabCode.createPersonalProject",
-					"when": "view == groupView && viewItem == user",
-					"group": "inline"
-				},
-				{
-					"command": "GitLabCode.deleteProject",
-					"when": "view == groupView && viewItem == group"
-				}
-			],
-            "submenus.GroupNode": [
+			"GitLabCode.GroupView": [],
+			"GitLabCode.PipelineView": [
+                {
+                    "command": "GitLabCode.openPipelineInGitLab",
+                    "group": "inline",
+                    "when": "view == pipelineView && viewItem == pipeline"
+                },
+                {
+                    "command": "GitLabCode.openJobInGitLab",
+                    "group": "inline",
+                    "when": "view == pipelineView && viewItem == job"
+                },
+                {
+                    "command": "GitLabCode.viewPipelines",
+                    "group": "inline",
+                    "when": "view == pipelineView && viewItem == pipeline"
+                },
+                {
+                    "command": "GitLabCode.viewJob",
+                    "group": "inline",
+                    "when": "view == pipelineView && viewItem == job"
+                }
+            ],
+			"GitLabCode.GroupNode": [
 				{
 					"command": "GitLabCode.createGroupProject",
 					"when": "view == groupView && viewItem == group",
@@ -217,37 +343,112 @@
 					"group": "inline"
 				},
 				{
-					"command": "GitLabCode.deleteProject",
+					"command": "GitLabCode.createPersonalSnippet",
+					"when": "view == groupView && viewItem == user"
+				},
+				{
+					"command": "GitLabCode.createProjectSnippet",
 					"when": "view == groupView && viewItem == project"
+				},
+				{
+					"command": "GitLabCode.deleteProject",
+					"when": "view == groupView && viewItem == project",
+					"comment": "TODO: add icon?"
+				},
+				{
+					"command": "GitLabCode.addMemberToProject",
+					"when": "view == groupView && viewItem == project",
+					"comment": "TODO: add icon?"
+				},
+				{
+					"command": "GitLabCode.addMemberToGroup",
+					"when": "view == groupView && viewItem == group",
+					"comment": "TODO: add icon?"
+				}
+			],
+			"GitLabCode.IssueNode": [
+				{
+					"command": "GitLabCode.viewIssue",
+					"icon": "$(eye)"
 				}
 			],
 			"view/title": [
-                {
-                    "command": "GitLabCode.refreshGroupView",
-                    "when": "view == groupView",
-                    "group": "inline"
-                },
-                {
-                    "submenu": "submenus.GroupView",
-                    "group": "inline"
-                }
-            ],
+				{
+					"command": "GitLabCode.refreshGroupView",
+					"when": "view == groupView",
+					"group": "inline"
+				},
+				{
+					"command": "GitLabCode.createGroup",
+					"when": "view == groupView",
+					"group": "inline"
+				},
+				{
+					"submenu": "GitLabCode.GroupView",
+					"group": "inline",
+					"when": "view == groupView"
+				},
+				{
+					"command": "GitLabCode.viewIssueList",
+					"when": "view == issueView"
+				},
+				{
+					"command": "GitLabCode.viewIssueBoard",
+					"when": "view == issueView"
+				}
+			],
 			"view/item/context": [
+				{
+					"submenu": "GitLabCode.GroupNode",
+					"group": "inline",
+					"when": "view == groupView"
+				},
+				{
+					"submenu": "GitLabCode.IssueNode",
+					"group": "inline",
+					"when": "view == issueView"
+				},
                 {
-                    "submenu": "submenus.GroupNode",
-                    "group": "inline"
-                }
-            ]
+					"submenu": "GitLabCode.PipelineView",
+					"group": "inline",
+					"when": "view == pipelineView"
+                },
+				{
+					"command": "GitLabCode.openIssueInGitLab",
+					"group": "inline",
+					"when": "view == issueView"
+				},
+				{
+					"command": "GitLabCode.openPipelinesInGitLab",
+					"group": "Open Pipelines In GitLab",
+					"when": "view == pipelineView"
+				}
+			]
 		},
 		"submenus": [
 			{
-				"id": "submenus.GroupView",
-				"label": "somefknlabel",
+				"id": "GitLabCode.GroupView",
+				"label": "More Actions",
+				"icon": "$(more)"
+			},
+			{
+				"id": "GitLabCode.IssueView",
+				"label": "More Actions",
+				"icon": "$(more)"
+			},
+			{
+				"id": "GitLabCode.GroupNode",
+				"label": "More Actions",
 				"icon": "$(more)"
 			},
             {
-				"id": "submenus.GroupNode",
-				"label": "somefknlabel",
+				"id": "GitLabCode.PipelineView",
+				"label": "More Actions",
+				"icon": "$(more)"
+            },
+			{
+				"id": "GitLabCode.IssueNode",
+				"label": "More Actions",
 				"icon": "$(more)"
 			}
 		]

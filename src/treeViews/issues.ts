@@ -2,7 +2,8 @@ import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import api from "../api";
 import { GROUP_VIEW_FOCUS } from "../globals";
-
+let issueKind: boolean;
+let parent_id: number;
 export interface IssuesNode {
 	resource: URL;
 	mainText: string;
@@ -58,7 +59,6 @@ export class IssueModel {
 
 	public async getGroups(): Promise<any> {
 		let res = await api.getUserGroups();
-
 		if (res.data.length == 0) {
 			return {} as IssueNode;
 		} else if (res.data.length > 0) {
@@ -104,7 +104,6 @@ export class IssueTreeDataProvider implements vscode.TreeDataProvider<IssueNode>
 						if (res.data.length > 0) {
 							let groups = new Array<IssueNode>();
 							for (let i = 0; i < res.data.length; i++) {
-								console.log(res.data[i].id);
 								groups.push(
 									new IssueNode(
 										res.data[i].id,
@@ -117,11 +116,8 @@ export class IssueTreeDataProvider implements vscode.TreeDataProvider<IssueNode>
 									)
 								);
 							}
-                            console.log("groups[0]")
-                            console.log(groups[0])
 							return groups;
 						} else {
-                            console.log("returning undefined")
 							return undefined;
 						}
 				  });
@@ -175,8 +171,7 @@ export class IssueTreeDataProvider implements vscode.TreeDataProvider<IssueNode>
         */
 	}
 }
-let issueKind: boolean;
-let parent_id: number;
+
 export class IssueView {
 	public issueTreeViewer: vscode.TreeView<IssueNode>;
 
@@ -188,28 +183,28 @@ export class IssueView {
 		const treeDataProvider = new IssueTreeDataProvider(groupModel);
 		this.issueTreeViewer = vscode.window.createTreeView("issueView", { treeDataProvider });
 
-		this.issueTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<IssueNode>) => {});
+		// this.issueTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<IssueNode>) => {});
 		vscode.commands.registerCommand("GitLabCode.refreshIssueView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}
 }
 /**
- * @todo implement actions for issues:
+ * @TODO implement actions for issues:
  * 1. Comment
  * 2. Delete
  * 3. Close
  * 4. Create
  * 
- * @feature Some extra functionality/features:
+ * @FEATURE Some extra functionality/features:
  * 1. When clicking on an issue, open a webview where the issue can be seen along with all the comments.
  * 
- * @feature as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the 
+ * !FEATURE as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the 
  * parent can be viewed in a list. 
- * @feature as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the 
+ * !feature as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the 
  * parent can be viewed in on a board. User can switch boards and will be able to drag and drop issues from one list to another. 
  * 
- * @feature add icon to feature. choose the icon to be based off of `labels`, `urgency`, or smth else. maybe just the color to represent the label, implies 
+ * @FEATURE add icon to feature. choose the icon to be based off of `labels`, `urgency`, or smth else. maybe just the color to represent the label, implies 
  * migrating to a custom webviewview tho
  * 
- * @feature add avatar of assignee to the left of the issue. might require a custom webviewview
+ * @FEATURE add avatar of assignee to the left of the issue. might require a custom webviewview
  * 
  */

@@ -7,7 +7,6 @@
 // 	},
 // 	createPersonalProject(projectName:string) {
 // 		// TODO: allow for the user to set more information, and based on that add that informtion to the request.
-// 		console.log("createPersonalProject");
 // 		// should be done in the tree view instead of a simple input
 // 		return this.api.post(`projects?name=${projectName}`)
 // 	},

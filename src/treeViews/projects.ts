@@ -18,6 +18,7 @@ export class ProjectNode extends vscode.TreeItem{
         parent_id: number; // to which group this project belongs
         visibility: string; //can prob be made into an enum, TODO
         node_id: number;
+        contextValue:string = 'project';
 
 	constructor(
         project_id: number, 
@@ -36,7 +37,6 @@ export class ProjectNode extends vscode.TreeItem{
 		this.resource = resource;
 	}
 
-	contextValue = 'project';
 }
 
 // export class ProjectModel {
