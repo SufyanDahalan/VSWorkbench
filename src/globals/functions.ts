@@ -3,9 +3,7 @@
 // const vscode = require("vscode");
 import * as vscode from 'vscode';
 
-
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY } from "./constants";
-
 
 export function settings(globalState:vscode.ExtensionContext["globalState"]) {
 	// get personal auth token and gitlab instance
@@ -39,7 +37,7 @@ export function settings(globalState:vscode.ExtensionContext["globalState"]) {
 }
 
 export function checkGitlabInstanceAndAuthToken(globalState:vscode.ExtensionContext["globalState"]) {
-	console.log(`auth token from chechAuthToken: ${globalState.get(AUTH_TOKEN_KEY)}`);
+	console.log(`auth token from chechAuthToken: |${globalState.get(AUTH_TOKEN_KEY)}|`);
 	// TODO: actually test to authenticate with the token against the gitlab instance specified
 	// AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY
 	if (!!globalState.get(AUTH_TOKEN_KEY)) {

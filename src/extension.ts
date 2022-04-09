@@ -2,10 +2,10 @@ import * as vscode from "vscode";
 import api from "./api";
 
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions } from "./globals";
-// const GlobalFunctions = require("./globals/functions");
 
-const Commands = require("./commands");
-import {GroupView} from "./views"
+import Commands from './commands'
+// import {GroupView, GroupTreeDataProvider, GroupModel} from "./treeViews/groups"
+import {GroupView/* , ProjectView */ }from './treeViews'
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
 
 	let helloWorldCommand = vscode.commands.registerCommand("GitLabCode.helloWorld", () => {
-		vscode.window.showInformationMessage("Hello World from GitLabCode!"); // Display a message box to the user
+		vscode.window.showInformationMessage("Hello World from GitLabCode!", "good"); // Display a message box to the user
 	});
 	let addPersonalAccessTokenCommand = vscode.commands.registerCommand("GitLabCode.addPersonalAccessToken", () => {
 		// MVP
@@ -28,6 +28,10 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
     new GroupView(context)
+    // new ProjectView(context)
+    
+		// const groupModel = new GroupModel();
+        // vscode.window.registerTreeDataProvider("groupsView", new GroupTreeDataProvider(groupModel) );
 
 	context.subscriptions.push(
 		addPersonalAccessTokenCommand,
@@ -41,7 +45,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("GitLabCode.viewPipelines", Commands.viewPipelinesCommand),
 		vscode.commands.registerCommand("GitLabCode.viewIssues", Commands.viewIssuesCommand),
 		vscode.commands.registerCommand("GitLabCode.viewGitTree", Commands.viewGitTreeCommand),
-		vscode.commands.registerCommand("GitLabCode.getUserGroups", Commands.getUserGroupsCommand)
+		vscode.commands.registerCommand("GitLabCode.getUserGroups", Commands.getUserGroupsCommand),
+		vscode.commands.registerCommand("GitLabCode.deleteProject", Commands.deleteProject),
 	);
 }
 

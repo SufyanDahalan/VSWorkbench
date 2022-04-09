@@ -3,6 +3,7 @@
   "displayName": "GitLabCode",
   "description": "",
   "version": "0.0.1",
+  "publisher": "SufyanDahalan",
   "engines": {
     "vscode": "^1.66.0"
   },
@@ -74,23 +75,31 @@
         "title": "GitLabCode: View Git Tree"
       },
       {
-          "command": "GitLabCode.refresh",
-          "title": "GitLabCode refresh"
-      }
+          "command": "GitLabCode.refreshGroupView",
+          "title": "GitLabCode refresh Groups View"
+      },
+      {
+        "command": "GitLabCode.refreshProjectsView",
+        "title": "GitLabCode refresh Projects View"
+    },
+    {
+        "command": "GitLabCode.deleteProject",
+        "title": "GitLabCode Delete Project"
+    }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "gitLabCode-activityBar",
           "title": "GitLabCode",
-          "icon": "resources/gitlab-icon-1-color-black-rgb.svg"
+          "icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
         }
       ],
       "panel": [
         {
           "id": "gitlabcode-panel",
           "title": "GitLabCode",
-          "icon": "resources/gitlab-icon-1-color-black-rgb.svg"
+          "icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
         }
       ]
     },
@@ -99,7 +108,7 @@
         {
           "id": "authentication",
           "name": "authentication",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "authentication",
           "visibility": "visible",
           "when": "!GitLabCode.authenticated"
@@ -107,15 +116,15 @@
         {
           "id": "groupsView",
           "name": "Groups",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "GitLabCode",
           "visibility": "visible",
           "when": "GitLabCode.authenticated"
         },
         {
-          "id": "Projects",
+          "id": "projectsView",
           "name": "Projects",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "GitLabCode",
           "visibility": "collapsed",
           "when": "GitLabCode.authenticated"
@@ -123,7 +132,7 @@
         {
           "id": "Issues",
           "name": "Issues",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "GitLabCode",
           "visibility": "collapsed",
           "when": "GitLabCode.authenticated"
@@ -131,7 +140,7 @@
         {
           "id": "jobs",
           "name": "Jobs",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "GitLabCode",
           "visibility": "collapsed",
           "when": "GitLabCode.authenticated"
@@ -139,7 +148,7 @@
         {
           "id": "settings",
           "name": "Settings",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "GitLabCode",
           "visibility": "collapsed",
           "when": "GitLabCode.authenticated",
@@ -150,7 +159,7 @@
         {
           "id": "gitlabPipelines",
           "name": "Pipelines",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "GitLabCode",
           "visibility": "collapsed",
           "when": "GitLabCode.authenticated"
@@ -158,7 +167,7 @@
         {
           "id": "gitlabGitTree",
           "name": "Git Tree",
-          "icon": "resources/dep.svg",
+          "icon": "./src/assets/dep.svg",
           "contextualTitle": "GitLabCode",
           "visibility": "visible",
           "when": "GitLabCode.authenticated"
@@ -166,8 +175,18 @@
       ]
     },
     "menus": {
-      "view/title": [],
-      "view/item/context": []
+      "view/title": [
+        {
+            "command": "GitLabCode.deleteProject",
+            "when": "view == groupsView"
+        }
+    ],
+    "view/item/context": [
+        {
+            "command": "GitLabCode.deleteProject",
+            "when": "view == groupsView && viewItem == project"
+        }
+      ]
     }
   },
   "scripts": {

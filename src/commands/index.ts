@@ -35,10 +35,15 @@ async function getUserGroupsCommand() {
 	console.log(await api.getUserGroups());
 } // MVP
 
-function createGroupCommand() {
+async function createGroupCommand() {
 	// vscode.window.showInformationMessage("Hello World from GitLabCode!");
+    console.log("api.getUserIDAsync")
+    // console.log(api.getUserIDAsync())
+    console.log(api.getUserProjects(api.getUserIDAsync()))
 } // MVP
-
+function deleteProject (){
+	vscode.window.showInformationMessage("delete Project habibi!");
+}
 function createIssueCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
@@ -56,14 +61,15 @@ function viewGitTreeCommand() {
 	// vscode.window.showInformationMessage("Hello World from GitLabCode!");
 	// api.getme;
 } // Feature
-
-exports.getUserGroupsCommand = getUserGroupsCommand;
-exports.createGroupProjectCommand = createGroupProjectCommand;
-exports.createGroupProjectCommand = createGroupProjectCommand;
-exports.createPersonalProjectCommand = createPersonalProjectCommand;
-exports.createGroupCommand = createGroupCommand;
-exports.createIssueCommand = createIssueCommand;
-exports.createMergeRequestCommand = createMergeRequestCommand;
-exports.viewPipelinesCommand = viewPipelinesCommand;
-exports.viewIssuesCommand = viewIssuesCommand;
-exports.viewGitTreeCommand = viewGitTreeCommand;
+export default {
+    getUserGroupsCommand,
+    createGroupProjectCommand,
+    deleteProject,
+    createPersonalProjectCommand,
+    createGroupCommand,
+    createIssueCommand,
+    createMergeRequestCommand,
+    viewPipelinesCommand,
+    viewIssuesCommand,
+    viewGitTreeCommand, 
+}
