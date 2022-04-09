@@ -27,6 +27,10 @@ export function createGroupProjectCommand(groupID: string) {
 	});
 	inputProjectName.show();
 } // MVP
+
+
+
+
 export async function getUserGroupsCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
@@ -82,9 +86,7 @@ export function deleteSnippetComment() {
 export function openProjectSettingsInGitLab() {
 	// https://docs.gitlab.com/ee/api/notes.html#delete-a-snippet-note
 }
-export function openGroupSettingsInGitLab() {
-	// https://docs.gitlab.com/ee/api/notes.html#delete-a-snippet-note
-}
+
 export function openPersonalSettingsInGitLab() {
 	// https://docs.gitlab.com/ee/api/notes.html#delete-a-snippet-note
     /**
@@ -108,6 +110,9 @@ export function addMemberToGroup() {
      * 
      */
 }
+export function openGroupSettingsInGitLab() {
+	// https://docs.gitlab.com/ee/api/notes.html#delete-a-snippet-note
+}
 /**
  * navigates to project in gitlab in default browser
  */
@@ -119,6 +124,42 @@ export function openProjectInGitLab() {
 export function openGroupInGitLab() {
 }
 
+export function addSSHKey(){
+    // https://docs.gitlab.com/ee/api/users.html#add-ssh-key
+}
+export function deleteSSHKey(){
+    // https://docs.gitlab.com/ee/api/users.html#delete-ssh-key-for-current-user
+}
+
+export function addGPGKey(){
+    // https://docs.gitlab.com/ee/api/users.html#add-a-gpg-key
+}
+export function deleteGPGKey(){
+    // https://docs.gitlab.com/ee/api/users.html#delete-a-gpg-key
+}
+export function addEmail(){
+    // https://docs.gitlab.com/ee/api/users.html#add-email
+}
+
+export function createImpersonationToken(){
+    // https://docs.gitlab.com/ee/api/users.html#create-an-impersonation-token
+}
+export function revokeImpersonationToken(){
+// https://docs.gitlab.com/ee/api/users.html#revoke-an-impersonation-token
+}
+
+export function createPersonalAccessToken(){
+    // https://docs.gitlab.com/ee/api/users.html#create-a-personal-access-token
+}
+export function listSSHKeys(){
+    // https://docs.gitlab.com/ee/api/users.html#list-ssh-keys-for-user
+}
+
+
+
+
+
+// https://docs.gitlab.com/ee/api/runners.html
 
 export  * from './pipeline'
 import pipelinesCommands from './pipeline'
