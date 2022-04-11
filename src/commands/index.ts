@@ -154,7 +154,12 @@ export function createPersonalAccessToken(){
 export function listSSHKeys(){
     // https://docs.gitlab.com/ee/api/users.html#list-ssh-keys-for-user
 }
+/**
+ * opens namespaces, projects, issues, pipelines in gitlab
+ */
+// export function openInGitlab(){
 
+// }
 
 
 
@@ -187,12 +192,6 @@ export default {
 
 	modifySnippetComment,
 	deleteSnippetComment,
-	openProjectInGitLab,
-	openGroupInGitLab,
-    
-	openProjectSettingsInGitLab,
-	openGroupSettingsInGitLab,
-	openPersonalSettingsInGitLab,
     addMemberToProject,
 addMemberToGroup
 };

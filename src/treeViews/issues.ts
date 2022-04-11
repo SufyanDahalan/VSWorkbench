@@ -1,83 +1,50 @@
 import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import api from "../api";
-import { GROUP_VIEW_FOCUS } from "../globals";
+
+import {Node} from './node' 
+
+// import { GROUP_VIEW_FOCUS } from "../globals";
 let issueKind: boolean;
 let parent_id: number;
-export interface IssuesNode {
-	resource: URL;
-	mainText: string;
-	comments: string[];
-	node_id: number;
-}
+// export interface IssuesNode {
+// 	resource: URL;
+// 	mainText: string;
+// 	comments: string[];
+// 	node_id: number;
+// }
 
-export class IssueNode extends vscode.TreeItem {
-	node_id: number;
-	parent_id: number;
+export class IssueNode extends Node {
+	// node_id: number;
+	// parent_id: number;
+	// url: URL;
+    // contextValue: string;
 	// visibility: string; //can prob be made into an enum, TODO
-	resource: URL;
 	/**
 	 * vscode.TreeItem.contextValue
 	 * possible values: "group", "user"
 	 * value depends on kind of gitlab namespace
 	 * TODO: maybe turn into enum to keep em clear? idk
 	 */
-	contextValue: string;
-	// subGroups: GroupNode[]; // TODO, implies that top level nodes are groups but not subgroups, and that children can be subgroups or projects etc...
 	constructor(
 		node_id: number,
 		project_id: number,
-		// visibility: string,
-		resource: URL,
-		contextValue: string,
-		// public readonly collapsibleState: vscode.TreeItemCollapsibleState, // FEATURE ?
-		public readonly label: string // public readonly command: vscode.Command // projects?: ProjectNode[],
+		url: URL,
+		// contextValue: string,
+		public readonly label: string
 	) {
-		super(label /* , collapsibleState */);
+		super(node_id, parent_id, url, 'issue', vscode.TreeItemCollapsibleState.None, label);
+		// super(label);
 		this.parent_id = project_id;
 		this.node_id = node_id;
-		// this.visibility = visibility;
-		this.resource = resource;
-		this.contextValue = contextValue;
-		// this.command = command;
+		this.url = url;
+		// this.contextValue = contextValue;
 	}
-	// iconPath = {
-	// 	light: "../assets/gitlab-icon-1-color-black-rgb.svg",
-	// 	dark: "../assets/gitlab-icon-1-color-black-rgb.svg",
-	// };
-	// iconPath = {
-	// 	light: `$(extensions-star-half)`,
-	// 	dark: `$(extensions-star-half)`,
-	// };
-
-	// iconPath = new vscode.ThemeIcon('extensions-star-full')
 	iconPath: vscode.ThemeIcon | undefined;
 }
 
 export class IssueModel {
 	constructor() {}
-
-	public async getGroups(): Promise<any> {
-		let res = await api.getUserGroups();
-		if (res.data.length == 0) {
-			return {} as IssueNode;
-		} else if (res.data.length > 0) {
-			let groups = new Array<IssueNode>();
-			for (let i = 0; i < res.data.length; i++) {
-				groups.push(
-					new IssueNode(
-						res.data[i].id,
-						res.data[i].parent_id,
-						// res.data[i].visibility,
-						res.data[i].web_url,
-						res.data[i].type,
-						// vscode.TreeItemCollapsibleState.Collapsed,
-						res.data[i].name
-					)
-				);
-			}
-		}
-	}
 }
 
 export class IssueTreeDataProvider implements vscode.TreeDataProvider<IssueNode> {
@@ -97,78 +64,18 @@ export class IssueTreeDataProvider implements vscode.TreeDataProvider<IssueNode>
 
 	public getChildren(element?: IssueNode): vscode.ProviderResult<IssueNode[]> | undefined {
 		if (!element) {
-			return (issueKind
-				? api.getGroupIssues(parent_id)
-				: api.getProjectIssues(parent_id)
-                ).then((res: any) => {
-						if (res.data.length > 0) {
-							let groups = new Array<IssueNode>();
-							for (let i = 0; i < res.data.length; i++) {
-								groups.push(
-									new IssueNode(
-										res.data[i].id,
-										res.data[i].project_id,
-										// res.data[i].visibility,
-										res.data[i].web_url,
-										res.data[i].kind,
-										// vscode.TreeItemCollapsibleState.Collapsed,
-										res.data[i].title
-									)
-								);
-							}
-							return groups;
-						} else {
-							return undefined;
-						}
-				  });
-		} /* else {
-			if (element.contextValue === "group") {
-				return api.getGroupProjects(element.node_id).then((res: any) => {
-					if (res.data.length > 0) {
-						let groups = new Array<IssueNode>();
-						for (let i = 0; i < res.data.length; i++) {
-							groups.push(
-								new IssueNode(
-									res.data[i].id,
-									res.data[i].namespace.parent_id,
-									res.data[i].visibility,
-									res.data[i].web_url,
-                                    res.data[i].type,
-									res.data[i].name
-								)
-							);
-						}
-						return groups;
-					} else {
-						return <IssueNode>{};
+			return (issueKind ? api.getGroupIssues(parent_id) : api.getProjectIssues(parent_id)).then((res: any) => {
+				if (res.data.length > 0) {
+					let groups = new Array<IssueNode>();
+					for (let i = 0; i < res.data.length; i++) {
+						groups.push(new IssueNode(res.data[i].id, res.data[i].project_id, res.data[i].web_url/* , res.data[i].kind */, res.data[i].title));
 					}
-				});
-			} else {
-				return api.getUserID().then((res: AxiosResponse) => {
-					return api.getUserProjects(res.data.id).then((res: AxiosResponse) => {
-						if (res.data.length > 0) {
-							let groups = new Array<IssueNode>();
-							for (let i = 0; i < res.data.length; i++) {
-								groups.push(
-									new IssueNode(
-										res.data[i].id,
-										res.data[i].namespace.parent_id,
-										res.data[i].visibility,
-										res.data[i].web_url,
-                                        res.data[i].type,
-										res.data[i].name
-									)
-								);
-							}
-							return groups;
-						} else {
-							return <IssueNode>{};
-						}
-					});
-				});
-			}
+					return groups;
+				} else {
+					return undefined;
+				}
+			});
 		}
-        */
 	}
 }
 
@@ -176,14 +83,15 @@ export class IssueView {
 	public issueTreeViewer: vscode.TreeView<IssueNode>;
 
 	constructor(context: vscode.ExtensionContext, GroupOrProjectSelected: boolean, node_id: number) {
-		// 0 == project, 1 == group
+		/**
+		 * 0 == project, 1 == group
+		 */
 		issueKind = GroupOrProjectSelected;
 		parent_id = node_id;
 		const groupModel = new IssueModel();
 		const treeDataProvider = new IssueTreeDataProvider(groupModel);
 		this.issueTreeViewer = vscode.window.createTreeView("issueView", { treeDataProvider });
-
-		// this.issueTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<IssueNode>) => {});
+		context.subscriptions.push(this.issueTreeViewer);
 		vscode.commands.registerCommand("GitLabCode.refreshIssueView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}
 }
@@ -193,18 +101,18 @@ export class IssueView {
  * 2. Delete
  * 3. Close
  * 4. Create
- * 
+ *
  * @FEATURE Some extra functionality/features:
  * 1. When clicking on an issue, open a webview where the issue can be seen along with all the comments.
- * 
- * !FEATURE as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the 
- * parent can be viewed in a list. 
- * !feature as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the 
- * parent can be viewed in on a board. User can switch boards and will be able to drag and drop issues from one list to another. 
- * 
- * @FEATURE add icon to feature. choose the icon to be based off of `labels`, `urgency`, or smth else. maybe just the color to represent the label, implies 
+ *
+ * !FEATURE as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the
+ * parent can be viewed in a list.
+ * !feature as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the
+ * parent can be viewed in on a board. User can switch boards and will be able to drag and drop issues from one list to another.
+ *
+ * @FEATURE add icon to feature. choose the icon to be based off of `labels`, `urgency`, or smth else. maybe just the color to represent the label, implies
  * migrating to a custom webviewview tho
- * 
+ *
  * @FEATURE add avatar of assignee to the left of the issue. might require a custom webviewview
- * 
+ *
  */

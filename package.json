@@ -30,11 +30,6 @@
 		],
 		"commands": [
 			{
-				"command": "GitLabCode.GroupView.refreshEntry",
-				"title": "Refresh Group View",
-				"category": "GitLabCode"
-			},
-			{
 				"command": "GitLabCode.helloWorld",
 				"title": "Hello World",
 				"category": "GitLabCode"
@@ -67,11 +62,14 @@
 			{
 				"command": "GitLabCode.createGroup",
 				"title": "Create Group",
-				"category": "GitLabCode"
+				"category": "GitLabCode",
+				"icon": "$(ports-forward-icon)"
 			},
 			{
 				"command": "GitLabCode.createIssue",
-				"title": "GitLabCode: Create Issue"
+				"title": "Create Issue",
+				"category": "GitLabCode",
+				"icon": "$(ports-forward-icon)"
 			},
 			{
 				"command": "GitLabCode.createMergeRequest",
@@ -91,16 +89,24 @@
 			{
 				"command": "GitLabCode.refreshGroupView",
 				"title": "Refresh Groups View",
-				"category": "GitLabCode"
+				"category": "GitLabCode",
+				"icon": "$(extensions-refresh)"
+			},
+			{
+				"command": "GitLabCode.refreshIssueView",
+				"title": "Refresh Issues View",
+				"category": "GitLabCode",
+				"icon": "$(extensions-refresh)"
 			},
 			{
 				"command": "GitLabCode.refreshPipelineView",
 				"title": "Refresh Pipelines View",
-				"category": "GitLabCode"
+				"category": "GitLabCode",
+				"icon": "$(extensions-refresh)"
 			},
 			{
-				"command": "GitLabCode.deleteProject",
-				"title": "Delete Project",
+				"command": "GitLabCode.deleteNamespaceNode",
+				"title": "Delete Group Or Project",
 				"category": "GitLabCode",
 				"icon": "$(notebook-delete-cell)"
 			},
@@ -125,32 +131,8 @@
 				"category": "GitLabCode"
 			},
 			{
-				"command": "GitLabCode.openProjectInGitLab",
-				"title": "Open In GitLab",
-				"category": "GitLabCode",
-				"icon": "$(globe)"
-			},
-			{
-				"command": "GitLabCode.openGroupInGitLab",
-				"title": "Open In GitLab",
-				"category": "GitLabCode",
-				"icon": "$(globe)"
-			},
-			{
-				"command": "GitLabCode.openGroupInGitLab",
-				"title": "Open In GitLab",
-				"category": "GitLabCode",
-				"icon": "$(globe)"
-			},
-			{
 				"command": "GitLabCode.openIssueBoardInGitLab",
 				"title": "Open List In GitLab",
-				"category": "GitLabCode",
-				"icon": "$(globe)"
-			},
-			{
-				"command": "GitLabCode.openIssueInGitLab",
-				"title": "Open Issue In GitLab",
 				"category": "GitLabCode",
 				"icon": "$(globe)"
 			},
@@ -161,20 +143,8 @@
 				"icon": "$(globe)"
 			},
 			{
-				"command": "GitLabCode.openProjectSettingsInGitLab",
-				"title": "Open Project Settings In GitLab",
-				"category": "GitLabCode",
-				"icon": "$(gear)"
-			},
-			{
-				"command": "GitLabCode.openGroupSettingsInGitLab",
-				"title": "Open Group Settings In GitLab",
-				"category": "GitLabCode",
-				"icon": "$(gear)"
-			},
-			{
 				"command": "GitLabCode.openSettingsInGitLab",
-				"title": "Open Personal Settings In GitLab",
+				"title": "Open Settings In GitLab",
 				"category": "GitLabCode",
 				"icon": "$(gear)"
 			},
@@ -194,16 +164,6 @@
 				"category": "GitLabCode"
 			},
 			{
-				"command": "GitLabCode.openPipelineInGitLab",
-				"title": "Open Pipeline In GitLab",
-				"category": "GitLabCode"
-			},
-			{
-				"command": "GitLabCode.openJobInGitLab",
-				"title": "Open Job In GitLab",
-				"category": "GitLabCode"
-			},
-			{
 				"command": "GitLabCode.viewPipelines",
 				"title": "View Pipelines",
 				"category": "GitLabCode"
@@ -217,8 +177,19 @@
 				"command": "GitLabCode.viewJob",
 				"title": "View Job",
 				"category": "GitLabCode"
+			},
+            {
+				"command": "GitLabCode.openInGitLab",
+				"title": "Open In GitLab",
+				"category": "GitLabCode",
+				"icon": "$(globe)"
 			}
 		],
+
+
+
+
+        
 		"viewsContainers": {
 			"activitybar": [
 				{
@@ -310,27 +281,17 @@
 		"menus": {
 			"GitLabCode.GroupView": [],
 			"GitLabCode.PipelineView": [
-                {
-                    "command": "GitLabCode.openPipelineInGitLab",
-                    "group": "inline",
-                    "when": "view == pipelineView && viewItem == pipeline"
-                },
-                {
-                    "command": "GitLabCode.openJobInGitLab",
-                    "group": "inline",
-                    "when": "view == pipelineView && viewItem == job"
-                },
-                {
-                    "command": "GitLabCode.viewPipelines",
-                    "group": "inline",
-                    "when": "view == pipelineView && viewItem == pipeline"
-                },
-                {
-                    "command": "GitLabCode.viewJob",
-                    "group": "inline",
-                    "when": "view == pipelineView && viewItem == job"
-                }
-            ],
+				{
+					"command": "GitLabCode.viewPipeline",
+					"group": "inline",
+					"when": "view == pipelineView && viewItem == job"
+				},
+				{
+					"command": "GitLabCode.viewJob",
+					"group": "inline",
+					"when": "view == pipelineView && viewItem == job"
+				}
+			],
 			"GitLabCode.GroupNode": [
 				{
 					"command": "GitLabCode.createGroupProject",
@@ -351,9 +312,8 @@
 					"when": "view == groupView && viewItem == project"
 				},
 				{
-					"command": "GitLabCode.deleteProject",
-					"when": "view == groupView && viewItem == project",
-					"comment": "TODO: add icon?"
+					"command": "GitLabCode.deleteNamespaceNode",
+					"when": "viewItem == project || viewItem == group"
 				},
 				{
 					"command": "GitLabCode.addMemberToProject",
@@ -376,21 +336,28 @@
 				{
 					"command": "GitLabCode.refreshGroupView",
 					"when": "view == groupView",
-					"group": "inline"
+					"group": "navigation"
 				},
 				{
 					"command": "GitLabCode.createGroup",
 					"when": "view == groupView",
-					"group": "inline"
+					"group": "navigation"
 				},
 				{
 					"submenu": "GitLabCode.GroupView",
-					"group": "inline",
 					"when": "view == groupView"
 				},
 				{
 					"command": "GitLabCode.viewIssueList",
 					"when": "view == issueView"
+				},
+				{
+					"command": "GitLabCode.openPipelinesInGitLab",
+					"when": "view == pipelineView"
+				},
+				{
+					"command": "GitLabCode.viewPipelines",
+					"when": "view == pipelineView"
 				},
 				{
 					"command": "GitLabCode.viewIssueBoard",
@@ -400,29 +367,33 @@
 			"view/item/context": [
 				{
 					"submenu": "GitLabCode.GroupNode",
-					"group": "inline",
+					"group": "inline@3",
 					"when": "view == groupView"
 				},
 				{
 					"submenu": "GitLabCode.IssueNode",
-					"group": "inline",
+					"group": "inline@3",
 					"when": "view == issueView"
 				},
-                {
-					"submenu": "GitLabCode.PipelineView",
-					"group": "inline",
-					"when": "view == pipelineView"
-                },
 				{
-					"command": "GitLabCode.openIssueInGitLab",
-					"group": "inline",
-					"when": "view == issueView"
+					"submenu": "GitLabCode.PipelineView",
+					"group": "inline@3",
+					"when": "view == pipelineView"
 				},
 				{
 					"command": "GitLabCode.openPipelinesInGitLab",
 					"group": "Open Pipelines In GitLab",
 					"when": "view == pipelineView"
-				}
+				},
+                {
+                    "command": "GitLabCode.openInGitLab",
+                    "group": "inline@2"
+                },
+                {
+                    "command": "GitLabCode.openSettingsInGitLab",
+                    "group": "inline@1",
+                    "when": "view == groupView"
+                }
 			]
 		},
 		"submenus": [
@@ -441,11 +412,11 @@
 				"label": "More Actions",
 				"icon": "$(more)"
 			},
-            {
+			{
 				"id": "GitLabCode.PipelineView",
 				"label": "More Actions",
 				"icon": "$(more)"
-            },
+			},
 			{
 				"id": "GitLabCode.IssueNode",
 				"label": "More Actions",
@@ -462,7 +433,8 @@
 		"watch-tests": "tsc -p . -w --outDir out",
 		"pretest": "npm run compile-tests && npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"install": "vsce package; code --install-extension ./*.vsix"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.2.0",

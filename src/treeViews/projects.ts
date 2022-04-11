@@ -1,42 +1,25 @@
 // import { IssuesNode } from "./issues";
 import * as vscode from "vscode";
 import api from "../api";
+import {Node} from './node' 
 
-
-// export interface ProjectNode {
-// 	resource: URL;
-//     name: string;
-//     parent_id: number; // to which group this project belongs
-// 	visibility: string; //can prob be made into an enum, TODO
-// 	id: number;
-
-// 	// issues: IssuesNode[];
-// }
-
-export class ProjectNode extends vscode.TreeItem{
-        resource: URL;
-        parent_id: number; // to which group this project belongs
-        visibility: string; //can prob be made into an enum, TODO
-        node_id: number;
-        contextValue:string = 'project';
-
+export class ProjectNode extends Node{
+    visibility: string; //can prob be made into an enum, TODO
 	constructor(
-        project_id: number, 
+        node_id: number, 
         parent_id: number,
 		visibility: string,
-		resource: URL,
-		public readonly label: string,
-		// public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+		url: URL,
+		public readonly label: /* vscode.TreeItemLabel */string,
 		public readonly command?: vscode.Command
 
 	) {
-		super(label/* , collapsibleState */);
-		this.parent_id = parent_id;
-		this.node_id = project_id;
+		super(node_id, parent_id, url, 'project', vscode.TreeItemCollapsibleState.None, label/* , collapsibleState */);
 		this.visibility = visibility;
-		this.resource = resource;
 	}
-
+    deleteProject(){
+		return api.deleteProject(this.node_id);
+    }
 }
 
 // export class ProjectModel {
