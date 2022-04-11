@@ -7,14 +7,9 @@ import {Node} from './node'
 let ProjectID: number;
 
 export class JobNode extends Node {
-	// node_id: number;
-	// parent_id: number;
 	status: string; //can prob be made into an enum, TODO
-	// url: URL;
 	stage: string;
 	duration: string;
-	// contextValue: string = "job";
-
 	constructor(
 		node_id: number,
 		parent_id: number,
@@ -25,11 +20,7 @@ export class JobNode extends Node {
 		duration: string
 	) {
 		super(node_id, parent_id, url, 'job', vscode.TreeItemCollapsibleState.None, label);
-		// super(label);
-		// this.parent_id = parent_id;
-		// this.node_id = node_id;
 		this.status = status;
-		// this.url = url;
 		this.stage = stage;
 		this.duration = duration;
 	}
@@ -37,12 +28,8 @@ export class JobNode extends Node {
 	iconPath: vscode.ThemeIcon | undefined;
 }
 export class PipelineNode extends Node {
-	// url: URL;
-	// parent_id: string;
 	status: string;
 	source: string; //can prob be made into an enum, TODO
-	// node_id: number;
-	// contextValue: string = "pipeline";
 	// author_name
 	constructor(
 		node_id: number,
@@ -50,18 +37,12 @@ export class PipelineNode extends Node {
 		status: string,
 		source: string,
 		url: URL,
-		// public readonly label: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
 		public readonly command?: vscode.Command
 	) {
 		super(node_id, parent_id, url, 'pipeline', vscode.TreeItemCollapsibleState.Collapsed, "#" + node_id.toString());
-
-		// super("#" + node_id.toString(), collapsibleState);
-		// this.parent_id = parent_id;
 		this.status = status;
-		// this.node_id = node_id;
 		this.source = source;
-		// this.url = url;
 	}
 }
 

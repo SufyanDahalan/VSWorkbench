@@ -96,14 +96,15 @@ export function activate(context: vscode.ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() {}
 /**
- * @FEATURE view/titel level action for GroupView to create a group. It will ask for name, then get all custom options for groups throw QuickPicks or 
+ * 1. @TOFIX heirarchy of groups subgroups, etc.
+ * 2. @TODO getting starred projects
+ * 3. @FEATURE view/titel level action for GroupView to create a group. It will ask for name, then get all custom options for groups throw QuickPicks or 
  * InputBoxes (e.g. add user to group or smth). It will then create it, refresh groupView, show some kind of a success message.
- * 
- * @FEATURE view/titel level action for namespace nodes in GroupView to create a group. It will ask for name, then get
+ * 4. @FEATURE view/titel level action for namespace nodes in GroupView to create a group. It will ask for name, then get
  * all custom options for groups throw QuickPicks or InputBoxes (e.g. add user to group or smth). It will then create it,
  * refresh groupView, show some kind of a success message.
- * 
- * @FEATURE ask for confirmation before deleting anything, e.g. deleteGroupProject or deleteUserProject
- * 
- * @TODO add submenu action to go to project/namespace in default browser
+ * 5. @FEATURE ask for confirmation before deleting anything, e.g. project or group
+ * 6. @FEATURE archive w $(archive) icon in the view/item/context for projects
+ * 7. @FEATURE clone a repo, or a whole group w an $(arrow-small-down) icon in the view/item/context
+ * 8. @FEATURE refactor axios to request-light: https://www.npmjs.com/package/request-light
  */

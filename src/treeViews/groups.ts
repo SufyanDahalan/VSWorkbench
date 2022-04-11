@@ -6,11 +6,7 @@ import { GROUP_VIEW_FOCUS } from "../globals";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
-export class GroupNode extends Node /* vscode.TreeItem */ {
-	// node_id: number;
-	// parent_id: number;
-	// url: URL;
-	// contextValue: string;
+export class GroupNode extends Node{
 
 	visibility: string; //can prob be made into an enum, TODO
 	/**
