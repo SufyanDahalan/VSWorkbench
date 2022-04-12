@@ -1,7 +1,7 @@
-// module.exports = {
-//     getUserInfo() {
-//         return this.api.get(`user/`);
-//     },
+export default {
+    // getUserInfo() {
+    //     return this.api.get(`user/`);
+    // },
 // 	getStarredProjects(userID:string) {
 // 		return this.api.get(`users/${userID}/starred_projects`); //
 // 	},
@@ -19,4 +19,4 @@
 // 	async getUserGroups() {
 // 		return await this.api.get(`groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc`);
 // 	},
-// };
+};

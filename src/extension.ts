@@ -90,7 +90,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         
 
-	);
+        );
 }
 
 // this method is called when your extension is deactivated
@@ -106,5 +106,5 @@ export function deactivate() {}
  * 5. @FEATURE ask for confirmation before deleting anything, e.g. project or group
  * 6. @FEATURE archive w $(archive) icon in the view/item/context for projects
  * 7. @FEATURE clone a repo, or a whole group w an $(arrow-small-down) icon in the view/item/context
- * 8. @FEATURE refactor axios to request-light: https://www.npmjs.com/package/request-light
+ * 9. @FEATURE showing branches as children of projects?
  */

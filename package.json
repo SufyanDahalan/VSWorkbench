@@ -178,18 +178,13 @@
 				"title": "View Job",
 				"category": "GitLabCode"
 			},
-            {
+			{
 				"command": "GitLabCode.openInGitLab",
 				"title": "Open In GitLab",
 				"category": "GitLabCode",
 				"icon": "$(globe)"
 			}
 		],
-
-
-
-
-        
 		"viewsContainers": {
 			"activitybar": [
 				{
@@ -385,15 +380,15 @@
 					"group": "Open Pipelines In GitLab",
 					"when": "view == pipelineView"
 				},
-                {
-                    "command": "GitLabCode.openInGitLab",
-                    "group": "inline@2"
-                },
-                {
-                    "command": "GitLabCode.openSettingsInGitLab",
-                    "group": "inline@1",
-                    "when": "view == groupView"
-                }
+				{
+					"command": "GitLabCode.openInGitLab",
+					"group": "inline@2"
+				},
+				{
+					"command": "GitLabCode.openSettingsInGitLab",
+					"group": "inline@1",
+					"when": "view == groupView"
+				}
 			]
 		},
 		"submenus": [

@@ -1,14 +1,13 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 
-const axios = require("axios").default;
 // const userApi = require("./user.js");
+// import userApi from './user'
 // const groupApi = require("./group.js");
 // const projectApi = require("./project.js");
 
 // import  userApi from "./user.js";
 // import  groupApi from "./group.js";
 // import  projectApi from "./project.js";
-const deepmerge = require("deepmerge");
 
 const api = axios.create({
 	baseURL: "https://gitlab.com/api/v4/",
@@ -104,4 +103,4 @@ const Api = {
 		return await this.api.get(`groups/${parentID}/subgroups`);
 	},
 };
-/* module.exports = */ export default Object.create(Api); //Object.create( deepmerge.all([Api, userApi, projectApi, groupApi]))
+export default Object.create(Api); //Object.create( deepmerge.all([Api, userApi, projectApi, groupApi]))
