@@ -1,3 +1,7 @@
+/**
+ * @module commands 
+ * @commands
+ */
 import * as vscode from "vscode";
 import api from "../api";
 
@@ -14,6 +18,7 @@ export function createPersonalProjectCommand() {
 	});
 	inputProjectName.show();
 } // MVP
+
 export function createGroupProjectCommand(groupID: string) {
 	let projectName = "";
 	const inputProjectName = vscode.window.createInputBox();
@@ -35,14 +40,23 @@ export async function getUserGroupsCommand() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
 
+/**
+ * 
+ */
 export async function createGroupCommand() {
-        api.getUserProjects(api.getUserIDAsync())
+        // api.getUserProjects(api.getUserIDAsync())
 } // MVP
 export function deleteProject(projectID: string) {
-	// api.deleteProject(context.workspaceState.get('GROUP_VIEW_FOCUS'))
 	api.deleteProject(projectID);
 }
-export function createIssueCommand() {
+/**
+ * @module commands
+ * @function createIssueCommand
+ * @name createIssueCommand
+ * @typedef function
+ * @memberof commands
+ */
+export function createIssueCommand () {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
 export function createMergeRequestCommand() {
@@ -170,6 +184,11 @@ export  * from './pipeline'
 import pipelinesCommands from './pipeline'
 export  * from './issue'
 import issueCommands from './issue'
+
+/**
+ * @module commands
+ * @exports commands
+ */
 export default {
     ...pipelinesCommands,
     ...issueCommands,

@@ -6,8 +6,7 @@ import { GROUP_VIEW_FOCUS } from "../globals";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
-export class GroupNode extends Node{
-
+export class GroupNode extends Node {
 	visibility: string; //can prob be made into an enum, TODO
 	/**
 	 * vscode.TreeItem.contextValue
@@ -48,19 +47,18 @@ export class GroupNode extends Node{
 		} else if (this.contextValue == "group") {
 			api.deleteGroup(this.node_id);
 		} else if (this.contextValue == "user") {
-            vscode.window.showErrorMessage("Can't delete personal namespace!")
+			vscode.window.showErrorMessage("Can't delete personal namespace!");
 		}
 	}
-    openSettingsInGitlab(){
+	openSettingsInGitlab() {
 		if (this.contextValue == "project") {
-            vscode.env.openExternal(vscode.Uri.parse(this.url.toString()+"/edit"));
+			vscode.env.openExternal(vscode.Uri.parse(this.url.toString() + "/edit"));
 		} else if (this.contextValue == "group") {
-            vscode.env.openExternal(vscode.Uri.parse(this.url.toString()+"/-/edit"));
-
+			vscode.env.openExternal(vscode.Uri.parse(this.url.toString() + "/-/edit"));
 		} else if (this.contextValue == "user") {
-            vscode.env.openExternal(vscode.Uri.parse('https://gitlab.com/-/profile'));
+			vscode.env.openExternal(vscode.Uri.parse("https://gitlab.com/-/profile"));
 		}
-    }
+	}
 }
 
 export class GroupModel {
@@ -112,71 +110,98 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 				if (res.data.length > 0) {
 					let groups = new Array<GroupNode>();
 					for (let i = 0; i < res.data.length; i++) {
-						groups.push(
-							new GroupNode(
-								res.data[i].id,
-								res.data[i].parent_id,
-								res.data[i].visibility,
-								res.data[i].web_url,
-								res.data[i].kind,
-								vscode.TreeItemCollapsibleState.Collapsed,
-								res.data[i].name
-							)
-						);
+						if (!res.data[i].parent_id) {
+							groups.push(
+								new GroupNode(
+									res.data[i].id,
+									res.data[i].parent_id,
+									res.data[i].visibility,
+									res.data[i].web_url,
+									res.data[i].kind,
+									vscode.TreeItemCollapsibleState.Collapsed,
+									res.data[i].name
+								)
+							);
+						}
 					}
 					return groups;
 				} else {
 					return <GroupNode>{};
 				}
 			});
-		} else {
-			if (element.contextValue === "group") {
-				return api.getGroupProjects(element.node_id).then((res: any) => {
-					if (res.data.length > 0) {
-						let groups = new Array<GroupNode>();
+		} else if (element.contextValue === "group" || element.contextValue === "user") {
+			console.log("1");
+			return api.getProjects(element.contextValue === "group", element.node_id).then((res: any) => {
+				// if (res.data.length > 0) {
+				let groups = new Array<GroupNode>();
+				for (let i = 0; i < res.data.length; i++) {
+					groups.push(
+						new GroupNode(
+							res.data[i].id,
+							res.data[i].namespace.id,
+							res.data[i].visibility,
+							res.data[i].web_url,
+							"project",
+							vscode.TreeItemCollapsibleState.None,
+							res.data[i].name
+						)
+					);
+				}
+				if (element.contextValue === "group") {
+					console.log("2");
+					return api.getSubGroups(element.node_id).then((res: any) => {
+						console.log("res.data.length");
+						console.log(res.data.length);
 						for (let i = 0; i < res.data.length; i++) {
 							groups.push(
 								new GroupNode(
 									res.data[i].id,
-									res.data[i].namespace.id,
+									res.data[i].parent_id,
 									res.data[i].visibility,
 									res.data[i].web_url,
-									"project",
-									vscode.TreeItemCollapsibleState.None,
+									"group",
+									vscode.TreeItemCollapsibleState.Collapsed,
 									res.data[i].name
 								)
 							);
 						}
 						return groups;
-					} else {
-						return <GroupNode>{};
-					}
-				});
-			} else {
-				return api.getUserID().then((res: AxiosResponse) => {
-					return api.getUserProjects(res.data.id).then((res: AxiosResponse) => {
-						if (res.data.length > 0) {
-							let groups = new Array<GroupNode>();
-							for (let i = 0; i < res.data.length; i++) {
-								groups.push(
-									new GroupNode(
-										res.data[i].id,
-										res.data[i].namespace.id,
-										res.data[i].visibility,
-										res.data[i].web_url,
-										"project",
-										vscode.TreeItemCollapsibleState.None,
-										res.data[i].name
-									)
-								);
-							}
-							return groups;
-						} else {
-							return <GroupNode>{};
-						}
 					});
-				});
-			}
+				}
+				return groups;
+				// }
+				// else {
+				// 	return <GroupNode>{};
+				// }
+			});
+		}
+		// else if (element.contextValue === "project") {
+		// 	return api.getUserID().then((res: AxiosResponse) => {
+		// 		return api.getUserProjects(res.data.id).then((res: AxiosResponse) => {
+		// 			if (res.data.length > 0) {
+		// 				let groups = new Array<GroupNode>();
+		// 				for (let i = 0; i < res.data.length; i++) {
+		// 					groups.push(
+		// 						new GroupNode(
+		// 							res.data[i].id,
+		// 							res.data[i].namespace.id,
+		// 							res.data[i].visibility,
+		// 							res.data[i].web_url,
+		// 							"project",
+		// 							vscode.TreeItemCollapsibleState.None,
+		// 							res.data[i].name
+		// 						)
+		// 					);
+		// 				}
+		// 				return groups;
+		// 			} else {
+		// 				return <GroupNode>{};
+		// 			}
+		// 		});
+		// 	});
+		// }
+		else {
+			return Array<GroupNode>(); //<GroupNode>{}[];
 		}
 	}
 }

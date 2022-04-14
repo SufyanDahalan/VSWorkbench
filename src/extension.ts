@@ -1,13 +1,17 @@
 import * as vscode from "vscode";
-import api from "./api";
+import  api, * as API from "./api";
 
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals";
-
-import Commands from "./commands";
-import { createGroupProjectCommand } from "./commands";
+/**
+ * alias commands
+ */
+// import {default as Commands} from "./commands";
+import * as Commands from "./commands";
+import {createIssueCommand} from "./commands";
 // import {GroupView, GroupTreeDataProvider, GroupModel} from "./treeViews/groups"
 import { GroupView, GroupNode, ProjectNode, Node } from "./treeViews";
 import { notDeepStrictEqual } from "assert";
+// import api from "./api";
 
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
@@ -43,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 		updatePersonalAccessTokenCommand,
 		helloWorldCommand,
 	// vscode.commands.registerCommand('GitLabCode.GroupView.refreshEntry', () => groupView.treeDataProvider.refresh()),
-		vscode.commands.registerCommand("GitLabCode.createIssue", Commands.createIssueCommand),
+		vscode.commands.registerCommand("GitLabCode.createIssue", createIssueCommand),
 		vscode.commands.registerCommand("GitLabCode.createPersonalProject", Commands.createPersonalProjectCommand),
 		vscode.commands.registerCommand("GitLabCode.createGroupProject", (node: GroupNode) => {
 			node.createGroupProject();
@@ -96,8 +100,10 @@ export function activate(context: vscode.ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() {}
 /**
- * 1. @TOFIX heirarchy of groups subgroups, etc.
+ * 
+ * 1. @TODO refactor and clean treeView/groups.ts
  * 2. @TODO getting starred projects
+ * 2. @TODO add `create Group` view/item/context action for group nodes with a + c
  * 3. @FEATURE view/titel level action for GroupView to create a group. It will ask for name, then get all custom options for groups throw QuickPicks or 
  * InputBoxes (e.g. add user to group or smth). It will then create it, refresh groupView, show some kind of a success message.
  * 4. @FEATURE view/titel level action for namespace nodes in GroupView to create a group. It will ask for name, then get
@@ -106,5 +112,23 @@ export function deactivate() {}
  * 5. @FEATURE ask for confirmation before deleting anything, e.g. project or group
  * 6. @FEATURE archive w $(archive) icon in the view/item/context for projects
  * 7. @FEATURE clone a repo, or a whole group w an $(arrow-small-down) icon in the view/item/context
- * 9. @FEATURE showing branches as children of projects?
+ * 8. @FEATURE showing branches as children of projects?
+ * 8. @FEATURE add types.d.ts for each file, refactor all exports and imports to be jsdoc compatible, and document project completely and iteratively
+ * ================================================================================================================================
+ * ================================================================================================================================
+ * @IMPLEMENT :-
+ * 1. {@link Commands.createGroupCommand}
+ * 2. {@link Commands.getUserGroupsCommand}
+ * 3. {@link API.Api.getStarredProjects} and in treeViews
+ * 4. {@link Commands.archiveProject} and in view/item/context
+ * 5. {@link Commands.createIssueCommand}, and in view/item/context. First issue you should make should be about documenting this very project
+ * 6. {@link ./treeViews/projects.ts } refactor. prob delete
+ * 7. integrate @Telemetry {@link https://code.visualstudio.com/docs/getstarted/telemetry}
+ * ================================================================================================================================
+ * ================================================================================================================================
+ * On JSDoc...
+ * 
+ * @see {@link https://stackoverflow.com/a/48455477/16419931}
+ * @see {@link https://stackoverflow.com/questions/52511753/jsdoc-broken-on-exports-default-in-vscode}
+ * @see {@link https://jsdoc.app}
  */

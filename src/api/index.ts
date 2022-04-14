@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-
+import * as vscode from "vscode";
 // const userApi = require("./user.js");
 // import userApi from './user'
 // const groupApi = require("./group.js");
@@ -20,7 +20,8 @@ const api = axios.create({
 //     return Promise.reject(error);
 //     });
 
-const Api = {
+
+export const Api = {
 	api,
 	updateBaseURL(newBaseURL: string) {
 		this.api.defaults.baseURL = newBaseURL;
@@ -35,14 +36,14 @@ const Api = {
 	getProjectIssues(projectID: string): any {
 		return this.api.get(`projects/${projectID}/issues`);
 	},
-    getGroupIssues(groupID: number):any {
+	getGroupIssues(groupID: number): any {
 		return this.api.get(`groups/${groupID}/issues`);
 	},
 	getProjectPipelines(projectID: number): any {
-        console.log("::::::::")
+		console.log("::::::::");
 		return this.api.get(`projects/${projectID}/pipelines`);
 	},
-    getPipelineJobs(projectID: number, pipeline_id: number): any {
+	getPipelineJobs(projectID: number, pipeline_id: number): any {
 		return this.api.get(`projects/${projectID}/pipelines/${pipeline_id}/jobs`);
 	},
 	getPipeline(projectID: string, pipelineID: string): any {
@@ -60,7 +61,7 @@ const Api = {
 		return this.api.get(`user/`);
 	},
 	getStarredProjects(userID: string) {
-		return this.api.get(`users/${userID}/starred_projects`); //
+		return this.api.get(`users/${userID}/starred_projects`);
 	},
 	createPersonalProject(projectName: string) {
 		// TODO: allow for the user to set more information, and based on that add that informtion to the request.
@@ -73,12 +74,28 @@ const Api = {
 	deleteProject(projectID: string) {
 		return this.api.delete(`projects/${projectID}`);
 	},
-	getUserProjects(userID: string) {
-		return this.api.get(`users/${userID}/projects`);
+/**
+ * 
+ * @param group boolean, true means its a group namespace, false means its a user namespace
+ * @param namespace_id id of the namespace from which the projects are to be loaded 
+ * @returns no return
+ */
+	getProjects(group: boolean, namespace_id: number) {
+        console.log(`group: ${group}, namespace_id: ${namespace_id}`)
+		if (group) {
+			return this.api.get(`groups/${namespace_id}/projects`);
+		} else {
+            return this.getUserID().then((res:AxiosResponse)=>{
+                return this.api.get(`users/${res.data.id}/projects`);
+            })
+		}
 	},
-	getGroupProjects(groupID: string) {
-		return this.api.get(`groups/${groupID}/projects`);
-	},
+	// getUserProjects(userID: string) {
+	// 	return this.api.get(`users/${userID}/projects`);
+	// },
+	// getGroupProjects(groupID: string) {
+	// 	return this.api.get(`groups/${groupID}/projects`);
+	// },
 	async getUserGroups() {
 		return await this.api.get(`groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc`);
 	},
