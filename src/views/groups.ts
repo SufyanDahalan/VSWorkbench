@@ -6,18 +6,12 @@ import { AUTH_TOKEN_KEY, GROUP_VIEW_FOCUS } from "../globals";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
+import { group } from "console";
 const api = Api.Instance;
-console.log("Api.PRIVATE_TOKEN")
-console.log(Api.PRIVATE_TOKEN)
 
 export class GroupNode extends Node {
 	visibility: string; //can prob be made into an enum, TODO
-	/**
-	 * vscode.TreeItem.contextValue
-	 * possible values: "group", "user"
-	 * value depends on kind of gitlab namespace
-	 * TODO: maybe turn into enum to keep em clear? idk
-	 */
+
 	constructor(
 		node_id: number,
 		parent_id: number,
@@ -62,6 +56,58 @@ export class GroupNode extends Node {
 		} else if (this.contextValue == "user") {
 			vscode.env.openExternal(vscode.Uri.parse("https://gitlab.com/-/profile"));
 		}
+	}
+	createSubGroup() {
+		let groupName = "";
+		let groupPath = "";
+		const inputSubGroupName = vscode.window.createInputBox();
+		const inputSubGroupPath = vscode.window.createInputBox();
+
+		inputSubGroupName.placeholder = "Please Enter Subgroup Name";
+		inputSubGroupPath.placeholder = "Please Enter Subgroup Path";
+
+		inputSubGroupPath.onDidChangeValue((input) => {
+			groupPath = input;
+		});
+		inputSubGroupPath.onDidAccept(() => {
+			inputSubGroupPath.hide();
+			api.createSubGroup(this.node_id, groupName, groupPath);
+		});
+
+		inputSubGroupName.onDidChangeValue((input) => {
+			groupName = input;
+		});
+		inputSubGroupName.onDidAccept(() => {
+			inputSubGroupName.hide();
+			inputSubGroupPath.show();
+		});
+		inputSubGroupName.show();
+	}
+	createGroup() {
+		let groupName = "";
+		let groupPath = "";
+		const inputSubGroupName = vscode.window.createInputBox();
+		const inputGroupPath = vscode.window.createInputBox();
+
+		inputSubGroupName.placeholder = "Please Enter Subgroup Name";
+		inputGroupPath.placeholder = "Please Enter Subgroup Path";
+
+		inputGroupPath.onDidChangeValue((input) => {
+			groupPath = input;
+		});
+		inputGroupPath.onDidAccept(() => {
+			inputGroupPath.hide();
+			api.createGroup(groupName, groupPath);
+		});
+
+		inputSubGroupName.onDidChangeValue((input) => {
+			groupName = input;
+		});
+		inputSubGroupName.onDidAccept(() => {
+			inputSubGroupName.hide();
+			inputGroupPath.show();
+		});
+		inputSubGroupName.show();
 	}
 }
 
@@ -110,28 +156,27 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 	public getChildren(element?: GroupNode): vscode.ProviderResult<GroupNode[]> {
 		if (!element) {
 			return api.getUserNamespaces().then((res: any) => {
-				// TODO: migrate to getNamespaces, and filter out nodes with parent_id != null, and add a hint on the personal namespace that it aint a group
-				if (res.data.length > 0) {
-					let groups = new Array<GroupNode>();
-					for (let i = 0; i < res.data.length; i++) {
-						if (!res.data[i].parent_id) {
-							groups.push(
-								new GroupNode(
-									res.data[i].id,
-									res.data[i].parent_id,
-									res.data[i].visibility,
-									res.data[i].web_url,
-									res.data[i].kind,
-									vscode.TreeItemCollapsibleState.Collapsed,
-									res.data[i].name
-								)
-							);
-						}
+				// if (res.data.length > 0) {
+				let groups = new Array<GroupNode>();
+				for (let i = 0; i < res.data.length; i++) {
+					if (!res.data[i].parent_id) {
+						groups.push(
+							new GroupNode(
+								res.data[i].id,
+								res.data[i].parent_id,
+								res.data[i].visibility,
+								res.data[i].web_url,
+								res.data[i].kind,
+								vscode.TreeItemCollapsibleState.Collapsed,
+								res.data[i].name
+							)
+						);
 					}
-					return groups;
-				} else {
-					return <GroupNode>{};
 				}
+				return groups;
+				// } else {
+				// 	return <GroupNode>{};
+				// }
 			}) as vscode.ProviderResult<GroupNode[]>;
 		} else if (element.contextValue === "group" || element.contextValue === "user") {
 			// console.log("1");
@@ -152,10 +197,10 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 					);
 				}
 				if (element.contextValue === "group") {
-					console.log("2");
+					// console.log("2");
 					return api.getSubGroups(element.node_id).then((res: any) => {
-						console.log("res.data.length");
-						console.log(res.data.length);
+						// console.log("res.data.length");
+						// console.log(res.data.length);
 						for (let i = 0; i < res.data.length; i++) {
 							groups.push(
 								new GroupNode(
@@ -209,14 +254,27 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 		}
 	}
 }
-
+/**
+ * class GroupView
+ */
 export class GroupView {
 	public groupTreeViewer: vscode.TreeView<GroupNode>;
-
+	/**
+	 *
+	 * @param context {@link vscode.ExtensionContext}
+	 */
 	constructor(context: vscode.ExtensionContext) {
 		const groupModel = new GroupModel();
 		const treeDataProvider = new GroupTreeDataProvider(groupModel);
-		this.groupTreeViewer = vscode.window.createTreeView("groupView", { treeDataProvider });
+		this.groupTreeViewer = vscode.window.createTreeView("groupView", { treeDataProvider,
+			canSelectMany: false, // is it useful?
+			/**
+			 * @TODO :- implement {@link vscode.TreeDragAndDropController} + 
+             * {@link https://github.com/microsoft/vscode-extension-samples/blob/main/tree-view-sample/src/testViewDragAndDrop.ts}
+             * will be used to move groups/subgroups/projects around from one group/namespace to another
+			 */
+			// dragAndDropController: vscode.TreeDragAndDropController<GroupNode> = {}
+		 });
 		context.subscriptions.push(this.groupTreeViewer);
 		this.groupTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
 			// TODO: highlight the item selected using TreeItemLabel.highlight

@@ -2,9 +2,17 @@ import * as vscode from "vscode";
 import api from "../api";
 
 export class Node extends vscode.TreeItem {
+    
 	node_id: number;
 	parent_id: number;
 	url: URL;
+    /**
+     * possible values: "group", "user", "project"
+     * value depends on kind of gitlab namespace
+     * @TODO maybe turn into enum to keep em clear? idk
+     * 
+	 * @see {@link vscode.TreeItem.contextValue}
+	 */
     contextValue: string;
 
 	constructor(

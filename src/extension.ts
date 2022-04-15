@@ -54,6 +54,9 @@ export function activate(context: vscode.ExtensionContext) {
 			node.createGroupProject();
 		}),
 		vscode.commands.registerCommand("GitLabCode.createGroup", Commands.createGroupCommand),
+        vscode.commands.registerCommand("GitLabCode.createSubGroup", (node:GroupNode)=>{
+            node.createSubGroup()
+        }),
 		vscode.commands.registerCommand("GitLabCode.createMergeRequest", Commands.createMergeRequestCommand),
 		// vscode.commands.registerCommand("GitLabCode.viewPipelines", Commands.viewPipelinesCommand),
 		vscode.commands.registerCommand("GitLabCode.viewIssue", Commands.viewIssue), // TODO: deGitLabCode.createGroupProjectlete
@@ -118,9 +121,8 @@ export function deactivate() {}
  * ================================================================================================================================
  * ================================================================================================================================
  * @IMPLEMENT :-
- * 1. {@link Commands.createGroupCommand}
- * 2. {@link Commands.getUserGroupsCommand}
- * 3. {@link API.Api.getStarredProjects} and in treeViews
+ * 1. {@link Commands.createGroupCommand}: should be shown only when its not Gitlab SaaS
+ * 3. {@link Api.getStarredProjects} and in treeViews
  * 4. {@link Commands.archiveProject} and in view/item/context
  * 5. {@link Commands.createIssueCommand}, and in view/item/context. First issue you should make should be about documenting this very project
  * 6. {@link ./treeViews/projects.ts } refactor. prob delete

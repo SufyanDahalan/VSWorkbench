@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import api from "../api";
-
+import Api from "../api";
+const api = Api.Instance
 export function getProjectPipelines(node_id: number) {
 	return api.getProjectPipelines(node_id);
 	// refresh view?

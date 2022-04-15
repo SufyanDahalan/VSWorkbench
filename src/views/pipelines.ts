@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
-import api from "../api";
+import Api from "../api";
+const api = Api.Instance
 import { GROUP_VIEW_FOCUS } from "../globals";
 import {Node} from './node' 
 
@@ -86,7 +87,7 @@ export class PipelineTreeDataProvider implements vscode.TreeDataProvider<Pipelin
 				} else {
 					return <PipelineNode>{};
 				}
-			});
+			}) as vscode.ProviderResult<PipelineNode[]>; // FIXME
 		} else if (element.contextValue === "pipeline") {
 			return api.getPipelineJobs(ProjectID, element.node_id).then((res: any) => {
 				if (res.data.length > 0) {
@@ -108,8 +109,10 @@ export class PipelineTreeDataProvider implements vscode.TreeDataProvider<Pipelin
 				} else {
 					return <JobNode>{};
 				}
-			});
+			}) as vscode.ProviderResult<PipelineNode[]>; // FIXME
 		}
+        else 
+            null
 	}
 }
 

@@ -66,6 +66,12 @@
 				"icon": "$(ports-forward-icon)"
 			},
 			{
+				"command": "GitLabCode.createSubGroup",
+				"title": "Create Subgroup",
+				"category": "GitLabCode",
+				"icon": "$(ports-forward-icon)"
+			},
+			{
 				"command": "GitLabCode.createIssue",
 				"title": "Create Issue",
 				"category": "GitLabCode",
@@ -334,6 +340,16 @@
 					"group": "navigation"
 				},
 				{
+					"command": "GitLabCode.refreshIssueView",
+					"when": "view == issueView",
+					"group": "navigation"
+				},
+				{
+					"command": "GitLabCode.refreshPipelineView",
+					"when": "view == pipelineView",
+					"group": "navigation"
+				},
+				{
 					"command": "GitLabCode.createGroup",
 					"when": "view == groupView",
 					"group": "navigation"
@@ -362,18 +378,23 @@
 			"view/item/context": [
 				{
 					"submenu": "GitLabCode.GroupNode",
-					"group": "inline@3",
+					"group": "inline@10",
 					"when": "view == groupView"
 				},
 				{
 					"submenu": "GitLabCode.IssueNode",
-					"group": "inline@3",
+					"group": "inline@10",
 					"when": "view == issueView"
 				},
 				{
 					"submenu": "GitLabCode.PipelineView",
-					"group": "inline@3",
+					"group": "inline@10",
 					"when": "view == pipelineView"
+				},
+				{
+					"command": "GitLabCode.createSubGroup",
+					"group": "inline@1",
+					"when": "view == groupView && viewItem == group"
 				},
 				{
 					"command": "GitLabCode.openPipelinesInGitLab",
@@ -382,11 +403,11 @@
 				},
 				{
 					"command": "GitLabCode.openInGitLab",
-					"group": "inline@2"
+					"group": "inline@1"
 				},
 				{
 					"command": "GitLabCode.openSettingsInGitLab",
-					"group": "inline@1",
+					"group": "inline@2",
 					"when": "view == groupView"
 				}
 			]

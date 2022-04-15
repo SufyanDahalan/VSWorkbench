@@ -46,6 +46,32 @@ export async function getUserGroupsCommand() {
  * 
  */
 export async function createGroupCommand() {
+    let groupName = "";
+    let groupPath = "";
+    const inputSubGroupName = vscode.window.createInputBox();
+    const inputSubGroupPath = vscode.window.createInputBox();
+
+    inputSubGroupName.placeholder = "Please Enter Subgroup Name";
+    inputSubGroupPath.placeholder = "Please Enter Subgroup Path";
+
+    inputSubGroupPath.onDidChangeValue((input) => {
+        groupPath = input;
+    });
+    inputSubGroupPath.onDidAccept(() => {
+        inputSubGroupPath.hide();
+        api.createGroup(groupName, groupPath);
+    });
+
+    inputSubGroupName.onDidChangeValue((input) => {
+        groupName = input;
+    });
+    inputSubGroupName.onDidAccept(() => {
+        inputSubGroupName.hide();
+        inputSubGroupPath.show();
+    });
+    inputSubGroupName.show();
+
+    // api.
         // api.getUserProjects(api.getUserIDAsync())
 } // MVP
 export function deleteProject(projectID: number) {

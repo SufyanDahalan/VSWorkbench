@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
-import api from "../api";
-
 import {Node} from './node' 
 
+import Api from "../api";
+const api = Api.Instance
 // import { GROUP_VIEW_FOCUS } from "../globals";
 let issueKind: boolean;
 let parent_id: number;

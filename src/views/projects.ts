@@ -1,8 +1,8 @@
 // import { IssuesNode } from "./issues";
 import * as vscode from "vscode";
-import api from "../api";
+import Api from "../api";
 import {Node} from './node' 
-
+const api = Api.Instance
 export class ProjectNode extends Node{
     visibility: string; //can prob be made into an enum, TODO
 	constructor(
