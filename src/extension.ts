@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import  api, * as API from "./api";
+import  { Api }/* , * as API */ from "./api";
 
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals";
 /**
@@ -9,18 +9,19 @@ import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS 
 import * as Commands from "./commands";
 import {createIssueCommand} from "./commands";
 // import {GroupView, GroupTreeDataProvider, GroupModel} from "./treeViews/groups"
-import { GroupView, GroupNode, ProjectNode, Node } from "./treeViews";
+import { GroupView, GroupNode, ProjectNode, Node } from "./views";
 import { notDeepStrictEqual } from "assert";
 // import api from "./api";
 
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 	context.globalState.setKeysForSync([GITLAB_INSTANCE_KEY]);
-	context.workspaceState.update(GROUP_VIEW_FOCUS, undefined);
+	// context.workspaceState.update(GROUP_VIEW_FOCUS, undefined);
 }
-
 export function activate(context: vscode.ExtensionContext) {
-	api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY));
+	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);
+    // const api = Api.Instance
+    
 	// api.updateI(context.globalState.get(GITLAB_INSTANCE_KEY));
 	initStorage(context);
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
@@ -101,7 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 /**
  * 
- * 1. @TODO refactor and clean treeView/groups.ts
+ * 1. @TODO refactor and clean {@link Views.groups}
  * 2. @TODO getting starred projects
  * 2. @TODO add `create Group` view/item/context action for group nodes with a + c
  * 3. @FEATURE view/titel level action for GroupView to create a group. It will ask for name, then get all custom options for groups throw QuickPicks or 

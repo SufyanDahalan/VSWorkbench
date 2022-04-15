@@ -3,7 +3,9 @@
  * @commands
  */
 import * as vscode from "vscode";
-import api from "../api";
+// import { api } from "../api";
+import { Api } from '../api'
+const api = Api.Instance
 
 export function createPersonalProjectCommand() {
 	let projectName = "";
@@ -19,7 +21,7 @@ export function createPersonalProjectCommand() {
 	inputProjectName.show();
 } // MVP
 
-export function createGroupProjectCommand(groupID: string) {
+export function createGroupProjectCommand(groupID: number) {
 	let projectName = "";
 	const inputProjectName = vscode.window.createInputBox();
 	inputProjectName.placeholder = "Please Enter Project Name";
@@ -46,7 +48,7 @@ export async function getUserGroupsCommand() {
 export async function createGroupCommand() {
         // api.getUserProjects(api.getUserIDAsync())
 } // MVP
-export function deleteProject(projectID: string) {
+export function deleteProject(projectID: number) {
 	api.deleteProject(projectID);
 }
 /**
