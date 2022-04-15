@@ -190,14 +190,14 @@
 				{
 					"id": "gitLabCode-activityBar",
 					"title": "GitLabCode",
-					"icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
+					"icon": "$(symbol-type-parameter)"
 				}
 			],
 			"panel": [
 				{
 					"id": "gitlabcode-panel",
 					"title": "GitLabCode",
-					"icon": "./src/assets/gitlab-icon-1-color-black-rgb.svg"
+					"icon": "$(symbol-type-parameter)"
 				}
 			]
 		},
