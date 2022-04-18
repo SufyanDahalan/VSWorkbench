@@ -4,11 +4,11 @@ import * as React from "preact"; // https://preactjs.com/guide/v10/getting-start
 import { Api } from "../api";
 import "./App.css";
 import Issue from "./Issue";
+import { Router, route } from 'preact-router'; // https://www.npmjs.com/package/preact-router
 const vscode = acquireVsCodeApi();
 const previousState = vscode.getState();
-import { Router, route } from 'preact-router'; // https://www.npmjs.com/package/preact-router
 import IssueView from "./issueView";
-import issue from "commands/issue";
+
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case "Token": {
@@ -20,13 +20,6 @@ window.addEventListener("message", (event) => {
 	}
 });
 
-// interface IIssue {
-// 	id: number;
-// 	title: string;
-//     state: string;
-//     updated_at: string;
-//     labels: string[];
-// }
 class App extends React.Component<{ api: Api }, {}> {
 	api: Api = this.props.api;
 	state = {
@@ -70,11 +63,10 @@ class App extends React.Component<{ api: Api }, {}> {
                         ))}
                 </div>
 
-                <IssueView path="/issue/:id" />
+                <IssueView path="/issue/:projectID/:issueID" />
 
                 </Router>
 			</div>
 		);
 	}
 }
-export default App;

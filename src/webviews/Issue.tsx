@@ -11,7 +11,7 @@ class Issue extends React.Component<IIssue,{}>{
         return (
             <div>
             <h1 key={this.props.id}>
-                <a href={'/issue/'+this.props.id}>
+                <a href={'/issue/'+this.props.project_id+'/'+this.props.iid}>
                 {this.props.title}
                 </a>
                 </h1>
