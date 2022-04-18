@@ -2,16 +2,11 @@ import * as vscode from "vscode";
 import  { Api }/* , * as API */ from "./api";
 
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals";
-/**
- * alias commands
- */
-// import {default as Commands} from "./commands";
+
 import * as Commands from "./commands";
 import {createIssueCommand} from "./commands";
-// import {GroupView, GroupTreeDataProvider, GroupModel} from "./treeViews/groups"
 import { GroupView, GroupNode, ProjectNode, Node } from "./views";
-import { notDeepStrictEqual } from "assert";
-// import api from "./api";
+import { IssuesViewProvidor } from "./webviews/issues";
 
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
@@ -20,8 +15,7 @@ function initStorage(context: vscode.ExtensionContext) {
 }
 export function activate(context: vscode.ExtensionContext) {
 	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);
-    // const api = Api.Instance
-    
+
 	// api.updateI(context.globalState.get(GITLAB_INSTANCE_KEY));
 	initStorage(context);
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
@@ -38,12 +32,21 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	let groupView = new GroupView(context);
+    let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
+    // vscode.window.registerWebviewViewProvider('GitLabCode.gitlabIssues', new IssuesViewProvidor(context))
+
+
 	// new ProjectView(context)
 
 	// const groupModel = new GroupModel();
 	// vscode.window.registerTreeDataProvider("groupView", new GroupTreeDataProvider(groupModel) );
 
 	context.subscriptions.push(
+
+
+        // vscode.window.registerWebviewViewProvider(IssuesViewProvidor.viewType, issuesWebView),
+        // vscode.window.registerWebviewPanelSerializer(IssuesViewProvidor.viewType, issuesWebView),
+
 		addPersonalAccessTokenCommand,
 		updatePersonalAccessTokenCommand,
 		helloWorldCommand,
@@ -87,7 +90,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("GitLabCode.openPipelinesInGitLab", Commands.openPipelinesInGitLab),
         vscode.commands.registerCommand("GitLabCode.viewPipelines", Commands.viewPipelines),
         vscode.commands.registerCommand("GitLabCode.viewPipeline", Commands.viewPipeline),
-        vscode.commands.registerCommand("GitLabCode.viewJob", Commands.viewJob),
+        vscode.commands.registerCommand("GitLabCode.viewJob", Commands.viewJob)
         
         
         

@@ -1,9 +1,7 @@
-//@ts-check
-
+// @ts-check
 'use strict';
-
 const path = require('path');
-
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //@ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 
@@ -45,4 +43,36 @@ const extensionConfig = {
     level: "log", // enables logging required for problem matchers
   },
 };
-module.exports = [ extensionConfig ];
+const viewConfig = {
+    entry: "./src/webviews/index.tsx",
+    output: {
+      path: path.resolve(__dirname, "dist"),
+      filename: "js/[name].js",
+    },
+    mode: "production",
+    plugins: [
+      new MiniCssExtractPlugin(),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.(ts|tsx)$/i,
+          loader: "ts-loader",
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/i,
+          use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
+        },
+      ],
+    },
+    externals: {
+        vscode: 'commonjs vscode' // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
+        // modules added here also need to be added in the .vscodeignore file
+      },    
+    resolve: {
+      extensions: [".ts", ".tsx", '.js']
+    },
+  }
+
+  module.exports = [extensionConfig, viewConfig];

@@ -1,5 +1,5 @@
 import axios, { Axios, AxiosResponse } from "axios";
-import * as vscode from "vscode";
+// import * as vscode from "vscode";
 // const userApi = require("./user.js");
 // import userApi from './user'
 // const groupApi = require("./group.js");
@@ -109,14 +109,11 @@ export class Api {
 	 */
 	createGroup(name: string, path: string = name) {
 		if (Api.baseURL == "https://gitlab.com/api/v4/") {
-			vscode.window.showErrorMessage("Cannot create top level group for GitLab SaaS users!. see [GitLab API docs](https://docs.gitlab.com/ee/api/groups.html#new-group). Additionally view our [workaround](https://add.link.to.dragndrop.workaround).");
-		} else {
-			if (path) {
-				return Api.instance.api.post(`groups`, { name, path });
-			} else {
-				return Api.instance.api.post(`groups`, { name, path: name });
-			}
-		}
+			// vscode.window.showErrorMessage("Cannot create top level group for GitLab SaaS users!. see [GitLab API docs](https://docs.gitlab.com/ee/api/groups.html#new-group). Additionally view our [workaround](https://add.link.to.dragndrop.workaround).");
+            return null;
+		} 
+        return Api.instance.api.post(`groups`, { name, path: path? path : name });
+		
 	}
 	// deletePersonalProject(projectID: string): AxiosResponse {
 	// 	return Api.instance.api.delete(`projects/${projectID}`);

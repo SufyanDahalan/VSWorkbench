@@ -76,6 +76,7 @@ export class IssueTreeDataProvider implements vscode.TreeDataProvider<IssueNode>
 				}
 			});
 		}
+        return null
 	}
 }
 

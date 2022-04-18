@@ -109,6 +109,11 @@ export class GroupNode extends Node {
 		});
 		inputSubGroupName.show();
 	}
+    cloneNameSpace(){
+        /**
+         * @Implement https://code.visualstudio.com/api/references/vscode-api#3548
+         *   */
+    }
 }
 
 export class GroupModel {

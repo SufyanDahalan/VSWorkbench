@@ -20,4 +20,7 @@ export class ProjectNode extends Node{
     deleteProject(){
 		return api.deleteProject(this.node_id);
     }
+    cloneProject(){
+        
+    }
 }

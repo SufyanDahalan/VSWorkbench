@@ -112,7 +112,7 @@ export class PipelineTreeDataProvider implements vscode.TreeDataProvider<Pipelin
 			}) as vscode.ProviderResult<PipelineNode[]>; // FIXME
 		}
         else 
-            null
+            return null
 	}
 }
 
