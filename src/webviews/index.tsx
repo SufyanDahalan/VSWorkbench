@@ -1,12 +1,12 @@
 //@ts-check
 
-import * as React from "preact/compat"; // https://preactjs.com/guide/v10/getting-started#typescript-preactcompat-configuration
+import * as React from "preact"; // https://preactjs.com/guide/v10/getting-started#typescript-preactcompat-configuration
 import { Api } from "../api";
 import "./App.css";
 import Issue from "./Issue";
 const vscode = acquireVsCodeApi();
 const previousState = vscode.getState();
-
+import { Router, route } from 'preact-router'; // https://www.npmjs.com/package/preact-router
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case "Token": {
@@ -18,10 +18,13 @@ window.addEventListener("message", (event) => {
 	}
 });
 
-interface IIssue {
-	id: number;
-	title: string;
-}
+// interface IIssue {
+// 	id: number;
+// 	title: string;
+//     state: string;
+//     updated_at: string;
+//     labels: string[];
+// }
 class App extends React.Component<{ api: Api }, {}> {
 	api: Api = this.props.api;
 	state = {
@@ -33,28 +36,44 @@ class App extends React.Component<{ api: Api }, {}> {
 	componentDidMount() {
 		this.api.getGroupIssues(16725755).then((res: any) => {
 			const issues = res.data;
+			for (const issue of issues) {
+				issue.author = {
+					username: issue.author.username,
+					name: issue.author.name,
+					id: issue.author.id,
+				};
+				issue.reference = issue.references.full;
+			}
 			this.setState({ issues });
 		});
 	}
+    handleRoute = async (e:any) => {
+        switch (e.url) {
+          case '/issue':
+            route('/issue', true);
+            break;
+        }
+      };
 	public render() {
 		return (
 			<div className="App">
 				<header className="App-header">
 					<h1 className="App-title">Issues</h1>
 				</header>
+            <Router onChange={this.handleRoute}>
 
-				{/* length: {this.state.issues.length} */}
-				{
-					// this.state.issues &&
-					this.state.issues.map((issue) => (
-						<Issue id={issue.id} title={issue.title}/*  issue={issue} */></Issue>
-					))
-				}
-				{/* <Issue issue={this.state.issues}></Issue> */}
+                <div path="/" default>
+                    {this.state.issues.map((issue) => (
+                        <Issue {...issue}></Issue>
+                        ))}
+                </div>
 
-				<p className="App-intro">
-					To get started, edit <code>src/App.tsx</code> and save to reload.
-				</p>
+                <div path="/issue/:id">
+                        ssssssssssssssssssss
+
+                </div>
+
+                </Router>
 			</div>
 		);
 	}
