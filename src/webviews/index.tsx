@@ -62,7 +62,6 @@ class App extends React.Component<{ api: Api }, {}> {
                         <Issue {...issue}></Issue>
                         ))}
                 </div>
-
                 <IssueView path="/issue/:projectID/:issueID" />
 
                 </Router>
