@@ -7,6 +7,7 @@ import * as Commands from "./commands";
 import {createIssueCommand} from "./commands";
 import { GroupView, GroupNode, ProjectNode, Node } from "./views";
 import { IssuesViewProvidor } from "./webviews/issues";
+import { PipelineViewProvidor } from "./webviews/pipelines";
 
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
@@ -33,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let groupView = new GroupView(context);
     let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
-    // vscode.window.registerWebviewViewProvider('GitLabCode.gitlabIssues', new IssuesViewProvidor(context))
+    let pipelineWebView = new PipelineViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string)
 
 
 	// new ProjectView(context)
@@ -63,7 +64,6 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("GitLabCode.createMergeRequest", Commands.createMergeRequestCommand),
 		// vscode.commands.registerCommand("GitLabCode.viewPipelines", Commands.viewPipelinesCommand),
 		vscode.commands.registerCommand("GitLabCode.viewIssue", Commands.viewIssue), // TODO: deGitLabCode.createGroupProjectlete
-		vscode.commands.registerCommand("GitLabCode.viewGitTree", Commands.viewGitTreeCommand),
 		vscode.commands.registerCommand("GitLabCode.getUserGroups", Commands.getUserGroupsCommand),
 		vscode.commands.registerCommand("GitLabCode.deleteNamespaceNode", (node: GroupNode) => {
         node.delete();

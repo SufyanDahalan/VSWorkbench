@@ -33,9 +33,12 @@ export class Api {
 		this.api = axios.create({
 			baseURL: Api.baseURL,
 			timeout: this.timeout,
-			headers: {
-				PRIVATE_TOKEN: Api.PRIVATE_TOKEN,
-			},
+			// headers: {
+                /**
+                 *  @ToFix
+                 *  */
+			// 	'PRIVATE-TOKEN': Api.PRIVATE_TOKEN, 
+			// },
 		});
 	}
 	public static get Instance() {
@@ -68,6 +71,25 @@ export class Api {
     getProjectIssue(projectID: number, issueID: number){
         return Api.instance.api.get(`projects/${projectID}/issues/${issueID}`)
     }
+
+
+
+    getProjectIssueComments(projectID: number, issueID: number){
+        return Api.instance.api.get(`projects/${projectID}/issues/${issueID}/notes`)
+    }
+    createNewProjectIssueComment(projectID: number, issueIID: number, body: string){
+        console.log('Api.instance.api')
+        console.log(Api.instance.api.defaults.headers.get)
+        console.log(Api.instance.api.defaults.headers.post)
+        console.log(Api.instance.api.defaults.baseURL)
+        Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/notes?body=${body}`)
+    }
+    editProjectIssueComment(projectID: number, issueID: number, note_id: number){
+        return Api.instance.api.put(`projects/${projectID}/issues/${issueID}/notes/${note_id}`)
+    }
+
+
+
 	getProjectPipelines(projectID: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`projects/${projectID}/pipelines`);
 	}
@@ -174,5 +196,17 @@ export class Api {
 	}
 	// };
 	// export default Object.create(Api); //Object.create( deepmerge.all([Api, userApi, projectApi, groupApi]))
+
+    // getBranches(){
+    //     return Api.instance.api.get()
+    // }
+
+    getBranches(projectID: number){
+        return Api.instance.api.get(`projects/${projectID}/repository/branches`)
+    }
+
+    getCommits(projectID: number){
+        return Api.instance.api.get(`projects/${projectID}/repository/commits`)
+    }
 }
 export default Api;

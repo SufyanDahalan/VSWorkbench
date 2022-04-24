@@ -97,10 +97,6 @@ export function viewIssue() {
 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
 } // MVP
 
-export function viewGitTreeCommand() {
-	// vscode.window.showInformationMessage("Hello World from GitLabCode!");
-	// api.getme;
-} // Feature
 
 export function addGroup() {
 	vscode.window.showInformationMessage("addGroup!");
@@ -229,7 +225,6 @@ export default {
 	createMergeRequestCommand,
 	// viewPipelinesCommand,
 	viewIssue,
-	viewGitTreeCommand,
 	addGroup,
 
 	createPersonalSnippet,

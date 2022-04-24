@@ -1,9 +1,10 @@
 //@ts-check
 
-import * as React from "preact/compat";
-import "./App.css";
+// import * as React from "preact/compat";
+import {Component} from "preact"; // https://preactjs.com/guide/v10/getting-started#typescript-preactcompat-configuration
 
-class Issue extends React.Component<IIssue,{}>{
+import "./App.css";
+class Issue extends Component<IIssue,{}>{
     constructor(props: IIssue){
         super(props)
     }

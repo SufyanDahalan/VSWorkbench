@@ -44,10 +44,43 @@ const extensionConfig = {
   },
 };
 const viewConfig = {
-    entry: "./src/webviews/index.tsx",
+    entry: "./src/webviews/issues/app/App.tsx",
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: "js/[name].js",
+      filename: "issues/[name].js",
+    },
+    mode: "production",
+    plugins: [
+      new MiniCssExtractPlugin(),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.(ts|tsx)$/i,
+          loader: "ts-loader",
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.module.css$/i,
+          use: [MiniCssExtractPlugin.loader, {
+            loader: 'css-loader', options: {modules:true}
+        }, "postcss-loader"],
+        },
+      ],
+    },
+    externals: {
+        vscode: 'commonjs vscode' // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
+        // modules added here also need to be added in the .vscodeignore file
+      },    
+    resolve: {
+      extensions: [".ts", ".tsx", '.js']
+    },
+  }
+  const pipelineConfig = {
+    entry: "./src/webviews/pipelines/app/App.tsx",
+    output: {
+      path: path.resolve(__dirname, "dist"),
+      filename: "pipelines/[name].js",
     },
     mode: "production",
     plugins: [
@@ -71,8 +104,8 @@ const viewConfig = {
         // modules added here also need to be added in the .vscodeignore file
       },    
     resolve: {
-      extensions: [".ts", ".tsx", '.js']
+      extensions: [".ts", ".tsx", '.js', ".css"]
     },
   }
 
-  module.exports = [extensionConfig, viewConfig];
+  module.exports = [extensionConfig, viewConfig, pipelineConfig];

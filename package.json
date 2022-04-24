@@ -3,6 +3,7 @@
 	"displayName": "GitLabCode",
 	"description": "",
 	"version": "0.0.1",
+	"types": "./types",
 	"publisher": "SufyanDahalan",
 	"engines": {
 		"vscode": "^1.66.0"
@@ -85,11 +86,6 @@
 			{
 				"command": "GitLabCode.viewIssue",
 				"title": "View Issue",
-				"category": "GitLabCode"
-			},
-			{
-				"command": "GitLabCode.viewGitTree",
-				"title": "View Git Tree",
 				"category": "GitLabCode"
 			},
 			{
@@ -257,23 +253,17 @@
 			],
 			"gitlabcode-panel": [
 				{
-					"id": "gitlabPipelines",
+					"id": "GitLabCode.gitlabPipelines",
+					"type": "webview",
 					"name": "Pipelines",
-					"contextualTitle": "GitLabCode",
-					"visibility": "collapsed",
-					"when": "GitLabCode.authenticated"
-				},
-				{
-					"id": "gitlabGitTree",
-					"name": "Git Tree",
 					"contextualTitle": "GitLabCode",
 					"visibility": "visible",
 					"when": "GitLabCode.authenticated"
 				},
 				{
 					"id": "GitLabCode.gitlabIssues",
-					"type": "webview",
 					"name": "Issues",
+					"type": "webview",
 					"contextualTitle": "GitLabCode",
 					"visibility": "visible",
 					"when": "GitLabCode.authenticated"
@@ -465,19 +455,24 @@
 		"@typescript-eslint/parser": "^5.16.0",
 		"@vscode/test-electron": "^2.1.3",
 		"css-loader": "^6.7.1",
+		"css-modules-typescript-loader": "^4.0.1",
+		"dts-css-modules-loader": "^1.2.4",
 		"eslint": "^8.11.0",
 		"glob": "^7.2.0",
 		"mini-css-extract-plugin": "^2.6.0",
 		"mocha": "^9.2.2",
 		"postcss": "^8.4.12",
 		"postcss-loader": "^6.2.1",
+		"style-loader": "^3.3.1",
 		"ts-loader": "^9.2.8",
 		"typescript": "^4.5.5",
+		"typings-for-css-modules-loader": "^1.7.0",
 		"webpack": "^5.70.0",
 		"webpack-cli": "^4.9.2"
 	},
 	"dependencies": {
 		"axios": "^0.26.1",
+		"iconv-lite": "^0.6.3",
 		"preact": "^10.7.1",
 		"preact-router": "^4.0.1"
 	}

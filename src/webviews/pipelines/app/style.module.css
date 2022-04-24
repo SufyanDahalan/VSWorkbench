@@ -1,0 +1,9 @@
+
+
+.node {
+    height: 250px;
+    width: 250px;
+    background-color: rgb(179, 20, 20);
+    border-radius: 50%;
+    /* display: inline-block; */
+  } 
