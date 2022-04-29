@@ -27,7 +27,7 @@ class IssueView extends Component<any, {}> {
 					name: comment.author.name,
 					id: comment.author.id,
 				};
-				console.log(comment.body);
+				// console.log(comment.body);
 			}
 			this.setState({ comments });
 		});
@@ -53,7 +53,7 @@ class IssueView extends Component<any, {}> {
 						type="text"
 						onInput={(e: any) => {
 							this.setState({ newComment: e.target.value });
-							console.log(e.target.value);
+							// console.log(e.target.value);
 						}}
 					/>
 					<button type="submit">post comment</button>

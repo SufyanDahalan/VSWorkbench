@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-
 export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "GitLabCode.gitlabPipelines";
 	token: string;

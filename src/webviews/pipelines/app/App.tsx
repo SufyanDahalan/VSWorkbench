@@ -24,11 +24,11 @@ class App extends Component<{ api: Api }, {}> {
 	state = {
 		commits: [{} as IPipelineListItem],
 	};
-	async getCommits() {
-		return this.api.getCommits(34436238);
+	async getProjectPipelines() {
+		return this.api.getProjectPipelines(34436238);
 	}
 	componentDidMount() {
-		this.api.getCommits(34436238).then((res: any) => {
+		this.api.getProjectPipelines(34436238).then((res: any) => {
 			const commits = res.data;
 			console.log(commits);
 			this.setState({ commits });
@@ -51,7 +51,7 @@ class App extends Component<{ api: Api }, {}> {
 		return (
 			<div className="App">
 				<Router onChange={this.handleRoute}>
-					<div path="/PipelineItem" default></div>
+					<div path="/PipelineItem"></div>
 					<div path="/" default>
 						{this.state.commits.map((c) => (
 							<PipelineListItem {...c}></PipelineListItem>

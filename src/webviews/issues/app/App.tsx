@@ -48,9 +48,12 @@ class App extends Component<{ api: Api }, {}> {
 			case "/issue":
 				route("/issue", true);
 				break;
-            default:
-                route("/", true);
-                break;
+            // case "/issue/:projectID/:issueID":
+            //     route("/issue/:projectID/:issueID", true);
+            //     break;
+            // default:
+            //     route("/", true);
+            //     break;
 		}
 	};
 	public render() {

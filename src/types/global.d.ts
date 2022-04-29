@@ -20,7 +20,7 @@ declare global {
 		author: { username: string; name: string; id: string }; // Sufyan Dahalan
 	}
 
-	interface IPipelineListItem {
+	interface ICommit {
 		id: number;
 		short_id: number;
 		title: string;
@@ -33,10 +33,16 @@ declare global {
 	}
 
 	interface IPipelineListItem {
-        status: string;
-        source: string; //can prob be made into an enum, TODO
-        node_id: number;
-        parent_id: number;
-        url: URL;        
+		status: string;
+		source: string; //can prob be made into an enum, TODO
+		id: number;
+		iid: number;
+		project_id: number;
+		web_url: URL;
+		/**
+		 * commit message of triggering commit
+		 * should be fetched over commit api
+		 */
+		message: string;
 	}
 }
