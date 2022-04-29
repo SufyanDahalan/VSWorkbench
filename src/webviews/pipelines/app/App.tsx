@@ -7,7 +7,7 @@ import { Router, route } from "preact-router"; // https://www.npmjs.com/package/
 // @ts-ignore
 const vscode = acquireVsCodeApi();
 const previousState = vscode.getState();
-import Commit from "./Commit";
+import PipelineListItem from "./PipelineListItem";
 
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
@@ -30,6 +30,7 @@ class App extends Component<{ api: Api }, {}> {
 	componentDidMount() {
 		this.api.getCommits(34436238).then((res: any) => {
 			const commits = res.data;
+            console.log(commits)
 			this.setState({ commits });
 		});
 	}
@@ -48,7 +49,7 @@ class App extends Component<{ api: Api }, {}> {
 				<div path="/" default>
                     a7a
                     {this.state.commits.map((c) => (
-							<Commit {...c}></Commit>
+							<PipelineListItem {...c}></PipelineListItem>
 						))}
 				</div>
                 </Router>
