@@ -22,7 +22,7 @@ window.addEventListener("message", (event) => {
 class App extends Component<{ api: Api }, {}> {
 	api: Api = this.props.api;
 	state = {
-		commits: [{} as ICommit],
+		commits: [{} as IPipelineListItem],
 	};
 	async getCommits() {
 		return this.api.getCommits(34436238);
@@ -30,30 +30,34 @@ class App extends Component<{ api: Api }, {}> {
 	componentDidMount() {
 		this.api.getCommits(34436238).then((res: any) => {
 			const commits = res.data;
-            console.log(commits)
+			console.log(commits);
 			this.setState({ commits });
 		});
 	}
-	handleRoute = async (e:any) => {
-	    switch (e.url) {
-	      case '/issue':
-	        route('/issue', true);
-	        break;
-	    }
-	  };
+	handleRoute = async (e: any) => {
+		switch (e.url) {
+			case "/":
+				route("/", true);
+                break;
+            case "/PipelineItem":
+				route("/pipelineList", true);
+                break;
+            default:
+				route("/", true);
+                break;
+		}
+	};
 	public render() {
 		return (
 			<div className="App">
-            <Router onChange={this.handleRoute}>
-
-				<div path="/" default>
-                    a7a
-                    {this.state.commits.map((c) => (
+				<Router onChange={this.handleRoute}>
+					<div path="/PipelineItem" default></div>
+					<div path="/" default>
+						{this.state.commits.map((c) => (
 							<PipelineListItem {...c}></PipelineListItem>
 						))}
-				</div>
-                </Router>
-
+					</div>
+				</Router>
 			</div>
 		);
 	}

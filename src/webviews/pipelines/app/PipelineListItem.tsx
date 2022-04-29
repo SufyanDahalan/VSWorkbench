@@ -3,12 +3,11 @@
 import {Component} from "preact"; // https://preactjs.com/guide/v10/getting-started#typescript-preactcompat-configuration
 
 
-class PipelineListItem extends Component<ICommit,{}>{
-    constructor(props: ICommit){
+class PipelineListItem extends Component<IPipelineListItem,{}>{
+    constructor(props: IPipelineListItem){
         super(props)
     }
     componentDidMount() {
-        console.log("yoooo")
 	}
     render() {
         return (
