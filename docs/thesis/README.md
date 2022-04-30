@@ -14,6 +14,12 @@ https://bookdown.org/yihui/rmarkdown-cookbook/how-to-read-this-book.html#how-to-
 
 https://bookdown.org/yihui/rmarkdown-cookbook/latex-template.html
 
+https://uoftcoders.github.io/studyGroup/lessons/misc/pandoc-intro/lesson/
+
+https://wstyler.ucsd.edu/posts/latex_dissertation.html
+
+https://www.datainmotion.de/using-pandoc-to-make-beautiful-latex-presentations/
+
 # Requirements 
 ```bash
 # sudo apt-get install texlive-xetex
