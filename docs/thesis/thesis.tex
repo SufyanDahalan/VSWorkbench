@@ -1,0 +1,78 @@
+% LaTeX-Vorlage für Abschlussarbeiten
+% Lehrstuhl für Automatisierungstechnik/Informatik
+% Bergische Universität Wuppertal
+%
+% ursprünglich erstellt von Nils Potthoff,
+% 2020-2021 grundlegend überarbeitet von Simon Lohmann
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Benutzer-Einstellungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                      %%%%%%%%
+%      Einstellungen erfolgen in der Datei Einstellungen.tex             %%%%%%%
+       \input{Einstellungen.tex}                                          %%%%%%
+%                                                                        %%%%%%%
+%%                                                                      %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{Vorlage/Praeambel} % Pakete und Kommandos (muss nicht geändert werden) %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Selber eingebundene Pakete (optional)
+%\usepackage{tikzducks} % Quack!
+
+% Eigene Befehle & Definitionen (optional)
+\newcommand{\zb}{z.\,B.}
+\newcommand{\buw}{Bergische Universität Wuppertal}	  % Beispiel mit \newcommand
+\newenvironment{vorlagenbeispiel}{\color{blue}}{}            % Beispiel-Umgebung
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document} % Hier beginnt das Dokument %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\input{Vorlage/FrontMatter} % Titelseite etc. (bitte nicht ändern) %%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%  Ab hier ändern und ergänzen  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%                               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%  | | | | | | | | | | | | | |  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
+	%%%%%%%%%%%%%  V V V V V V V V V V V V V V  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% weitere .tex-Dateien werden mit \input eingebunden
+	% (z.B. eine für jedes Kapitel)
+
+	
+	% Einführungskapitel
+	\input{include/Einleitung}
+	\input{include/Grundlagen}
+	
+	
+	% weitere (eigene) Kapitel
+	\input{include/Entwurf}
+	\input{include/Realisierung}
+	%...
+	
+	% Schlusskapitel
+	\input{include/Analyse}
+	\input{include/Schlussbetrachtungen}
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\appendix % Ende des Inhalts, hier beginnt der Anhang %%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\input{Vorlage/BackMatter}% Verzeichnisse (bitte nicht ändern) %%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	% Anhänge
+%	\input{include/Klassendiagramm}
+%	\input{include/Versuchsaufbauten}
+%	\input{include/Schaltplan}
+	\input{include/Messreihen}
+	\input{include/Sourcecode}
+%   ...
+	\input{include/FAQ}              % Fragen und Antworten zur Vorlage und zu LaTeX
+	\input{include/LaTeX-Beispiele}  % Beispiele zu LaTeX
+s
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%% ENDE %%% ENDE %%% ENDE %%% ENDE %%% ENDE %%% ENDE %%% ENDE %%% ENDE %%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document} 

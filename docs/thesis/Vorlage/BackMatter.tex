@@ -1,0 +1,105 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ! WARNUNG ! %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Diese Datei bitte nur bearbeiten,    %%%
+%%%   wenn du ein LaTeX-Experte bist      %%%
+%%%             U N D                     %%%
+%%%  die Vorlage unbedingt ändern willst  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DATEI-INFO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Diese Datei generiert diverse Verzeichnisse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%SONSTIGE VERZEICHNISSE
+\clearpage{\pagestyle{empty}\cleardoublepage}%
+\begingroup
+	% Lokaler Override -> Verzeichnisse tragen sich gerne mal sowohl als aktuelles Kapitel als auch aktuelles Unterkapitel ein - dass steht in der Kopfzeile dann doppelt da und sieht hässlich aus!
+	\let\oldmarkboth\markboth
+	\renewcommand{\markboth}[2]{
+		\oldmarkboth{#1}{}
+	}
+	
+	
+	\ifbool{verzeichnisseZusammenfassen}{% Seitenumbruch durch Abstand ersetzen, wenn gewünscht
+		\def\clearpage{\vspace{2em}}%
+	}{}%
+%
+%
+	\ifbool{abbildungsverzeichnis}{%
+		\clearpage%
+		\verzeichnisEintrag{\listfigurename}{lof}
+		\listoffigures%
+	}{}%
+%
+%
+	\ifbool{quellcodeverzeichnis}{%
+		\clearpage%
+		\verzeichnisEintrag{\lstlistlistingname}{listings}
+		\lstlistoflistings%
+	}{}%
+%
+%
+\clearpage
+	\ifbool{tabellenverzeichnis}{%
+		\clearpage%
+		\verzeichnisEintrag{\listtablename}{lot}
+		\listoftables%
+	}{}%
+%
+	
+%		\clearpage%
+%		%Redefinition des Stils von "siehe {anderer Begriff}":
+%		\renewcommand\glsseeformat[3][\seename]{%
+%			\\*% non breaking new line
+%			\emph{#1} \glsseelist{#2}%
+%		}
+%
+		% Anwendbare Styles (es gibt noch viel mehr): 
+		% mcolist 			: mehrspaltig
+		% mcolindexgroup 	: spalten+Anfangsbuchstaben über Gruppen
+		% altlist			: 		
+		% long				:
+		%
+		% nogroupskip deaktiviert den Abstand zwischen Gruppen (CLK und CRC gehören zu einer Gruppe, weil sie beide mit C beginnen)
+	\ifbool{symbolverzeichnis}{%
+		\vspace{-1em}
+		\verzeichnisEintrag{\glssymbolsgroupname}{listofsymbols}
+		\printnoidxglossary[type=symbols,		style=altlongragged4col,nogroupskip]
+		\vspace{-1em}
+	}{}%
+	\ifbool{abkuerzungsverzeichnis}{%
+		\SaveTranslation{\abbreviationsnamesaved}{abbreviationsname}
+		\verzeichnisEintrag{\abbreviationsnamesaved}{listofabbreviations}
+		\printnoidxglossary[type=abbreviations,	style=altlongragged4col,nogroupskip, title={\abbreviationsnamesaved}]
+		\vspace{-1em}
+	}{}%
+	\ifbool{akronymverzeichnis}{%
+		\verzeichnisEintrag{\acronymname}{listofacronyms}
+		\printnoidxglossary[type=acronym,		style=mcolindex,nogroupskip]
+		\vspace{-1em}
+	}{}%
+	\ifbool{glossar}{%
+		\verzeichnisEintrag{\glossaryname}{glossary}
+		\printnoidxglossary[type=main,			style=altlist,nogroupskip]
+%		\par
+	}{}%
+	%	
+	%%Literaturverzeichnis
+	\ifbool{weiterfuehrendeLiteratur}{%
+		\verzeichnisEintrag{\GetTranslation{Bibliography}}{literature}
+		\printbibliography[title={\GetTranslation{Bibliography}},category=cited]%
+		
+		\SaveTranslation{\furtherreadingsaved}{FurtherReading}% Umweg, da ggf. Umlaute enthalten sind und das sonst direkt nicht klappt
+		\verzeichnisEintrag{\furtherreadingsaved}{furtherreading}
+		\printbibliography[title={\GetTranslation{FurtherReading}},notcategory=cited]%
+	}{%
+		\verzeichnisEintrag{\GetTranslation{Bibliography}}{literature}
+		\printbibliography[title={\GetTranslation{Bibliography}}]%
+	}%
+%
+\endgroup

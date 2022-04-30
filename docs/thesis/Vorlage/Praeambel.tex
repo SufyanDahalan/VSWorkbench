@@ -1,0 +1,760 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ! WARNUNG ! %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Diese Datei bitte nur bearbeiten,    %%%
+%%%   wenn du ein LaTeX-Experte bist      %%%
+%%%             U N D                     %%%
+%%%  die Vorlage unbedingt ändern willst  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DATEI-INFO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Diese Datei richtet diverse Pakete und Befehle für die Vorlage ein %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\def\inPreamble{}% Flag setzen: wird sind in der Präambel
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Encoding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[utf8]{inputenc}
+% UTF8 Codierte .tex-Dateien
+
+\RequirePackage[T1]{fontenc}
+% Benutzung der europäischen Schriftkodierung
+% z.B. zur richtigen Darstellung von Umlauten
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Werkzeuge %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{etoolbox}		% Einfacheres Programmieren in LaTeX
+\RequirePackage{calculator}		% Rechnen (auch mit Längen)
+\RequirePackage{xfp}			% Genaueres Rechnen (aber nicht mit Längen)
+\RequirePackage{pbox}			% \pbox (Parbox flexibler Breite)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Variablen zur Anpassung durch den Benutzer %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% >>> werden gesetzt in der Datei "PersoenlicheAngaben.tex" %%%%%%%%%%%%%%%%%%
+
+\newbool{abbildungsverzeichnis}
+\newbool{quellcodeverzeichnis}
+\newbool{tabellenverzeichnis}
+\newbool{symbolverzeichnis}
+\newbool{akronymverzeichnis}
+\newbool{abkuerzungsverzeichnis}
+\newbool{glossar}
+
+\newbool{verzeichnisseZusammenfassen}
+\newbool{verzeichnisseImInhaltsverzeichnis}
+
+\newbool{nichtZitiertInweiterfuehrendeLiteratur}
+\newbool{weiterfuehrendeLiteratur}
+\newbool{alleAutorenExplizitNennen}
+
+\newbool{verlaengerung}
+\newbool{danksagung}
+\newbool{zusatzErklaerung}
+
+\newbool{color}
+\newbool{linksMarkieren}
+
+\newbool{doppelseitig}
+
+\newlength{\bindekorrektur}
+\setlength{\bindekorrektur}{1cm}
+
+\newlength{\randAussen}
+\setlength{\randAussen}{1.88cm} % 1.88 - 2.5cm (einseitig), 2.5 - 3.4 cm (doppelseitig)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Benutzer-Einstellungen anwenden %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{Einstellungen}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Verzeichnis- & PDF-Verzeichnis-Einträge generieren %%%%%%%%%%%%%%%%%%%%%%%%%
+
+%TODO Verwendung so anpassen, dass der Eintrag (=Linkziel) direkt beim entsprechenden Titel steht (=Titel auch mit \verzeichnisEintrag generieren und vom originalverzeichnis ausblenden?)
+\newcommand{\verzeichnisEintrag}[2]{%
+	% #1 Name
+	% #2 Label (für PDF)
+	\ifbool{verzeichnisseImInhaltsverzeichnis}{%
+%		\ifbool{verzeichnisseZusammenfassen}{%
+			%nichts
+%		}{%
+			\clearpage%
+%		}%
+		\phantomsection% damit die Seitenzahl auf jeden Fall stimmt
+		\nopagebreak%
+		\addcontentsline{toc}{chapter}{#1}% 
+		\nopagebreak%
+	}{%
+		\pdfbookmark[0]{#1}{#2}% hier passte die Seitenzahl bisher immer, daher keine \phantomsection nötig
+	}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Document-Class %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifbool{doppelseitig}{
+	\def\onetwoside{twoside}
+}{
+	\def\onetwoside{oneside}
+}
+
+\documentclass[
+	\onetwoside,% twoside: zweiseitig, oneside: einseitig
+	titlepage, 	% Titelseite steht für sich allein
+	12pt,		% Schriftgröße
+	a4paper, 	% A4-Papier
+]{report}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Sprachen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[%
+	main=\hauptsprache, %Umsetzung der deutschen Sprache nach neuer Rechtschreibung
+	\hauptsprache, % muss hier nochmal erwähnt werden, damit \autoref das auch mitbekommt
+	\weitereSprachen %Sprachen, die nur Abschnittsweise (z.B. für Zitate) verwendet werden
+	]{babel}
+
+\RequirePackage{translations}
+
+\DeclareTranslation{German}{Bibliography}{Literatur}
+\DeclareTranslation{English}{Bibliography}{Bibliography}
+\DeclareTranslationFallback{Bibliography}{Bibliography}
+
+\DeclareTranslation{German}{FurtherReading}{Weiterführende Literatur}
+\DeclareTranslation{English}{FurtherReading}{Further Reading}
+\DeclareTranslationFallback{FurtherReading}{Further Reading}
+
+\DeclareTranslation{German}{abbreviationsname}{Abkürzungen}
+\DeclareTranslation{English}{abbreviationsname}{Abbreviations}
+\DeclareTranslationFallback{abbreviationsname}{Abbreviations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Schriftarten, Schriftsatz %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{lmodern} % Schriftart lmodern nutzen
+\RequirePackage{microtype} % Besserer Schriftsatz
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Zitate, Anführungszeichen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[
+	autostyle, % Zitierstil an die aktuelle Sprache anpassen
+	german=quotes, % wenn Deutsch -> „Anführungszeichen“ benutzen 
+]{csquotes} %wird auch von biblatex verwendet
+
+\renewcommand{\mkcitation}[1]{\,#1} % Umdefiniert um doppelklammerung bei \textquote+\cite zu verhindern
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Literaturverwaltung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\autorenAnzahlImLiteraturverzeichnis{4}
+\ifbool{alleAutorenExplizitNennen}{
+	\def\autorenAnzahlImLiteraturverzeichnis{99}
+}{}
+
+\RequirePackage[backend=bibtex8,  %Daten von Bibtex holen
+			style=alphabetic, %In der Form [Xil13] statt [1] referenzieren
+			sorting=nyt,	      %Name,Year,Title 
+			maxbibnames=\autorenAnzahlImLiteraturverzeichnis, %Anzahl maximal/minimal genannter Autoren im Literaturverzeichnis
+			minbibnames=3, 
+			maxcitenames=3, %Anzahl maximal/minimal genannter Autoren mit \citeauthor{...}
+			mincitenames=3,
+			maxsortnames=99, % Anzahl der Autoren, die in die Sortierung eingehen
+			minsortnames=99,
+			maxalphanames=4, % Maximale Anzahl Autoren, bei der jeder Autor mit einem Buchstaben in [ABCD] genannt wird
+			minalphanames=3, % Anzahl Autoren, ab der [ABC+] verwendet wird
+			]{biblatex}
+
+\DeclareNameAlias{default}{family-given}% Format: Nachname, Vorname
+\DefineBibliographyStrings{ngerman}{ 
+	andothers = {{et\,al\adddot}}, % et al.
+}
+\renewcommand*{\multinamedelim}{\addsemicolon\space} % Zeichen zwischen den Autoren
+%\renewcommand*{\finalnamedelim}{\addsemicolon\space} % Zeichen zwischen den letzten beiden Autoren
+
+\addbibresource{Verzeichnisse/Literatur.bib} % Literatur-Datei laden
+
+\DeclareBibliographyCategory{cited} % registrieren, welche Quellen zitiert wurden
+\AtEveryCitekey{%
+	\addtocategory{cited}{\thefield{entrykey}}%
+}
+
+\ifbool{nichtZitiertInweiterfuehrendeLiteratur}{
+	\nocite{*} % alle nicht zitierten Quellen mit aufnehmen
+}{
+	\explizitesNocite
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Seitengröße festlegen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Berechnung der seitlichen Seitenränder:
+\def\randAussenCm{}
+\def\bindekorrekturCm{}
+\LENGTHDIVIDE{\randAussen}{1cm}{\randAussenCm} 			% auf cm normieren
+\LENGTHDIVIDE{\bindekorrektur}{1cm}{\bindekorrekturCm} 	% auf cm normieren
+
+\newlength{\randRechtsAussen}	% Als Länge anlegen (bessere Wiederverwendbarkeit)
+\newlength{\randLinksInnen}
+
+\setlength{\randRechtsAussen}{\fpeval{1*\randAussenCm} cm}
+\setlength{\randLinksInnen}{\fpeval{\randAussenCm/2+\bindekorrekturCm} cm}
+
+% Anwenden
+\usepackage[
+%	showframe, 				% Seitenränder anzeigen - zum Debuggen
+	layout=a4paper,			% Papierformat
+	headheight=1.2cm,		% durch Kopfzeile festgelegt
+	top=3.55cm,				% Abstand Text <-> oberer Seitenrand
+	left=\randLinksInnen,	% Abstand Text <-> linker Seitenrand
+	right=\randRechtsAussen,% Abstand Text <-> rechter Seitenrand
+	bottom=3.7cm 			% Abstand Text <-> unterer Seitenrand
+]{geometry}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% (R), (C), TM (vor allem für Zitate und das Literaturverzeichnis) %%%%%%%%%%%
+
+\newcommand{\markRegistered}[1]{#1$^\text{\tiny{\textregistered\xspace}}$}
+\newcommand{\markCopyrighted}[1]{#1$^\text{\tiny{\copyright\xspace}}$}
+\newcommand{\markTrademark}[1]{#1$^\text{\tiny{\texttrademark\xspace}}$}
+\usepackage[official]{eurosym}
+
+
+\usepackage{bbding}%Häkchen für abgehakte Dinge
+\newcommand{\ok}{\Checkmark}
+\newcommand{\x}{\XSolidBrush}
+\newcommand{\xg}{\textcolor{gray}{\x}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Farben %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[
+	\colormodel,% Konvertiere alle Farben in das angegebene Farbmodell
+	table, 		% Lade das colortbl package (Farben in Tabellen)
+	showerrors,	% Nicht definierte Farbe verwendet -> Fehler erzeugen
+]{xcolor}		% Farben
+
+% Universell nutzbar
+\definecolor{Buw}			{cmyk}{0.55, 0.00, 1.00, 0.00} % Pantone 376
+\definecolor{BuwEtikett}	{cmyk}{0.55, 0.00, 1.00, 0.10} % Pantone 376 + 10K
+
+\definecolor{BuwFak01}		{cmyk}{0.08, 1.00, 0.65, 0.34} % Pantone 201
+\definecolor{BuwFak02}		{cmyk}{1.00, 0.03, 0.34, 0.12} % Pantone 321
+\definecolor{BuwFak03}		{cmyk}{1.00, 0.57, 0.12, 0.70} % Pantone 540
+\definecolor{BuwFak04_oben}	{cmyk}{0.70, 0.30, 0.00, 0.12} % Pantone 646
+\definecolor{BuwFak04_unten}{cmyk}{1.00, 0.61, 0.04, 0.26} % Pantone 301
+\definecolor{BuwFak05}		{cmyk}{0.23, 0.17, 0.13, 0.46} % Pantone Cool Gray 8
+\definecolor{BuwFak06_oben}	{cmyk}{0.37, 1.00, 0.00, 0.26} % Pantone 2425
+\definecolor{BuwFak06_unten}{cmyk}{0.37, 1.00, 0.00, 0.47} % Pantone 2425 + 30K
+\definecolor{BuwFak07}		{cmyk}{1.00, 0.00, 0.55, 0.40} % Pantone 562
+\definecolor{BuwFak08}		{cmyk}{0.00, 0.00, 0.00, 0.00} %
+\definecolor{BuwFak09}		{cmyk}{0.00, 0.30, 0.85, 0.00} % Pantone 1235
+
+\definecolor{pureK}			{cmyk}{0.00, 0.00, 0.00, 1.00} % K
+
+\definecolor{AccentStrong}	{cmyk}{0.000,0.420,0.800,0.100} % Orange
+\definecolor{AccentWeak}	{cmyk}{0.295,0.142,0.000,0.310} % Bläuliches Grau
+
+% Farbschema
+\ifbool{color}{
+	% wenn Farbe
+	\colorlet{primaryTop}		{Buw}
+	\colorlet{primaryMiddle}	{Buw}
+	\colorlet{primaryBottom}	{Buw}
+	\colorlet{secondaryTop}		{BuwFak06_oben}
+	\colorlet{secondaryMiddle}	{BuwFak06_oben!50!BuwFak06_unten}
+	\colorlet{secondaryBottom}	{BuwFak06_unten}
+	\colorlet{tertiaryTop}		{black!50}
+	\colorlet{tertiaryMiddle}	{black!50}
+	\colorlet{tertiaryBottom}	{black!50}
+	\colorlet{textBlack}		{black}
+}{
+	% wenn Graustufen
+	\colorlet{primaryTop}		{pureK}
+	\colorlet{primaryMiddle}	{pureK}
+	\colorlet{primaryBottom}	{pureK}
+	\colorlet{secondaryTop}		{pureK!70}
+	\colorlet{secondaryMiddle}	{pureK!70}
+	\colorlet{secondaryBottom}	{pureK!70}
+	\colorlet{tertiaryTop}		{pureK!50}
+	\colorlet{tertiaryMiddle}	{pureK!50}
+	\colorlet{tertiaryBottom}	{pureK!50}
+	\colorlet{textBlack}		{pureK}
+}
+
+% Kurzform für mittlere Farbe
+\colorlet{primary}			{primaryMiddle}
+\colorlet{secondary}		{secondaryMiddle}
+\colorlet{tertiary}			{tertiaryMiddle}
+
+
+% Spezialisierter Anwendungszweck
+\colorlet{pagenumber}		{tertiaryBottom!50!textBlack}
+\colorlet{headrule}			{primaryTop}
+\colorlet{footnoteRule}		{secondary}
+\colorlet{footrule}			{primaryBottom}
+
+% TODO Formelnummern Style
+\colorlet{captionLabel}		{pureK!80}
+\colorlet{subcaptionLabel}	{pureK!70}
+
+\colorlet{captionText}		{pureK!70}
+\colorlet{subcaptionText}	{pureK!60}
+
+\colorlet{listingBackground}{pureK!5}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Fußnotengestaltung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\renewcommand{\footnoterule}{%
+	\color{footnoteRule}{%
+%	\textcolor{footnoteRule}{
+% 	an der selben Stelle sorgt für Probleme mit umgebrochenen Listings.
+%	Das liegt daran, dass \textcolor{}{} zusätzlich zu \color auch noch ein \leavevmode enthält.
+%	Das \leavevmode wiederum bringt das Listing durcheinander, so dass z.B. die Zeilennummern direkt beim Umbruch 
+%	jeweils vertauscht sind und oberhalb der untersten Zeile der vorderen Seite eine Lücke entsteht.
+%	
+		\vspace*{-3pt}%
+		\hrule height 0.1em width 0.4\columnwidth%
+		\vspace*{2.6pt}%
+	}%
+}%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Kopfzeilen und Fußzeilen, Seitenzahl %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\customFootrule{
+	\renewcommand{\footrulewidth}{1.5mm}
+	\renewcommand{\footrule}{%
+		\begingroup
+			\color{footrule}
+			\hrule height \footrulewidth
+			\vspace{0.5em}
+		\endgroup
+	}
+}
+
+\def\customHeadrule{
+	\renewcommand{\headrulewidth}{1.5mm}
+	\renewcommand{\headrule}{%
+		\begingroup
+			\color{headrule}
+			\hrule height \headrulewidth 
+		\endgroup
+	}
+}
+
+
+\def\renewMarks{
+	\renewcommand{\sectionmark}[1]{%
+		\markright{%
+			##1%~(\thesection)%
+		}%
+	}
+	\renewcommand{\chaptermark}[1]{%
+		\markboth{%
+			##1% \chaptername~\thechapter%
+		}{%
+		}%
+	}
+}
+
+\def\seitenNummer{%
+	\color{pagenumber}\sffamily\bfseries\thepage{}%
+}
+
+\usepackage{fancyhdr} % Schönere Kopfzeilen
+\def\vertikalZentrieren{%
+	\vspace{-\footrulewidth}%
+	\vspace{-1.275em}%
+}
+
+\ifbool{doppelseitig}{
+	\def\rightodd{RO}
+	\def\righteven{RE}
+	\def\leftodd{LO}
+	\def\lefteven{LE}
+	\def\rightoddlefteven{RO,LE}
+	\def\leftoddrighteven{LO,RE}
+}{
+	\def\rightodd{R}
+	\def\righteven{R}
+	\def\leftodd{R}
+	\def\lefteven{R}
+	\def\rightoddlefteven{R}
+	\def\leftoddrighteven{L}
+}
+
+\fancypagestyle{thesis-page-regular}{%
+	\renewMarks
+	\fancyhf{}%clear
+	\fancyhead[\rightoddlefteven]{%
+		\includegraphics[height=2em]{\buwlogopdf}%
+	}
+	\fancyhead[\leftoddrighteven]{%
+		\nouppercase{%
+			\sffamily%
+			\textbf{\leftmark}%
+			\\%
+			\rightmark%
+		}%
+	}
+	\fancyfoot[\rightodd]{\vertikalZentrieren\colorbox{white}{\seitenNummer}\hspace{1em}}
+	\fancyfoot[\lefteven]{\vertikalZentrieren\hspace{1em}\colorbox{white}{\seitenNummer}}
+	
+	\customHeadrule
+	\customFootrule
+}
+
+\fancypagestyle{plain}{%
+	\renewMarks
+	\fancyhf{} % clear
+	\fancyfoot[\rightodd]{\vertikalZentrieren\colorbox{white}{\seitenNummer}\hspace{1em}}
+	\fancyfoot[\lefteven]{\vertikalZentrieren\hspace{1em}\colorbox{white}{\seitenNummer}}
+	
+	\customHeadrule
+	\customFootrule
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Format der Überschriften %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[%
+	nobottomtitles*,	% Überschriften am unteren Seitenrand vermeiden
+]{titlesec}
+ 
+\def\titleformatBase{\sffamily\bfseries}
+\def\titleformatChapter{\Huge}
+\def\titleformatSection{\LARGE}
+\def\titleformatSubsection{\Large}
+\def\titleformatSubsubsection{\large}
+\def\titleformatParagraph{\normalsize}
+
+\def\titlepartChapter	{\titleformatChapter\ifbool{weAreInTheAppendix}{\Alph{chapter}}{\arabic{chapter}}}
+\def\titlepartSection	{\titleformatSection\arabic{section}}
+\def\titlepartSubsection{\titleformatSubsection\arabic{subsection}}
+\newbool{weAreInTheAppendix}
+\setbool{weAreInTheAppendix}{false}
+\appto{\appendix}{\setbool{weAreInTheAppendix}{true}}
+\def\titleNumberExtraDistance{.5cm}
+
+\titleformat{\chapter}[hang]
+	{\titleformatBase}
+	{\titlepartChapter\hphantom{.\titlepartSection.\titlepartSubsection}}
+	{\titleNumberExtraDistance}
+	{\titleformatChapter}
+	%[after-code]
+	
+\titleformat{\section}[block]
+	{\titleformatBase}
+	{\color{textBlack!50}\titlepartChapter.\color{textBlack}\titlepartSection\hphantom{.\titlepartSubsection}}
+	{\titleNumberExtraDistance}
+	{\titleformatSection}
+	%[after-code]
+
+\titleformat{\subsection}[block]
+	{\titleformatBase}
+	{\color{textBlack!33}\titlepartChapter.\color{textBlack!50}\titlepartSection.\color{textBlack}\titlepartSubsection}
+	{\titleNumberExtraDistance}
+	{\titleformatSubsection}
+	%[after-code]
+	
+\titleformat{\subsubsection}[block]
+	{\titleformatBase}
+	{\titleformatSubsubsection\thesubsubsection}
+	{}
+	{%
+%	\hphantom{\titlepartChapter\titlepartSection\titlepartSubsection}\hspace{\titleNumberExtraDistance}%
+	\titleformatSubsubsection}
+	%[after-code]
+	
+\titleformat{\paragraph}[runin]
+	{\titleformatBase}
+	{\titleformatParagraph\theparagraph}
+	{0em}
+	{%
+%	\hphantom{\titlepartChapter\titlepartSection\titlepartSubsection}\hspace{\titleNumberExtraDistance}%
+	\titleformatParagraph}%
+	[]
+	%[after-code]
+	
+%				command			left	before	after
+\titlespacing*{\chapter}		{0pt}	{-2.1em}{1em}
+\titlespacing*{\section}		{0pt}	{1em}	{1em}
+\titlespacing*{\subsection}		{0em}	{1em}	{1em}
+\titlespacing*{\subsubsection}	{0em}	{1em}	{1em}
+\titlespacing*{\paragraph}		{0em}	{1em}	{1em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Grafiken %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphicx}				% um Bilder einbinden zu können 
+\usepackage{pdfpages}				% Ganzseitig externe PDFs einbinden (z.B. für Aufgabenstellung)
+
+\usepackage{tikz}					% Zeichnen per Code
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SI-Einheiten und Zahlendarstellung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[
+	% Die Einstellungen für dieses Paket befinden sich in der Datei siunitx.cfg
+]{siunitx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Quellcode %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings} %Für Quelltexte
+
+% manuell Übersetzen
+\DeclareTranslation{German}{lstlistingname}{Quellcode}
+\DeclareTranslation{English}{lstlistingname}{Sourcecode}
+\DeclareTranslationFallback{lstlistingname}{\lstlistingname}
+\renewcommand{\lstlistingname}{\GetTranslation{lstlistingname}}
+
+\DeclareTranslation{German}{lstlistoflistingname}{Quellcodeverzeichnis}
+\DeclareTranslation{English}{lstlistoflistingname}{List of Sourcecodes}
+\DeclareTranslationFallback{lstlistoflistingname}{\lstlistlistingname}
+\renewcommand{\lstlistlistingname}{\GetTranslation{lstlistoflistingname}}
+
+\ifbool{color}{
+	\def\listingBasicstyle		{\color{black}\ttfamily\small}
+	\def\listingKeywordstyle	{\color{primary}\bfseries}
+	\def\listingStringstyle		{\color{secondary}\slshape}
+	\def\listingCommentstyle	{\color{AccentWeak}\fontseries{l}\selectfont}
+	\def\listingEmphstyle		{\color{AccentStrong}\bfseries}
+	\def\listingRulecolor		{\color{AccentWeak}}
+	\def\listingNumbercolor		{\color{AccentWeak!60}}
+}{
+	\def\listingBasicstyle		{\color{pureK}\ttfamily\small}
+	\def\listingKeywordstyle	{\color{pureK}\bfseries}
+	\def\listingStringstyle		{\color{pureK}\slshape}
+	\def\listingCommentstyle	{\color{pureK}\fontseries{l}\selectfont}
+	\def\listingEmphstyle		{\color{pureK}\bfseries\underbar}
+	\def\listingRulecolor		{\color{pureK!50}}
+	\def\listingNumbercolor		{\color{pureK!26}}
+}
+
+\lstset{
+	basicstyle	= \listingBasicstyle,		% Basisformat
+	keywordstyle= \listingKeywordstyle,		% Schlüsselwörter
+	stringstyle	= \listingStringstyle,		% Strings
+	commentstyle= \listingCommentstyle,		% Kommentare
+	emphstyle	= \listingEmphstyle,		% Hervorhebungen
+%	
+%	extendedchars=true,      	%Erweiterte Zeichensätze in Listings benutzen (aber nur Single-Byte!)   
+	breaklines=true,            % Zeilen werden Umgebrochen
+	breakatwhitespace=true,		% erlaube Zeilenumbrüche nur an Whitespace
+	breakindent=0em,
+	breakautoindent=true, % bei Zeilenumbruch automatisch einrücken
+%
+	prebreak=,
+	postbreak=\mbox{$\hookrightarrow$\hspace{-0.34em}\hphantom{m}},
+%	
+	showstringspaces=true, 		% Leerzeichen in Strings zeigen
+	showspaces=false,           % Leerzeichen anzeigen?
+	showtabs=false,             % Tabs anzeigen?
+	tabsize=3,					% Zeichenbreite eines Tabs
+%	
+	keepspaces=false,			% Erlaubt die Unterdrückung von Leerzeichen zugunsten eines besseren Spalten-Layouts
+	columns=fixed,				% Zeichenbreite
+%	
+	captionpos=b, 				% Position der Beschriftung
+	xleftmargin=2.2em, 			% Abstand zum Rand
+	xrightmargin=0.35em,		%
+	framexleftmargin=0em,		% Abstand im Rahmen
+	framexrightmargin=0pt,		%
+	framexbottommargin=2pt,		%
+	framextopmargin=0pt,		%
+	frame=tblr,					% Rahmen anzeigen
+	frameround=tftf,			% t: abgerundete Ecke, f: eckige Ecke
+	backgroundcolor=\color{listingBackground}, % Hintergrundfarbe
+	rulecolor=\listingRulecolor,% Farbe der Umrandung
+%
+	numbers=left,
+	numberstyle=\scriptsize\ttfamily\listingNumbercolor, %Stil der Zeilennummern
+	stepnumber=1,
+}
+
+\lstset{literate= % Deutsche Umlaute und ß in Listings erlauben
+	{Ö}{{\"O}}{1}
+	{Ä}{{\"A}}{1}
+	{Ü}{{\"U}}{1}
+	{ß}{{\ss}}{1}
+	%{ẞ}{{\MakeUppercase{\ss}}}{1} % KNOWNISSUE: der aktuell verwendete font enthält das zeichen leider nicht, also lieber erstmal weglassen ;-)
+	{ü}{{\"u}}{1}
+	{ä}{{\"a}}{1}
+	{ö}{{\"o}}{1}
+}
+
+\lstdefinelanguage{thesis-latexbeispiel}
+	{morekeywords=
+		{\\begin, \\end, \\frac, \\pi, \\\\, \\sum, \\varphi, \\pm, \\int, \\limits, \\infty, \\cdot, \\sqrt, \\left, \\right, \\mathrm,
+		\\linewidth, \\centering, \\includegraphics, \\caption, \\label, \\lstinline, \\lstinputlisting, \\todo, \\listoftodos, \\url, \\href, \\cite, \\textqoute,
+		\\gls, \\glssymbol, \\LaTeX},
+		emph={figure, table, tabular, align, lstlisting},
+		sensitive=true,
+		morecomment=[l]{\%},
+%		morecomment=[s]{/*}{*/},
+%		morestring=[b]",
+		alsoletter={\\},
+	}
+	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Format der Float-Beschriftungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{caption}
+\usepackage[labelformat=brace,list=true]{subcaption}
+%Farbiger Text geht mit labelfont={bf,it,color=red}
+% Mehr Infos zu CaptionStyle http://ctan.math.washington.edu/tex-archive/macros/latex/contrib/caption/caption-eng.pdf
+\DeclareCaptionStyle{myCaptionStyle}{%
+	format=plain,			% Basis-Format
+	labelsep=quad,			% Abstand Typ/Nummer <-> Beschriftung
+%	indention=-7em,			%
+	margin=0.5em,				% Zusatzabstand Links
+	singlelinecheck=false,	%
+	labelfont={sf,small,bf,color=captionLabel},% Font Typ/Nummer
+	textfont={sf,small, color=captionText},	% Font Beschriftung
+%	justification=centering,
+}
+
+\DeclareCaptionStyle{mySubCaptionStyle}{%
+	format=plain,			% Basis-Format
+	labelsep=space,			% Abstand Typ/Nummer <-> Beschriftung
+%	indention=-7em,			%
+	margin=0.5em,			% Zusatzabstand links
+	singlelinecheck=false,	%
+	labelfont={sf,small,bf, color=subcaptionLabel},% Font Typ/Nummer
+	textfont={sf,small, color=subcaptionText},	% Font Beschriftung
+%	justification=centering,
+}
+
+% labelformat: empty  :
+%              simple : a 
+%              brace  : a)
+%              parens : (a)
+
+
+\captionsetup[table]{style=myCaptionStyle}
+\captionsetup[figure]{style=myCaptionStyle}
+\captionsetup[lstlisting]{style=myCaptionStyle}
+
+\captionsetup[subfigure]{style=mySubCaptionStyle}
+\captionsetup[subtable]{style=mySubCaptionStyle}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PDF-Meta-Informationen und Links im Dokument %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[]{hyperref}
+
+\ifbool{linksMarkieren}{
+	% nichts
+}{
+	\hypersetup{hidelinks} % Link-Markierung verstecken
+}
+
+\hypersetup{
+	linktoc=all, 						% Welcher Teil im Inhaltsverzeichnis ist klickbar? (none/section/page/all)
+    colorlinks=false,					% false: boxed links (wird nicht mitgedruckt); true: colored links (wird auch so gedruckt!)
+	linkcolor=primary!50!white,			% color of internal links
+    linkbordercolor=primary!20!white,
+%
+    citecolor=primary!50!black,			% color of links to bibliography
+    citebordercolor=primary!20!gray,
+%
+    filecolor=AccentStrong,				% color of file links
+    filebordercolor=AccentStrong!20,
+%
+    urlcolor=AccentWeak,				% color of external links
+    urlbordercolor=AccentWeak!20,
+%
+	menucolor=blue,
+	menubordercolor=blue,
+%
+	runcolor=red,
+	runbordercolor=red,
+%
+    %bookmarks=true,			% show bookmarks bar?
+    unicode=true,				% non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,			% show Acrobat’s toolbar?
+    pdfmenubar=true,			% show Acrobat’s menu?
+    pdffitwindow=false,			% window fit to page when opened
+    pdfstartview={FitH},		% fits the width of the page to the window
+    pdftitle=\thema,			% Titel
+    pdfauthor=\autor,			% Autor
+    pdfsubject=\artderarbeit,	% subject of the document
+    pdfcreator=LaTeX,			% creator of the document
+    pdfproducer=,				% producer of the document
+    pdfkeywords=\schlagwoerter,	% Schlagworte
+    pdfnewwindow=true,			% Links in neuem Fenster öffnen
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Glossar, Abkürzungen, Akronyme, Symbole, ... %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[
+	toc=false,		% Nicht im Inhaltsverzeichnis anzeigen. Wenn die Verzeichnisse dort erscheinen sollen, machen wir das selber
+	translate=babel,% Babel zum Übersetzen verwenden
+	acronym,		% Eigenes Verzeichnis für Akronyme	(CRC, BAföG, LASER, ...)
+	abbreviations,	% Eigenes Verzeichnis für Abkürzungen (Dr., z.B., bspw., bzw., etc.)
+	symbols,		% Eigenes Verzeichnis für Symbole (µ, ...)
+]{glossaries-extra}
+
+\usepackage{glossary-longragged}% Extra Style
+\usepackage{glossary-mcols}% Extra Style
+
+% 'seename' wird mit translate=babel nicht übersetzt => dann machen wir das eben selber
+\DeclareTranslation{German}{seename}{siehe}
+\DeclareTranslation{English}{seename}{see}
+\DeclareTranslationFallback{seename}{\seename} 
+\renewcommand{\seename}{\expandonce{\GetTranslation{seename}}} %expandonce: es scheint so als würde der Befehl zu früh/spät expandiert - mit expandonce passt es
+
+
+\makenoidxglossaries %langsames Sortieren, funktioniert aber immer und braucht keine externen Programme
+\loadglsentries{Verzeichnisse/Glossar.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Anpassung von Nummerierungstiefe etc. (default passt aber schon)
+%\setcounter{secnumdepth}{3} %Nummerierungstiefe
+%\setcounter{tocdepth}{2} %Kapiteltiefe im Inhaltverzeichnis
+
+
+
+\usepackage{blindtext}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Todos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[
+	ngerman,
+%	textwidth=\randRechtsAussen-0em,%TODO sollte sich berechnen lassen, oder?
+	textsize=scriptsize
+]{todonotes}
+
+\setlength{\marginparwidth}{\randAussen-2.5mm}% hieraus ergibt sich die Breite der Todo-Boxen
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Für Debugszwecke: Mehr Infos zu Boxen ausgeben:
+%\showboxdepth=\maxdimen
+%\showboxbreadth=\maxdimen

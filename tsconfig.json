@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"typeRoots": ["./types"],
+        // "types":["./src/Globals.d.ts"],
 		"jsx": "react-jsx",
 		"jsxImportSource": "preact",
 		"module": "es2015",
@@ -12,7 +13,7 @@
 			"@/*": ["./src/*"]
 		},
         // "allowJs": true,
-		"sourceMap": true,
+		"sourceMap": true, 
 		"rootDir": "src",
 		"strict": true /* enable all strict type-checking options */,
 		/* Additional Checks */

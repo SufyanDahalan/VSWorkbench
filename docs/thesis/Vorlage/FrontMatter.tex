@@ -1,0 +1,203 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ! WARNUNG ! %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Diese Datei bitte nur bearbeiten,    %%%
+%%%   wenn du ein LaTeX-Experte bist      %%%
+%%%             U N D                     %%%
+%%%  die Vorlage unbedingt ändern willst  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% DATEI-INFO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Diese Datei enthält die Titelseite und Standardteile am Anfang der Thesis %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\pagenumbering{Roman}
+\pagestyle{plain}
+%
+% Entscheiden, welches der Logopdfs benutzt wird (verschiedene Schwarztöne)
+\newcommand{\buwlogopdf}{Medien/Uni_Wuppertal_Logo__cmykblack.pdf}
+\ifbool{color}{%
+	\renewcommand{\buwlogopdf}{Medien/Uni_Wuppertal_Logo__richblack.pdf}
+}{% color disabled
+	\ifstrequal{\colormodel}{rgb}{%
+		\renewcommand{\buwlogopdf}{Medien/Uni_Wuppertal_Logo__rgbblack.pdf}
+	}{% cmyk/gray/...
+		\renewcommand{\buwlogopdf}{Medien/Uni_Wuppertal_Logo__cmykblack}
+	}
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Titelseite %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+	\begin{titlepage}
+		\sffamily%
+		%
+		\hspace{-1.5em}%
+		\includegraphics[width=4.5cm]{\buwlogopdf}%
+		\hfill%
+		\begin{minipage}[b]{\linewidth-4.5cm}
+			\begin{flushright}
+				\normalsize{Fakultät für Elektrotechnik,}%
+				\\\vspace{0.2mm}
+				\normalsize{Informationstechnik und Medientechnik}%
+				\vspace*{0.05mm}
+			\end{flushright}
+		\end{minipage}
+		\vspace{-0.3em}
+		\begingroup%
+			\color{primary}%
+			\rule{\textwidth}{3pt}%
+		\endgroup%
+		\begin{flushright}
+			\lehrstuhl
+		\end{flushright}
+		
+		\vspace{3.2em}
+		\begin{center}
+			\textbf{\Huge{\artderarbeit}}%
+			\vspace{1.4em}
+			\\
+			\textbf{\large{\thema}}%
+		\end{center}
+		
+		
+		\vfill
+	
+	
+		\begin{center}
+			\Large
+			\autor%
+			\\
+			{\Large\matrikelnummer}%
+			\bigskip\\%
+			\studiengang%
+			\\
+			{\large\schwerpunkt}%
+			\vspace{2em}%
+			\hspace{0em}\\%
+			\normalsize%
+			\ort, den \abgabedatum%
+		\end{center}
+		
+		
+		\vspace{7.5em}
+		
+		
+		\pbox[t][2em]{\linewidth}{Betreuer}%
+		\quad%
+		\pbox[t][2em]{\linewidth}{\betreuer}%
+		\hfill%
+		\pbox[t][2em]{\linewidth}{Erstgutachter\\Zweitgutachter}%
+		\quad%
+		\pbox[t][2em]{\linewidth}{\prueferA\\\prueferB}%
+	
+	\end{titlepage}
+	\ifbool{doppelseitig}{%
+		% im doppelseitigen Modus zählt report wie gewünscht
+	}{%
+		\stepcounter{page}% Seite manuell hochzählen, weil report das im einseitigen Modus nicht macht, im doppelseitigen aber schon (Konsistenz)
+	}
+	\clearpage{\pagestyle{empty}\cleardoublepage}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Themenblatt / Aufgabenstellung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+	\pdfbookmark[1]{Aufgabenstellung}{aufgabe}%
+	\includepdf[
+		pages={1},
+		fitpaper=true
+	]{Medien/Aufgabenstellung.pdf}%
+	\clearpage{\pagestyle{empty}\cleardoublepage}%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Verlängerung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+	\ifbool{verlaengerung}{%
+		\cleardoublepage%
+		\pdfbookmark[1]{Verlängerung}{verlaengerung}%
+		\includepdf[pages={1},fitpaper=true]{Medien/Verlaengerung.pdf}%
+	  	\clearpage{\pagestyle{empty}\cleardoublepage}%
+	}{}%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Erklärungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+	\pdfbookmark[1]{Erklärungen}{erklaerung}%
+	\vspace*{2em}%
+	\section*{Eidesstattliche Erklärung}%
+	\noindent Hiermit versichere ich, dass ich die Arbeit selbstständig verfasst, keine anderen als die angegebenen Quellen und Hilfsmittel benutzt sowie Zitate kenntlich gemacht habe.%
+	
+	\ifbool{zusatzErklaerung}{\vfill}{\vspace{4em}}%
+	\begin{tabular}{lc}%
+	\ort, den \abgabedatum \hspace*{1cm}& \rule[2px]{5cm}{0.5px}\\%
+	                                    &\footnotesize{(Unterschrift)}%
+	\end{tabular}
+	\ifbool{zusatzErklaerung}{\vfill}{\vspace{5em}}%
+	
+	\section*{Einverständniserklärung}
+	\noindent Ich bin damit einverstanden, dass meine Abschlussarbeit wissenschaftlich interessierten Personen oder Institutionen zur Verfügung gestellt werden kann. Korrektur- oder Bewertungshinweise in meiner Arbeit dürfen nicht zitiert werden.
+	
+	\ifbool{zusatzErklaerung}{\vfill}{\vspace{4em}}%
+	\begin{tabular}{lc}
+	\ort, den \abgabedatum \hspace*{1cm}& \rule[-2px]{5cm}{0.5px} \\ 
+	                                       &\footnotesize{(Unterschrift)}
+	\end{tabular}
+	\ifbool{zusatzErklaerung}{%
+		\vfill
+		\input{Kapitel/Zusatzerklaerung}
+		\vfill
+	}{}
+	\clearpage	
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Danksagung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\ifbool{danksagung}{%
+		\vspace*{\fill}\vspace{-3em}%
+		\pdfbookmark[1]{Danksagung}{danksagung}%
+		\input{Kapitel/Danksagung}%
+		\vfill%
+	}{}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Kurzfassung & Abstract %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+	\clearpage{\pagestyle{empty}\cleardoublepage}
+	\vspace*{\fill}\vspace{-3em}
+	\pdfbookmark[1]{Kurzfassung}{kurzfassung}
+	\input{Kapitel/Kurzfassung}
+	\vfill
+	\clearpage
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  INHALTSVERZEICHNIS
+\markboth{\contentsname}{}
+\pdfbookmark[1]{\contentsname}{toc}
+\begingroup
+	\renewcommand{\markboth}[2]{}{}
+	\tableofcontents
+\endgroup
+\clearpage
+%
+%
+%%WIDMUNG, VORWORT
+%
+%\nomenclature{$x$}{Description}
+%\nomenclature{TEXT}{Abkürz}
+%% Ende der Titelei; es folgt der Hauptteil
+\ifbool{doppelseitig}{%
+	\clearpage%
+	\hphantom{anker, damit hier auch wirklich eine leere Seite ist}%
+}{}%
+{\pagestyle{empty}\cleardoublepage}% Inhalt soll auf rechter Seite beginnen
+\pagenumbering{arabic}%
+\pagestyle{thesis-page-regular}%

@@ -1,0 +1,237 @@
+\chapter{FAQ - Frequently Asked Questions}
+	\emph{engl.: Häufig stellte Fragen}
+	
+	\emph{In \ref{FAQ:Vorlage} gibt es die FAQ speziell zu dieser Vorlage und dem Umgang damit.}
+	
+	\emph{In \ref{FAQ:LaTeX} werden typische Anfängerfragen zum Thema \LaTeX{} behandelt.} 
+	
+	\section{Zu dieser Vorlage}\label{FAQ:Vorlage}
+		\subsection{Was brauche ich?}
+			\subsubsection{Diese Vorlage}
+			Die Vorlage wird als komprimiertes Archiv verteilt. Dieses muss zuerst entpackt werden.
+			
+			\subsubsection{Eine LaTeX-Distribution}
+			Je nach Betriebssystem gibt es unterschiedliche Pakete, in denen \LaTeX zusammen mit den am häufigsten benutzten Paketen zu einer sogenannten \emph{\LaTeX-Distribution} zusammengefasst ist.
+%			
+			\TeX Live und MiKTeX sind die am häufigsten genutzten Varianten:
+			
+			\paragraph{TeX Live}~\\
+			\fbox{Linux} \fbox{Windows} \fbox{MacOS\footnotemark}\footnotetext{für MacOS gibt es auch noch die speziell abgestimmte Variante \emph{MacTeX}, welche auf \emph{\TeX Live} aufbaut} \fbox{FreeBSD} \fbox{NetBSD} \fbox{Solaris}
+			\hfill
+			\url{http://tug.org/texlive/}
+			\medskip
+			
+			\noindent Wird in den vielen Linux-Distributionen schon mitgeliefert und über den Linux-Paketmanager automatisch aktualisiert.
+			%				
+			Unter Ubuntu/Mint/Debian kann man es z.B. über das Terminal mit  
+			\lstinline|sudo apt install texlive| installieren.
+			%				
+			Je nach Anwendung gibt es verschieden große Pakete. Mit \lstinline|texlive| installiert man ein einfaches TeX-System mit häufig genutzten Paketen. Dies ist für die meisten Anwendungsfälle ausreichend.
+			%				
+			\lstinline|texlive-base| wäre die Minimalinstallation, alle weiteren Pakete müssen von Hand installiert werden.
+			%				
+			\lstinline|texlive-full| enthält alle Pakete. Dafür braucht es natürlich auch am meisten Speicherplatz.
+			
+			\paragraph{MiKTeX}~\\
+			\fbox{Linux} \fbox{Windows} \fbox{MacOS}
+			\hfill
+			\url{https://miktex.org/download}
+			
+			\noindent Lädt Pakete nur auf Anfrage, braucht also potenziell weniger Speicherplatz.
+			Bei der Installation wird gefragt, was passieren soll, wenn MiKTeX bemerkt dass ein Paket fehlt:
+			\begin{description}
+				\item[Nicht installieren] Fehlende Pakete werden nicht automatisch installiert -- das muss man also selber machen. \textit{(Für Anfänger nicht empfohlen)}
+				\item[Nachfragen] Sobald ein Paket fehlt, öffnet MiKTeX ein Fenster in dem man auswählen kann, ob das Paket installiert werden darf. Einfach und transparent. Am Anfang wird man aber möglicherweise ziemlich oft gefragt, bis alle Pakete heruntergeladen wurden.
+				\item[Automatisch installieren] Fehlende Pakete werden ohne Nachfrage beim Nutzer automatisch installiert. Einfach, aber intransparent.
+			\end{description}
+			
+			Man kann diese Option in den Einstellungen von MiKTeX auch später noch ändern.
+			
+			\subsubsection{Einen (LaTeX-) Editor}
+			\emph{Weil \LaTeX-Quellcode auch nur ganz normaler Text ist, kann im Prinzip jeder beliebige Text-Editor\footnote{Nur bitte nicht Word, Writer etc. Das sind keine Text-Editoren!} benutzt werden.}
+			\medskip
+			
+			Viel einfacher (und übersichtlicher) wird es aber, wenn man einen \LaTeX-Editor benutzt.
+			Diese Programme kennen in der Regel die meisten Befehle und können diese automatisch vervollständigen, bieten Vorschaufunktionen, einfaches Kompilieren und vieles mehr.
+			
+			
+			Empfehlenswert ist z.B. \emph{TeXstudio\footnote{\url{https://www.texstudio.org/}, verfügbar für Linux, Windows \& Mac OS}}, in dem ich diesen Text hier gerade schreibe und schon diverse Vorlagen und Pakete entwickelt habe. Es enthält eine Autovervollständigung der gängigen \LaTeX-Befehle, eine einfache Rechtschreibprüfung und viele Hilfsfunktionen zum Finden von Symbolen, Formatieren von Tabellen und so weiter...
+			\medskip
+			
+			\emph{Besonders praktisch finde ich die Option, direkt per Strg+Klick im PDF an die entsprechende Stelle im Quellcode zu springen (das geht natürlich auch anders herum). Oder mit Strg+Klick auf einen Paketnamen die entsprechende Dokumentation zu öffnen. Oder sich z.B. die Vorschau einer Formel direkt im Quellcode anzeigen zu lassen. Und es gibt noch so viel mehr...}
+			
+			\subsubsection{Eine Literaturverwaltung (optional)}
+			Die Literaturliste kann man in einem \LaTeX-Editor schon hinreichend gut bearbeiten.
+			%			
+			Literaturverwaltungsprogramme können einem die Arbeit aber erleichtern.
+			%			
+			Frei verfügbar ist z.B. das Programm \emph{JabRef}\footnote{Läuft unter Linux, Windows und Mac OS, \url{http://www.jabref.org/}}.
+			Dieses kann auch diverse Wissenschaftliche Online-Verzeichnisse durchsuchen, eignet sich (bedingt) also auch zur Literaturrecherche.
+		
+			
+		\subsection{Titelblatt und Einstellungen ändern}\label{FAQ:Einstellungen}
+			Die für Benutzer gedachten Einstellungsmöglichkeiten finden sich in der Datei \lstinline|Einstellungen.tex|.
+%			
+			Damit kann man \zb{} die Angaben auf der Titelseite ändern, zwischen einseitigem und doppelseitigem Layout wählen oder entscheiden, welche Verzeichnisse generiert werden sollen und vieles mehr. Alle Optionen sind dort ausführlich kommentiert.
+			
+		\subsection{Literatur/Quellen}
+			Die Literatureinträge werden von dieser Vorlage aus der Datei \lstinline|Literatur.bib| geladen.
+			Hat sich etwas an dieser Datei geändert, muss das Literaturverzeichnis neu kompiliert werden. (siehe \ref{FAQ:kompilieren:literatur} \emph{\nameref{FAQ:kompilieren:literatur}})
+			
+		\subsection{Glossareinträge, Abkürzungen, Akronyme}
+			werden in der Datei \lstinline|Glossar.tex| eingetragen.
+		
+		\subsection{Im PDF sind am Anfang mehrere leere Seiten}
+			Je nachdem ob Ihr in \lstinline|Einstellungen.tex| das einseitige oder das doppelseitige Layout gewählt habt, werden leere Seiten zwischen Kapiteln generiert.
+			Das sieht im PDF erst mal seltsam aus, ist aber Absicht:
+			%		
+			So fängt \zb{} der Inhaltsteil auf der rechten Seite an (das ist eine übliche Konvention).
+			Damit dann auf der linken Seite nicht noch der Rest vom Inhaltsverzeichnis steht, was schon mal etwas seltsam aussehen kann, wird dafür gesorgt, dass die erste linke Seite vor dem Start des Texts leer ist. Endet das Inhaltsverzeichnis auf der linken Seite, ergibt sich zusätzlich noch eine leere rechte Seite.
+			
+			Bei Aufgabenstellung, ggf. Verlängerung und Eidesstattlicher Erklärung handelt es sich jeweils um allein stehende Elemente, daher wird auch hier jeweils dafür gesorgt, dass die linke Seite daneben leer bleibt.
+		
+		\subsection{Seitenränder springen hin und her}
+			Im doppelseitigen Layout gibt es einen inneren und einen äußeren Rand.
+			\medskip
+			
+			\textit{In den \hyperref[FAQ:Einstellungen]{Einstellungen} kann bei Bedarf auch ein einseitiges Layout gewählt werden.}
+		
+		\subsection{Seitenzahlen springen hin und her}
+			Im doppelseitigen Layout gibt es einen inneren und einen äußeren Rand.
+			Die Seitenzahlen stehen immer am äußeren Rand der Seite.
+			\medskip
+			
+			\textit{In den \hyperref[FAQ:Einstellungen]{Einstellungen} kann bei Bedarf auch ein einseitiges Layout gewählt werden.}
+			
+		\subsection{Die Druckerei zählt S/W-Seiten als Farbseiten}
+			\textit{Farbseiten sind meist deutlich teurer als Schwarz-Weiß bzw. Graustufen-Seiten.
+			Es kann also sinnvoll sein, wenn nur die Seiten mit farbigen Bildern etc. als Farbseiten gedruckt werden. Viele Thesis-Druckereien und Copyshops haben dafür eine Software, die Farbseiten automatisch erkennen kann\footnote{Oder das zumindest können sollte ;-)}.}
+			
+			Meistens funktioniert das mit dieser Thesisvorlage einwandfrei.
+			Einige wenige Druckereien verhalten sich diesbezüglich aber \emph{etwas seltsam}.
+			Falls eure Druckerei Probleme macht, könnt ihr in der Datei \emph{Einstellungen.tex} den Parameter \lstinline|\colormodel| anpassen.
+			
+			Faustregel für \lstinline|\colormodel|:
+			\begin{itemize}
+			\item erst mal bei der Standardeinstellung \lstinline|cmyk| lassen. Das ist das professionelle Druckformat.
+			\item wenn die Druckerei Probleme macht, auf \lstinline|rgb| umstellen. Hat in einem uns bekannten Fall schon mal geholfen.
+			\item wenn die Druckerei immer noch Probleme macht, auf \lstinline|gray| umstellen.
+			\end{itemize}
+
+	\clearpage
+	\section{Zu \LaTeX{} allgemein}\label{FAQ:LaTeX}
+		\subsection{Hintergrundwissen: Aus \LaTeX{} wird ein PDF}
+			\LaTeX-Quellcode wird kompiliert, dass heißt ein spezielles Programm (der \emph{Compiler}) liest den Quellcode und erstellt daraus ein Dokument im Zielformat.
+			Je nach Compiler und dessen Einstellungen können dabei unterschiedliche Zielformate herauskommen.
+%			
+			Einer der wichtigsten Compiler ist \emph{Pdf\LaTeX}. Er erstellt aus dem Code ein PDF-Dokument. Dieses kann dann einfach betrachtet, gedruckt, kommentiert oder auf einem Datenträger der Thesis beigelegt werden.
+			
+			\emph{Praktisch alle Druckereien nehmen PDF-Dokumente an.
+			Mit einem Writer- oder Word-Dokument, LaTeX-Code oder anderen Datei-Formaten wollen die Druckereien dagegen häufig lieber nichts zu tun haben\footnote{Im schlimmsten Fall wird der Druckauftrag abgelehnt, wenn es etwas besser läuft müsst Ihr evtl. einen Aufpreis zahlen. Mit einem PDF seid Ihr dagegen bei praktisch allen seriösen Anbietern auf der sicheren Seite.}}
+			
+		\subsection{\LaTeX{} kompilieren}
+			Die Thesis kann im Terminal mit dem Befehl \lstinline|pdflatex Thesis.tex| kompiliert werden.
+			In \emph{TeXstudio} geht das mit einem Klick auf den Kompilieren-Button oder mit der Taste \fbox{F5}.
+			
+			In manchen Fällen muss man zwei mal kompilieren, mehr dazu in Abschnitt \ref{FAQ:kompilieren:zweimal} \emph{\nameref{FAQ:kompilieren:zweimal}}.
+		\subsection{Literaturverzeichnis kompilieren}\label{FAQ:kompilieren:literatur}	
+			Das Literaturverzeichnis wird in der Regel von einem separaten Programm verarbeitet (z.B. BibTeX, BibLaTeX oder Biber).
+			%In dieser Thesisvorlage wird BibLaTeX verwendet, das Backend ist BibTeX (so passen die Standardeinstellungen von TeXstudio direkt).
+			\medskip
+			
+			Dieses muss explizit aufgerufen werden.
+			In \emph{TeXstudio} geht dass z.B. mit der Taste \fbox{F8}, im Terminal per \lstinline|bibtex Thesis.aux|.
+			
+			Danach muss dann das \LaTeX-Dokument (in \emph{TeXstudio} mit \fbox{F5}) kompiliert werden.
+			\bigskip
+			
+			\hrule
+			\medskip
+			\noindent \textbf{Im Worstcase\footnote{alles hat sich geändert} muss man}:
+			\begin{enumerate}
+			\item \LaTeX-Code kompilieren \emph{(damit bekannt ist, welche Quellenverweise es gibt)}
+			\item Literatur kompilieren \emph{(Quellen zusammenstellen)}
+			\item \LaTeX-Code kompilieren \emph{(Layout des Dokuments, Verzeichnisse vorbereiten)}
+			\item \LaTeX-Code kompilieren \emph{(Verzeichnisse korrekt setzen)}
+			\end{enumerate}
+			In der Praxis ist das aber kein großes Problem, da man beim Arbeiten an dem Dokument meist nach Bedarf kompiliert...
+			\hrule
+		
+		\subsection{Zwei mal kompilieren}\label{FAQ:kompilieren:zweimal}
+			\textit{
+				\begin{itemize}\itemsep=0pt
+					\item Das neue Kapitel ist nicht im Inhaltsverzeichnis aufgeführt?
+					\item Der Verweis auf ein Bild zeigt auf die falsche Seite?
+				\end{itemize}
+			}
+			
+			\begin{center}
+				Lösung: Einfach zwei mal kompilieren.
+				\bigskip
+				
+				Aber warum eigentlich?
+			\end{center}
+			
+			
+			Normalerweise wird der \LaTeX-Code einmal von vorne nach hinten durchgegangen und dabei kompiliert.
+%			
+			Am Beispiel des Inhaltsverzeichnis wird direkt klar, dass damit bestimmte Dinge nicht möglich sind:
+				Wenn das Inhaltsverzeichnis vorne im Dokument gesetzt werden soll, weiß \LaTeX{} zu diesem Zeitpunkt noch gar nicht, auf welcher Seite die Kapitel stehen werden und welche Kapitel es überhaupt gibt -- schließlich folgen diese erst später im Quellcode.
+			
+			Stattdessen läuft der \LaTeX-Compiler einmal durch das gesamte Dokument und merkt sich dabei, welche Kapitel existieren und auf welchen Seiten diese begonnen haben.
+				Diese Information wird dann in eine Datei gespeichert\footnote{Deshalb liegen neben dem eigentlichen \LaTeX-Dokument und der Literaturdatei nach dem kompilieren noch so viele andere Dateien mit Endungen wie z.B. \lstinline|.aux| oder \lstinline|.toc| herum}.
+%			
+			Im zweiten Durchlauf werden diese Informationen wieder eingelesen und verwendet um das Inhaltsverzeichnis zu erstellen, d.h. das Inhaltsverzeichnis hinkt quasi einen Kompilierschritt hinterher.
+			\bigskip
+			
+			\noindent Das gleiche gilt auch für
+			\begin{itemize}
+			\item Verweise/Referenzen (bzw. alles was mit Seitenzahlen zu tun hat)
+			\item alle anderen Verzeichnisse, z.B. Abbildungsverzeichnis, Tabellenverzeichnis, Literaturverzeichnis.
+			\end{itemize}
+		
+		
+
+		
+		\subsection{Floating-Umgebungen}\label{sec:wissen:float}
+			\textit{Hilfe, mein Bild/meine Tabelle/... ist nicht wo es sein soll!} --
+	%		
+			Bilder, Tabellen usw. sind in \LaTeX{} sogenannte \emph{Floating-Umgebungen}, d.h. sie sind nicht fest an einem Platz, sonderen werden beim Kompilieren so verschoben, dass die Seite gut aussieht.
+	%		
+			Nun ist \emph{was gut aussieht} nicht unbedingt für jeden gleich, und es gibt auch Fälle in denen \LaTeX{} sich scheinbar sehr seltsam entscheidet.
+			Daher kann man in eckigen Klammern ggf. Präferenzen für die Positionierung angeben, die \LaTeX{} dann als Orientierung nimmt - im Zweifelsfall aber auch ignorieren darf:
+			
+			\begin{description}
+			\item[t] bitte oben auf die Seite
+			\item[b] bitte unten auf die Seite
+			\item[h] bitte hier an dieser Stelle im Text
+			\item[p] bitte auf eine eigene Seite packen, auf der nur andere Floats sein dürfen
+			\item[!] \LaTeX soll seine eigenen Regeln zum guten Platzieren von Floats ignorieren
+			\end{description}
+		
+	
+		
+
+		
+		\subsection{Leerzeichen nach einem Befehl fehlt}
+			\subsubsection*{Das Problem}
+				Schreibt man einen Satz wie z.B. \emph{Ich benutze \LaTeX, weil \LaTeX für Formelsatz super ist.} so fällt auf, dass zwischen \emph{\LaTeX{}} und \emph{für} das Leerzeichen fehlt.			
+				Habe ich es einfach nur vergessen?
+				
+				Nein, hier ist der Quellcode:
+				\bigskip
+				
+				\lstinline[language=thesis-latexbeispiel, showspaces=true]|Ich benutze \LaTeX, weil \LaTeX für Formelsatz super ist.|
+				\bigskip
+			
+				Wie man sieht, steht hinter dem zweiten \lstinline[language=thesis-latexbeispiel]|\LaTeX| eindeutig ein Leerzeichen. Dieses fällt aber weg, weil Befehle in \LaTeX normalerweise grundsätzlich Parameter erwarten, also das nächste Zeichen betrachten und schauen ob noch ein Parameter kommt. Bei fettgedrucktem Text wie \lstinline[language=thesis-latexbeispiel]|dieser \textbf{Text} ist fettgedruckt| (dieser \textbf{Text} ist fettgedruckt) ist das offensichtlich, bei \lstinline[language=thesis-latexbeispiel]|\LaTeX| halt nicht. Wie man bei genauem Hinschauen sieht, ist es beim ersten \lstinline[language=thesis-latexbeispiel]|\LaTeX| auch kein Problem, weil direkt ein Komma folgt. Lediglich Leerzeichen werden von solchen Befehlen \glqq gefressen\grqq, weil ein Leerzeichen durchaus erlaubt wäre.
+				
+				Dieses Verhalten ist auch durchaus sinnvoll, weil man manchmal nach einem \LaTeX-Befehl vielleicht auch gar kein Leerzeichen haben will. So ist z.B. \lstinline|\LaTeXbefehl| kein gültiger \LaTeX befehl, und eigentlich wollten wir hier ja auch nur \lstinline[language=thesis-latexbeispiel]|\LaTeX| und \lstinline|befehl| aneinanderhängen. Folglich kommt zwischen \lstinline[language=thesis-latexbeispiel]|\LaTeX| und \lstinline|befehl| ein Leerzeichen, an dem \LaTeX erkennt, wo der Befehl zu Ende ist und der Text weitergeht. Weil das Leerzeichen aber nur markiert, wo der \LaTeX Befehl endet, taucht es im Text nicht auf.
+			\subsubsection*{Die Lösung}
+				In solchen Fällen (oder immer, es schadet jedenfalls nie) einfach \lstinline[language=thesis-latexbeispiel]|\LaTeX{}| schreiben, also leere Parameterklammern hinzufügen. So ist direkt klar, wo der Befehl aufhört und das Leerzeichen wird nicht mehr \glqq gefressen\grqq:
+				\bigskip
+				
+				\emph{Ich benutze \LaTeX, weil \LaTeX{} für Formelsatz super ist.}
+				\medskip
+				
+				\lstinline[language=thesis-latexbeispiel, showspaces=true]|Ich benutze \LaTeX, weil \LaTeX{} für Formelsatz super ist.|

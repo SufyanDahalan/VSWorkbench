@@ -1,0 +1,643 @@
+% Encoding: UTF-8
+@misc{Patent:ADAT:US,
+ author = {Keith Barr and Alan Zak and Marcus Ryle and David Brown and Carl Lafky},
+ title = {Method and apparatus for providing a digital audio interface protocol},
+ year = {1994},
+ month = {03},
+ day = {22},
+ note = {US 5297181},
+ version = {},
+ howpublished = {Patent},
+ nationality = {US},
+ filing_num = {07822469},
+ yearfiled = {1992},
+ monthfiled = {01},
+ dayfiled = {17},
+ pat_refs = {US 4803703 (Feb, 1989) DeLuca et al. 375/114; US 5010559 (Apr, 1991) O'Connor et al. 375/114},
+ IPC_class = {H03D  324},
+ US_class = {375/111; 375/116; 375/119},
+ abstract = {A digital audio interface protocol carries multiple channels of digital audio information serially between a transmitting digital audio tape recorder and a plurality of receiving recording units. Using a three stage process, the circuitry of the present invention allows the receiving VCO's to "lock on" to the sampling rate of the serial digital data stream without any explicit sampling information. In a first stage, the VCO frequency is adjusted until a sync pattern is properly received. In a second stage, the VCO frequency is adjusted to oscillate a preselected number of times between sync pattern occurrences. In a third stage, the VCO phase is adjusted to match the phase of the serial data stream.}
+}
+
+@misc{Patent:ADATSync:EU,
+ author = {Barr, Keith and Zak, Alan and Ryle, Marcus and Brown, David},
+ title = {Method for synchronizing digital audio tape recorders},
+ year = {1999},
+ month = {06},
+ day = {16},
+ note = {EP 0621976 B1},
+ version = {B1},
+ howpublished = {Patent},
+ nationality = {EP},
+ filing_num = {93903568},
+ yearfiled = {1993},
+ monthfiled = {01},
+ dayfiled = {15},
+ pat_refs = {EP-A- 0 368 511; EP-A- 0 443 272; GB-A- 2 141 284; US-A- 4 210 939; US-A- 4 772 966; US-A- 4 991 032},
+ IPC_class = {6G 11B  15/00   B;  6G 11B  27/032  B;  6G 11B  27/10   B;  6G 11B  27/30   B;  6G 11B 5/86A},
+ US_class = {},
+ abstract = {A method for synchronously operating two or more rotary head digital audio tape recorders without having to dedicate a separate timing track. The present invention synchronizes the machines in three steps. First, the slave unit reads the time code (111) value from the data stream and compares this time code (111) to the master's time code (111) examining the difference in time code (111) values and adjusting the transport speed so that the values are approximately equal. Next, the slave's capstan motors are slowed down (or sped up) so that the slave and master units arelatex
+  within one drum revolution of each other. Finally, the slave's microprocessor adjusts the speed of the entire system to skip individual samples until the master and slave units are synchronized.}
+}
+ 
+@misc{UG612,
+ author = {{Xilinx (Hrsg.)}},
+ title = {UG612 Timing Closure User Guide},
+ year = {2012},
+ month = {10},
+ day = {16},
+ note = {gültig für ISE Design Suite 14.3 bis 14.6},
+ version = {14.3},
+  address = {San Jose, CA}
+ }
+
+@misc{UG625,
+ author = {{Xilinx (Hrsg.)}},
+ title = {UG625 Constraints Guide},
+ year = {2013},
+ month = {04},
+ day = {01},
+ note = {gültig für ISE Design Suite 14.5 bis 14.6},
+ version = {14.5},
+  address = {San Jose, CA}
+ }
+ 
+@misc{DS123,
+ author = {{Xilinx (Hrsg.)}},
+ title = {DS123 Platform Flash In-System Programmable Configuration PROMs},
+ year = {2010},
+ month = {05},
+ day = {19},
+ note = {},
+ version = {2.18},
+  address = {San Jose, CA}
+ }
+ 
+@misc{DS529,
+ author = {{Xilinx (Hrsg.)}},
+ title = {DS529 Spartan-3A FPGA Family: Data Sheet},
+ year = {2010},
+ month = {08},
+ day = {19},
+ note = {},
+ version = {2.0},
+  address = {San Jose, CA}
+ }
+
+@Misc{XAPP951,
+  author       = {Stephanie Tapp},
+  title        = {XAPP 951 Configuring Xilinx FPGAs with SPI Serial Flash},
+  month        = {09},
+  year         = {2010},
+  address      = {San Jose, CA},
+  day          = {23},
+  organization = {{Xilinx (Hrsg.)}},
+  version      = {1.3},
+}
+
+@Manual{XAPP986,
+  title        = {XAPP986 Bulletproof Configuration Guide for Spartan-3A FPGAs},
+  author       = {Jameel Hussein},
+  address      = {San Jose, CA},
+  month        = {11},
+  year         = {2007},
+  day          = {12},
+  organization = {{Xilinx (Hrsg.)}},
+  version      = {1.0.2},
+}
+
+@Manual{PcbChecklist,
+  title        = {PCB Design Checklist},
+  author       = {{Xilinx (Hrsg.)}},
+  year         = {2014},
+  note         = {abgerufen am 18.01.2014 um 11:30.},
+  howpublished = {Website},
+  subtitle     = {Checklist to help PCB and system designers complete a PCB.},
+  url          = {http://www.xilinx.com/products/design_resources/signal_integrity/si_pcbcheck.htm},
+}
+ 
+@misc{Datenblatt:AL1401AG,
+	author = {{Wavefront Semiconductor (Hrsg.)}},
+	title = {AL1401AG ADAT® Optical Encoder},
+	howpublished = {Datenblatt},
+	year = {2005},
+	month = {09},
+	address={Cumberland, RI}
+}
+
+@misc{Datenblatt:AL1402G,
+	author = {{Wavefront Semiconductor (Hrsg.)}},
+	title = {AL1402G ADAT® Optical Decoder},
+	howpublished = {Datenblatt},
+	year = {2005},
+	month = {09},
+	address={Cumberland, RI}
+}
+
+@Misc{SPRU580G,
+	author={{Texas Instruments (Hrsg.)}},
+	title={TMS320C6000 DSP Multichannel Buffered Serial Port (McBSP)},
+	subtitle={Reference Guide},
+	year = {2006},
+	month = {12},
+	note = {},
+	version = {G},
+	address={Dallas,TX}
+}
+
+@misc{Datenblatt:TORX173,
+	author = {{Toshiba (Hrsg.)}},
+	title = {TORX173},
+	subtitle = {Fiber Optic Receiving Module},
+	howpublished = {Datenblatt},
+	year = {2001},
+	month = {08},
+	day = {10},
+	address = {Minato, Japan}
+}
+
+@misc{Datenblatt:TOTX173,
+	author = {{Toshiba (Hrsg.)}},
+	title = {TOTX173},
+	subtitle = {Fiber Optic Transmitting Module},
+	howpublished = {Datenblatt},
+	year = {2001},
+	month = {08},
+	day = {10},
+	address = {Minato, Japan}
+}
+
+@misc{Datenblatt:TORX147,
+	author = {{Toshiba (Hrsg.)}},
+	title = {TORX147PL(F,T)},
+	subtitle = {Fiber Optic Receiving Module},
+	howpublished = {Datenblatt},
+	year = {2006},
+	month = {12},
+	day = {28},
+	address = {Minato, Japan}
+}
+
+@misc{Datenblatt:TOTX147,
+	author = {{Toshiba (Hrsg.)}},
+	title = {TOTX147(F,T)},
+	subtitle = {Fiber Optic Transmitting Module},
+	howpublished = {Datenblatt},
+	year = {2006},
+	month = {12},
+	day = {28},
+	address = {Minato, Japan}
+}
+
+@misc{Datenblatt:PLR135,
+	author = {{Everlight (Hrsg.)}},
+	title = {Photolink- Fiber Optic Receiver PLR135/T},
+	howpublished = {Datenblatt},
+	year = {2013},
+	month = {05},
+	day = {30},
+	version={4},
+	address={New Taipei City, Taiwan}
+}
+
+@misc{Datenblatt:PLT133,
+	author = {{Everlight (Hrsg.)}},
+	title = {Technical Data Sheet Photolink -- Fiber Optic Transmitter},
+	subtitle = {PLT133\linebreak[3]/T},
+	howpublished = {Datenblatt},
+	year = {2005},
+	month = {07},
+	day = {25},
+	version={2},
+	address={New Taipei City, Taiwan}
+}
+
+@misc{Besprechung:14.10.2013,
+	author = {Christian Kleinhenrich},
+	title = {Besprechung zu den Zielen der Thesis},
+	howpublished = {persönliches Gespräch},
+	year = {2013},
+	month = {10},
+	day = {14},
+	address = {Wuppertal}
+}
+
+@BOOK{DesignersGuideToVHDL,
+	AUTHOR = {Ashenden, Peter J.},
+	YEAR = {2008}, 
+	month = {05},
+	TITLE = {The Designer's Guide to VHDL},
+	EDITION = {3},
+	ISBN = {978-0-12-088785-9},
+	PUBLISHER = {Morgan Kaufmann},
+	ADDRESS = {San Francisco, CA}
+}
+
+@misc{ADATspec96khz,
+	title = {Alesis ADAT Proprietary Multichannel Optical Digital Interface},
+	subtitle = {Addendum February 2001 2X Sample Rate (96kHz) Specification},
+	author = {{Alesis (Hrsg.)}},
+	year = {2001},
+	month = {02},
+	day = {03},
+	version = {1.0},
+	Address = {Cumberland, RI}
+}
+
+@misc{Datenblatt:LD1117,
+	author={{ST-Microelectronics (Hrsg.)}},
+	title={LD1117},
+	subtitle={Adjustable and Fixed Low Drop Positive Voltage Regulator},
+	howpublished={Datenblatt},
+	year={2013},
+	month={11},
+	Version={33},
+	address={Genf}
+}
+
+@Misc{PracticalGuidetoHighspeedPCBLayout,
+  author  = {John Ardizzoni},
+  month   = {09},
+  note    = {In: Analog Dialogue 39-9},
+  title   = {A Practical Guide to High-Speed Printed-Circuit-Board Layout},
+  year    = {2005},
+  journal = {Analog Dialogue},
+}
+
+@Manual{Xilinx:UG585:v1_10,
+  title        = {UG585 Zynq-7000 All Programmable SoC},
+  author       = {{Xilinx (Hrsg.)}},
+  organization = {Xilinx},
+  address      = {San Jose, CA},
+  month        = {02},
+  year         = {2015},
+  day          = {23},
+  subtitle     = {Technical Reference Manual},
+  version      = {1.10},
+}
+
+@Manual{Xilinx:UG643:v2016_2,
+  title   = {UG643 OS and Libraries Document Collection},
+  author  = {{Xilinx (Hrsg.)}},
+  address = {San Jose, CA},
+  month   = {06},
+  year    = {2016},
+  day     = {8},
+  version = {2016.2},
+}
+
+@misc{Xilinx:UG761:v13_1,
+ author = {{Xilinx (Hrsg.)}},
+ title = {UG761 AXI Reference Guide},
+ year = {2011},
+ month = {03},
+ day = {07},
+ version = {13.1},
+ address = {San Jose, CA}
+}
+
+@Manual{Xilinx:UG835:v2016_2,
+  title   = {UG835 Vivado Design Suite Tcl Command Reference Guide},
+  author  = {{Xilinx (Hrsg.)}},
+  address = {San Jose, CA},
+  month   = {06},
+  year    = {2016},
+  day     = {8},
+  version = {2016.2},
+}
+
+@Manual{Xilinx:UG821:v12_0,
+  title   = {UG821 Zynq-7000 All Programmable SoC Software Developers Guide},
+  author  = {{Xilinx (Hrsg.)}},
+  address = {San Jose, CA},
+  month   = {09},
+  year    = {2015},
+  day     = {30},
+  version = {12.0},
+}
+
+@Manual{Xilinx:UG1118:v2016_2,
+  title    = {UG1118 Vivado Design Suite User Guide},
+  author   = {{Xilinx (Hrsg.)}},
+  address  = {San Jose, CA},
+  month    = {06},
+  year     = {2016},
+  day      = {08},
+  subtitle = {Creating and Packaging Custom IP},
+  version  = {2016.2},
+}
+
+@Manual{Xilinx:PG021:v7_1,
+  title    = {PG021 AXI DMA v7.1},
+  author   = {{Xilinx (Hrsg.)}},
+  address  = {San Jose, CA},
+  month    = {11},
+  year     = {2015},
+  day      = {18},
+  subtitle = {LogiCORE IP Product Guide},
+  version  = {7.1},
+}
+
+@Manual{Xilinx:WP231,
+  title        = {WP257 HDL Coding Practices to Accelerate Design Performance},
+  author       = {Philippe Garrault and Brian Philofsky},
+  address      = {San Jose, CA},
+  month        = {01},
+  year         = {2006},
+  day          = {06},
+  howpublished = {White Paper},
+  organization = {Xilinx (Hrsg.)},
+  version      = {1.1},
+}
+
+@Manual{Xilinx:WP480:v1_0,
+  title        = {WP480 A Methodology for Repeatable and Reliable Timing Closure},
+  author       = {John Bieker},
+  organization = {Xilinx (Hrsg.)},
+  address      = {San Jose, CA},
+  month        = {08},
+  year         = {2016},
+  day          = {11},
+  howpublished = {White Paper},
+  version      = {1.0},
+}
+ 
+@misc{Philips:I2S_BUS_Specification,
+author={{Philips Semiconductors (Hrsg.)}},
+title={I$^2$S bus specification},
+year={1996},
+month={06},
+day={05},
+address={Amsterdam}
+}
+
+@misc{AnalogDevices:MT-085,
+author={{Analog Devices (Hrsg.)}},
+title={Fundamentals of Direct Digital Synthesis (DDS)},
+year={2009},
+note = {Tutorial},
+version = {Rev.0, 10/08, WK},
+address={Norwood, MA}
+}
+
+@misc{AnalogDevices:ADAU1761:rev_C,
+author={{Analog Devices (Hrsg.)}},
+title={ADAU 1761},
+subtitle={SigmaDSP Stereo, Low Power, 96 kHz, 24-Bit Audio Codec with Integrated PLL},
+year={2010},
+howpublished={Datenblatt},
+version = {C},
+address={Norwood, MA}
+}
+
+@Misc{ARM:AMBA_AXI_and_ACE_Protocol_Specification:E,
+  author   = {{ARM (Hrsg.)}},
+  note     = {ARM IHI 0022E},
+  title    = {\markRegistered{AMBA} \markTrademark{AXI} and \markTrademark{ACE} Protocol Specification},
+  year     = {2013},
+  address  = {Cambridge},
+  subtitle = {\markTrademark{AXI3}, \markTrademark{AXI4}, and \markTrademark{AXI4-Lite} ACE and \markTrademark{ACE-Lite}},
+  version  = {Rev.E},
+}
+
+@misc{ARM:AMBA4AXI4StreamProtocol:v1_0,
+author={{ARM (Hrsg.)}},
+title={\markRegistered{AMBA} 4 AXI4-Stream Protocol},
+subtitle={Specification},
+year={2010},
+note={ARM IHI 0051A},
+version = {1.0},
+address={Cambridge}
+}
+
+@misc{ARM:NEONProgrammersGuide:v1_0,
+author={{ARM (Hrsg.)}},
+title={\markTrademark{NEON}},
+subtitle={Programmer's Guide},
+year={2013},
+note={ARM DEN 0018A},
+version = {1.0},
+address={Cambridge}
+}
+
+@Standard{IEEE:754:2008,
+  title    = {IEEE Standard for Floating-Point Arithmetic},
+  author   = {{IEEE (Hrsg.)}},
+  address  = {New York},
+  month    = {08},
+  year     = {2008},
+  day      = {29},
+  subtitle = {IEEE 754-2008},
+}
+
+@book{Book:PerceptionBasedDataprocessingInAcoustics,
+	author = {Bo\.{z}ena Kostek},
+	title = {Perception-Based Data Processing in Acoustics},
+	subtitle = {Applications to Music Information Retrieval and Psychology of Hearing},
+	year = {2005},
+	isbn = {3-540-25729-2},
+	publisher = {Springer Verlag},
+	address = {Berlin Heidelberg}
+}
+
+@book{Book:TheZynqBook:edition1,
+	author = {Luise H. Crockett and Ross A. Elliot and Martin A. Enderwitz and Robert W. Stewart},
+	title = {The Zynq Book},
+	subtitle = {Embedded Processing with the \markRegistered{ARM} \markRegistered{Cortex}-A9 on the \markRegistered{Xilinx} \markRegistered{Zynq}-7000 All Programmable SoC},
+	edition = {1},
+	year = {2014},
+	month = {07},
+	publisher = {Strathclyde Academic Media},
+	note = {In association with Xilinx},
+	address = {Glasgow}
+} 
+
+@book{Book:SignaltheorieMertins,
+  title={Signaltheorie},
+  author={Alfred Mertins},
+  edition={3},
+  year={2013},
+  isbn={978-3-8348-8109-0},
+  publisher={Springer Vieweg},
+  address = {Wiesbaden}
+}
+
+@book{Book:RythmAndTransforms,
+  title={Rythm and Transforms},
+  author={William A. Sethares},
+  year={2007},
+  edition={1},
+  isbn={978-1-84628-639-1},
+  publisher={Springer-Verlag London Limited},
+  address = {London}
+}
+
+@book{Book:TuningTimbreSpectrumScale,
+  title={Tuning, Timbre, Spectrum, Scale},
+  author={William A. Sethares},
+  year={2005},
+  edition={2},
+  isbn={1-85233-797-4},
+  publisher={Springer-Verlag London Limited},
+  address = {London}
+}
+
+@book{Book:TheScientistandEngineersGuidetoDigitalSignalProcessing,
+  title={The Scientist and Engineer's Guide to Digital Signal Processing},
+  author={Steven W. Smith},
+  year={1997},
+  edition={1},
+  isbn={978-0966017632},
+  publisher={California Technical Publishing},
+  address = {San Diego, CA}
+}
+
+@article{AudioCodingForRepresentationInMIDIviaPitchDetectionUsingHarmonicDictionaries,
+author={Nicholas J. Sieger and Ahmed H. Tewfik},
+title={Audio Coding for Representation in MIDI via Pitch Detection Using Harmonic Dictionaries},
+journal={Journal of VLSI Signal Processing},
+volume={20},
+year={1998},
+pages={45--59}
+}
+
+@article{ComparisonofLinearPredictionModelsforAudioSignals,
+author={Toon van Waterschoot and Marc Moonen},
+title={Comparison of Linear Prediction Models for Audio Signals},
+journal={EURASIP Journal on Audio, Speech, and Music Processing},
+volume={2008},
+year={2008},
+note={Article ID 706935}
+}
+
+@article{HighQualityTimeStretchandPitchShiftEffectsforSpeechandAudioUsingtheInstantaneousHarmonicAnalysis,
+author={Elias Azarov and Alexander Petrovsky and Marek Parfieniuk},
+title={High-Quality Time Stretch and Pitch Shift Effects for Speech and Audio Using the Instantaneous Harmonic Analysis},
+journal={EURASIP Journal on Advances in Signal Processing},
+volume={2010},
+note={Article ID 712749},
+year={2010}
+}
+
+@article{Soundcheck:RolandGR55undGK3,
+author={Jan Lüdeke},
+title={Beam me up},
+subtitle={Roland GR55 \& GK-3},
+journal={Gitarre \& Bass},
+note={Test:Gitarre},
+volume={3},
+year={2014},
+}
+
+@techreport{HighThroughputImplementationofaMillionPointSparseFourierTransform,
+author={Abhinav Agarwal and Haitham Hassanieh and Omid Abari and Ezz Hamed and Dina Katabi and Arvind},
+title={High-Throughput Implementation of a Million-Point Sparse Fourier Transform},
+year={2014},
+month={06},
+day={04},
+type={Paper},
+institution={Computer Science \& Artificial Intelligence Laboratory, Massachusetts Institute of Technology},
+address={Cambridge, MA}
+}
+
+@techreport{SpectrumAndSpectralDensityEstimationByTheDFTincludingAListOfWindowFunctions,
+author={G. Heinzel and A. Rüdiger and R. Schilling},
+title={Spectrum and spectral density estimation by the Discrete Fourier transform (DFT), including a comprehensive list of window functions and some new flat-top windows.},
+year={2002},
+month={02},
+day={15},
+type={Paper},
+institution={Max-Planck-Institut für Gravitationsphysik (Albert-Einstein-Institut) Teilinstitut Hannover},
+address={Hannover}
+}
+
+@Standard{IEEE:Std_logic_1164:1993,
+  title        = {IEEE Standard Multivalue Logic System for VHDL Model Interoperability (Std\_\-lo\-gic\_\-1164)},
+  organization = {IEEE},
+  author       = {{IEEE (Hrsg.)}},
+  month        = {05},
+  year         = {1993},
+  doi          = {10.1109/IEEESTD.1993.115571},
+  journal      = {IEEE Std 1164-1993},
+  keywords     = {logic CAD;many-valued logics;specification languages;standards;IEEE standards;Std logic 1164;Std logic 1164 package declaration;VHDL;model interoperability;multivalue logic;semantics;Design automation;Multivalued logic;Specification languages;Standards;Std_logic_1164;VHDL model interoperability;logic system;multivalue;standard logic},
+  pages        = {1-24},
+}
+
+@misc{ZedBoardErrata_RevD2,
+	author={{Avnet Electronics Marketing (Hrsg.)}},
+	title={ZedBoard Rev D.2	Errata},
+	year={2015},
+	month={12},
+	day={22},
+	Version={1.2},
+	address={Phoenix, AZ}
+}
+
+@misc{Motorola:SPIBlockGuide:v03_06,
+	author={{Motorola (Hrsg.)}},
+	title={SPI Block Guide V03.06},
+	year={2003},
+	month={02},
+	day={04},
+	version={03.06},
+	note={Document Number S12SPIV3/D}
+}
+	
+@misc{NXP:UM10204:I2Cspecification:rev6,
+	author={{NXP (Hrsg.)}},
+	title={UM10204},
+	subtitle={I$^\textbf{2}$C-bus specification and user manual},	
+	year={2014},
+	month={04},
+	day={04},
+	version={Rev. 6},
+	address={Eindhoven}
+}
+
+@misc{CirrusLogic:AN301:rev1,
+	author={{Cirrus Logic (Hrsg.)}},
+	title={AN 301},
+	subtitle={Time Division Multiplexed Audio Interface: A Tutorial},	
+	year={2006},
+	month={09},
+	version={Rev. 1},
+	address={Austin, TX}
+}
+
+@misc{CirrusLogic:AN282:rev1,
+	author={{Cirrus Logic (Hrsg.)}},
+	title={AN 282},
+	subtitle={The 2-Channel Serial Audio Interface: A Tutorial},	
+	year={2005},
+	month={06},
+	version={Rev. 1},
+	address={Austin, TX}
+}
+
+@misc{TclKonsole:Help:ipgui:addDynamicText,
+	author={{Xilinx}},
+	title = {help ipgui::add\_dynamic\_text},
+	howpublished = {Hilfefunktion der TCL-Konsole},
+	year = {2016},
+	month = {09},
+	day = {05}
+}
+
+@misc{Stackoverflow:TclCPUcores,
+	author= {Enze Chi and Donal Fellows},
+	title={How to find the number of CPUs in tcl?},
+	year={2015},
+	month={04},
+	url={http://stackoverflow.com/questions/29482303/how-to-find-the-number-of-cpus-in-tcl},
+	howpublished={Website},
+	note={abgerufen am 08.10.2016 um 13:46.}
+}
+
+@Misc{thesis:vorlage,
+  author = {Simon Lohmann},
+  title  = {Thesisvorlage der Fakultät für Elektrotechnik, Informationstechnik und Medientechnik},
+  month  = nov,
+  year   = {2021},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}
