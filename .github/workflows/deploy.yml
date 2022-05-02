@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
-# defaults: 
-#   run: 
-#     working-directory: docs
+defaults: 
+  run: 
+    working-directory: docs
 on:
   push:
     branches:
