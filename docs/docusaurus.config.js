@@ -8,13 +8,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
 	title: "My Site",
 	tagline: "Dinosaurs are cool",
-	url: "https://SufyanDahalan.github.io",
-	baseUrl: "/thesis/",
+	url: "https://vsworkbench.dahalan.de/",
+	baseUrl: "/",
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 	favicon: "img/favicon.ico",
 	organizationName: "SufyanDahalan", // Usually your GitHub org/user name.
-	projectName: "thesis", // Usually your repo name.
+	projectName: "vsworkbench", // Usually your repo name.
 	trailingSlash: true,
     deploymentBranch: "gh-pages",
 	presets: [
