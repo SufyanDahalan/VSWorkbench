@@ -1,8 +1,8 @@
 {
-	"name": "gitlabcode",
-	"displayName": "GitLabCode",
+	"name": "vsworkbench",
+	"displayName": "VSWorkbench",
 	"description": "",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"types": "./types",
 	"publisher": "SufyanDahalan",
 	"engines": {
@@ -441,7 +441,8 @@
 		"pretest": "npm run compile-tests && npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
-		"ins": "vsce package; code --install-extension ./*.vsix"
+		"ins": "vsce package; code --install-extension ./*.vsix",
+		"deploy": "vsce publish --no-yarn"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.2.0",
@@ -465,6 +466,7 @@
 		"terser-webpack-plugin": "^5.3.1",
 		"ts-loader": "^9.2.8",
 		"typescript": "^4.5.5",
+		"vsce": "^2.7.0",
 		"webpack": "^5.70.0",
 		"webpack-cli": "^4.9.2"
 	},
