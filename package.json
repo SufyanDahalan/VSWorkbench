@@ -443,7 +443,7 @@
 		"test": "node ./out/test/runTest.js",
 		"ins": "vsce package; code --install-extension ./*.vsix",
 		"deploy": "vsce publish --no-yarn",
-		"postinstall": "cd docs && npm i && mkdir docs && cd ..",
+		"postinstall": "cd docs && npm i && cd ..",
 		"docs-readme": "echo \"---\nsidebar_position: 1\nid: intro\nslug: /\n---\n$(cat README.md)\" > docs/docs/intro.md",
 		"docs-api": "npx jsdoc2md ./src/**/*.ts --configure ./jsdoc2md.json > ./docs/docs/api.md",
 		"docs": "npm ci && npm run docs-readme && npm run docs-api && cd docs && npm run build",
