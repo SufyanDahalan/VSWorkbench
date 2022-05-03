@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
-defaults: 
-  run: 
-    working-directory: docs
+# defaults: 
+#   run: 
+#     working-directory: docs
 on:
   push:
     branches:
@@ -17,10 +17,8 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
-      - name: Install dependencies
-        run: npm ci
       - name: Build website
-        run: npm run build
+        run: npm run docs
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages

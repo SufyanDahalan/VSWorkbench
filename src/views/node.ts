@@ -10,9 +10,9 @@ export class Node extends vscode.TreeItem {
      * possible values: "group", "user", "project"
      * value depends on kind of gitlab namespace
      * @TODO maybe turn into enum to keep em clear? idk
-     * 
-	 * @see {@link vscode.TreeItem.contextValue}
 	 */
+     // Note: it's possible to ignore broken links with the 'onBrokenLinks' Docusaurus configuration, and let the build pass.
+	 // maybe add a rule to link it to vscode api docs@see {@link vscode.TreeItem.contextValue}
     contextValue: string;
 
 	constructor(

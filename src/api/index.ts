@@ -130,7 +130,7 @@ export class Api {
 	 * cannot be used on GitLab SaaS!
 	 * @param name name of the group to be created
 	 * @param path path of the group to be created
-	 * @returns
+	 * @returns nothing
 	 */
 	createGroup(name: string, path: string = name) {
 		if (Api.baseURL == "https://gitlab.com/api/v4/") {

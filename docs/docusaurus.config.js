@@ -3,6 +3,8 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const remarkMermaid = require("remark-mermaid");
+const lunrSearch = require.resolve("docusaurus-lunr-search");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -23,14 +25,12 @@ const config = {
 			/** @type {import('@docusaurus/preset-classic').Options} */
 			({
 				docs: {
-					sidebarPath: require.resolve("./sidebars.js"),
-					// Please change this to your repo.
-					editUrl: "https://github.com/SufyanDahalan/vsworkbench/tree/main/packages/create-docusaurus/templates/shared/",
+                    routeBasePath: '/', // Serve the docs at the site's root
+                    sidebarPath: require.resolve("./sidebars.js"),
+                    remarkPlugins: [[remarkMermaid, { simple: true }]]
 				},
 				blog: {
 					showReadingTime: true,
-					// Please change this to your repo.
-					editUrl: "https://github.com/SufyanDahalan/vsworkbench/tree/main/packages/create-docusaurus/templates/shared/",
 				},
 				theme: {
 					customCss: require.resolve("./src/css/custom.css"),
@@ -70,8 +70,8 @@ const config = {
 						title: "Docs",
 						items: [
 							{
-								label: "Tutorial",
-								to: "/docs/intro",
+								label: "Documentation",
+								to: "/",
 							},
 						],
 					},
@@ -106,13 +106,14 @@ const config = {
 						],
 					},
 				],
-				copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+				copyright: `Copyright © ${new Date().getFullYear()} Sufyan Dahalan.`,
 			},
 			prism: {
 				theme: lightCodeTheme,
 				darkTheme: darkCodeTheme,
 			},
 		}),
+        plugins: [lunrSearch]
 };
 
 module.exports = config;

@@ -264,10 +264,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
  */
 export class GroupView {
 	public groupTreeViewer: vscode.TreeView<GroupNode>;
-	/**
-	 *
-	 * @param context {@link vscode.ExtensionContext}
-	 */
+
 	constructor(context: vscode.ExtensionContext) {
 		const groupModel = new GroupModel();
 		const treeDataProvider = new GroupTreeDataProvider(groupModel);
