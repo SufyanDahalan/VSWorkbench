@@ -17,8 +17,6 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
-      - name: ls
-        run:  ls node_modules | grep jsdoc
       - name: Install jsdoc2md
         run: npm install -g jsdoc-to-markdown
       - name: Build website
