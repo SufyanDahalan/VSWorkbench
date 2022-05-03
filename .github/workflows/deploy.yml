@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
+      - name: Install jsdoc2md
+        run: npm install -g jsdoc-to-markdown
       - name: Build website
         run: npm run docs
       # Popular action to deploy to GitHub Pages:
