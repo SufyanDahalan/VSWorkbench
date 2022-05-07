@@ -2,7 +2,7 @@
 	"name": "vsworkbench",
 	"displayName": "VSWorkbench",
 	"description": "",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"types": "./types",
 	"publisher": "SufyanDahalan",
 	"engines": {
@@ -36,7 +36,7 @@
         "gitlab-ci"
 	],
 	"activationEvents": [
-		"*"
+		"onStartupFinished"
 	],
 	"contributes": {
 		"viewsWelcome": [
@@ -453,7 +453,6 @@
 		"pretest": "npm run compile-tests && npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js",
-		"ins": "vsce package; code --install-extension ./*.vsix",
 		"deploy": "vsce publish --no-yarn",
 		"postinstall": "cd docs && npm i && cd ..",
 		"docs-readme": "echo \"---\nsidebar_position: 1\nid: intro\nslug: /\n---\n$(cat README.md)\" > docs/docs/intro.md",
