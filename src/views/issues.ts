@@ -93,7 +93,7 @@ export class IssueView {
 		const treeDataProvider = new IssueTreeDataProvider(groupModel);
 		this.issueTreeViewer = vscode.window.createTreeView("issueView", { treeDataProvider });
 		context.subscriptions.push(this.issueTreeViewer);
-		vscode.commands.registerCommand("GitLabCode.refreshIssueView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
+		vscode.commands.registerCommand("VSWorkbench.refreshIssueView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}
 }
 /**

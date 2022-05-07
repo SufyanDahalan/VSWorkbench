@@ -8,12 +8,32 @@
 	"engines": {
 		"vscode": "^1.66.0"
 	},
+	"author": {
+		"name": "Sufyan Dahalan",
+		"email": "sufyan.dahalan@gmail.com"
+	},
+	"homepage": "vsworkbench.dahalan.de",
+	"bugs": {
+		"url": "https://github.com/SufyanDahalan/vsworkbench/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SufyanDahalan/vsworkbench.git"
+	},
 	"main": "./dist/extension.js",
 	"extensionKind": [
 		"ui"
 	],
 	"categories": [
-		"Other"
+		"Other",
+		"SCM Providers"
+	],
+    "keywords": [
+		"vsworkbench",
+        "gitlab",
+        "cicd",
+        "gitlab-pipelines",
+        "gitlab-ci"
 	],
 	"activationEvents": [
 		"*"
@@ -22,168 +42,168 @@
 		"viewsWelcome": [
 			{
 				"view": "authentication",
-				"contents": "No personal access token detected!\nPlease create a personal access token [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Authenticate](command:GitLabCode.addPersonalAccessToken)"
+				"contents": "No personal access token detected!\nPlease create a personal access token [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Authenticate](command:VSWorkbench.addPersonalAccessToken)"
 			},
 			{
 				"view": "settings",
-				"contents": "Update Authentication Information [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Update Perosnal Authentication Token](command:GitLabCode.updatePersonalAccessToken)"
+				"contents": "Update Authentication Information [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Update Perosnal Authentication Token](command:VSWorkbench.updatePersonalAccessToken)"
 			}
 		],
 		"commands": [
 			{
-				"command": "GitLabCode.helloWorld",
+				"command": "VSWorkbench.helloWorld",
 				"title": "Hello World",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.addPersonalAccessToken",
+				"command": "VSWorkbench.addPersonalAccessToken",
 				"title": "Authenticate",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.updatePersonalAccessToken",
+				"command": "VSWorkbench.updatePersonalAccessToken",
 				"title": "Update Personal Token",
-				"category": "GitLabCode Personal"
+				"category": "VSWorkbench Personal"
 			},
 			{
-				"command": "GitLabCode.createPersonalProject",
+				"command": "VSWorkbench.createPersonalProject",
 				"title": "Create Personal Project",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.getUserGroups",
+				"command": "VSWorkbench.getUserGroups",
 				"title": "Get User Groups Information",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.createGroupProject",
+				"command": "VSWorkbench.createGroupProject",
 				"title": "New Group Project",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.createGroup",
+				"command": "VSWorkbench.createGroup",
 				"title": "Create Group",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(ports-forward-icon)"
 			},
 			{
-				"command": "GitLabCode.createSubGroup",
+				"command": "VSWorkbench.createSubGroup",
 				"title": "Create Subgroup",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(ports-forward-icon)"
 			},
 			{
-				"command": "GitLabCode.createIssue",
+				"command": "VSWorkbench.createIssue",
 				"title": "Create Issue",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(ports-forward-icon)"
 			},
 			{
-				"command": "GitLabCode.createMergeRequest",
+				"command": "VSWorkbench.createMergeRequest",
 				"title": "Create Merge Request",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.viewIssue",
+				"command": "VSWorkbench.viewIssue",
 				"title": "View Issue",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.refreshGroupView",
+				"command": "VSWorkbench.refreshGroupView",
 				"title": "Refresh Groups View",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(extensions-refresh)"
 			},
 			{
-				"command": "GitLabCode.refreshIssueView",
+				"command": "VSWorkbench.refreshIssueView",
 				"title": "Refresh Issues View",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(extensions-refresh)"
 			},
 			{
-				"command": "GitLabCode.refreshPipelineView",
+				"command": "VSWorkbench.refreshPipelineView",
 				"title": "Refresh Pipelines View",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(extensions-refresh)"
 			},
 			{
-				"command": "GitLabCode.deleteNamespaceNode",
+				"command": "VSWorkbench.deleteNamespaceNode",
 				"title": "Delete Group Or Project",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(notebook-delete-cell)"
 			},
 			{
-				"command": "GitLabCode.createPersonalSnippet",
+				"command": "VSWorkbench.createPersonalSnippet",
 				"title": "Create Personal Snippet",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.createProjectSnippet",
+				"command": "VSWorkbench.createProjectSnippet",
 				"title": "Create Project Snippet",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.viewIssueList",
+				"command": "VSWorkbench.viewIssueList",
 				"title": "View Issue List",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.viewIssueBoard",
+				"command": "VSWorkbench.viewIssueBoard",
 				"title": "View Issue Board",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.openIssueBoardInGitLab",
+				"command": "VSWorkbench.openIssueBoardInGitLab",
 				"title": "Open List In GitLab",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(globe)"
 			},
 			{
-				"command": "GitLabCode.openListInGitLab",
+				"command": "VSWorkbench.openListInGitLab",
 				"title": "Open Board In GitLab",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(globe)"
 			},
 			{
-				"command": "GitLabCode.openSettingsInGitLab",
+				"command": "VSWorkbench.openSettingsInGitLab",
 				"title": "Open Settings In GitLab",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(gear)"
 			},
 			{
-				"command": "GitLabCode.addMemberToProject",
+				"command": "VSWorkbench.addMemberToProject",
 				"title": "Add Member To Project",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.addMemberToGroup",
+				"command": "VSWorkbench.addMemberToGroup",
 				"title": "Add Member To Group",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.openPipelinesInGitLab",
+				"command": "VSWorkbench.openPipelinesInGitLab",
 				"title": "Open Pipelines In GitLab",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.viewPipelines",
+				"command": "VSWorkbench.viewPipelines",
 				"title": "View Pipelines",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.viewPipeline",
+				"command": "VSWorkbench.viewPipeline",
 				"title": "View Pipeline",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.viewJob",
+				"command": "VSWorkbench.viewJob",
 				"title": "View Job",
-				"category": "GitLabCode"
+				"category": "VSWorkbench"
 			},
 			{
-				"command": "GitLabCode.openInGitLab",
+				"command": "VSWorkbench.openInGitLab",
 				"title": "Open In GitLab",
-				"category": "GitLabCode",
+				"category": "VSWorkbench",
 				"icon": "$(globe)"
 			}
 		],
@@ -191,14 +211,14 @@
 			"activitybar": [
 				{
 					"id": "gitLabCode-activityBar",
-					"title": "GitLabCode",
+					"title": "VSWorkbench",
 					"icon": "$(symbol-type-parameter)"
 				}
 			],
 			"panel": [
 				{
 					"id": "gitlabcode-panel",
-					"title": "GitLabCode",
+					"title": "VSWorkbench",
 					"icon": "$(symbol-type-parameter)"
 				}
 			]
@@ -210,194 +230,186 @@
 					"name": "authentication",
 					"contextualTitle": "authentication",
 					"visibility": "visible",
-					"when": "!GitLabCode.authenticated"
+					"when": "!VSWorkbench.authenticated"
 				},
 				{
 					"id": "groupView",
 					"name": "Groups",
 					"icon": "$(accounts-view-bar-icon)",
-					"contextualTitle": "GitLabCode",
+					"contextualTitle": "VSWorkbench",
 					"visibility": "visible",
-					"when": "GitLabCode.authenticated"
+					"when": "VSWorkbench.authenticated"
 				},
 				{
 					"id": "issueView",
 					"name": "Issues",
-					"contextualTitle": "GitLabCode",
+					"contextualTitle": "VSWorkbench",
 					"visibility": "collapsed",
-					"when": "GitLabCode.authenticated"
+					"when": "VSWorkbench.authenticated"
 				},
 				{
 					"id": "pipelineView",
 					"name": "Pipelines",
-					"contextualTitle": "GitLabCode",
+					"contextualTitle": "VSWorkbench",
 					"visibility": "collapsed",
-					"when": "GitLabCode.authenticated"
+					"when": "VSWorkbench.authenticated"
 				},
 				{
 					"id": "settings",
 					"name": "Settings",
-					"contextualTitle": "GitLabCode",
+					"contextualTitle": "VSWorkbench",
 					"visibility": "collapsed",
-					"when": "GitLabCode.authenticated",
-					"contents": "Update Personal Authentication Token [learn more](https://www.npmjs.com/).\n[Add Dependency](command:GitLabCode.updatePersonalAccessToken)"
-				},
-				{
-					"id": "stars",
-					"name": "Starred Projects",
-					"contextualTitle": "GitLabCode",
-					"visibility": "collapsed",
-					"when": "GitLabCode.authenticated",
-					"contents": "@feature section for starred projects along with a couple of actions [api](https://docs.gitlab.com/ee/api/projects.html#list-user-projects), [second api](https://docs.gitlab.com/ee/api/projects.html#list-projects-starred-by-a-user)"
+					"when": "VSWorkbench.authenticated",
+					"contents": "Update Personal Authentication Token [learn more](https://www.npmjs.com/).\n[Add Dependency](command:VSWorkbench.updatePersonalAccessToken)"
 				}
 			],
 			"gitlabcode-panel": [
 				{
-					"id": "GitLabCode.gitlabPipelines",
+					"id": "VSWorkbench.gitlabPipelines",
 					"type": "webview",
 					"name": "Pipelines",
-					"contextualTitle": "GitLabCode",
+					"contextualTitle": "VSWorkbench",
 					"visibility": "visible",
-					"when": "GitLabCode.authenticated"
+					"when": "VSWorkbench.authenticated"
 				},
 				{
-					"id": "GitLabCode.gitlabIssues",
+					"id": "VSWorkbench.gitlabIssues",
 					"name": "Issues",
 					"type": "webview",
-					"contextualTitle": "GitLabCode",
+					"contextualTitle": "VSWorkbench",
 					"visibility": "visible",
-					"when": "GitLabCode.authenticated"
+					"when": "VSWorkbench.authenticated"
 				}
 			]
 		},
 		"menus": {
-			"GitLabCode.GroupView": [],
-			"GitLabCode.PipelineView": [
+			"VSWorkbench.GroupView": [],
+			"VSWorkbench.PipelineView": [
 				{
-					"command": "GitLabCode.viewPipeline",
+					"command": "VSWorkbench.viewPipeline",
 					"group": "inline",
 					"when": "view == pipelineView && viewItem == job"
 				},
 				{
-					"command": "GitLabCode.viewJob",
+					"command": "VSWorkbench.viewJob",
 					"group": "inline",
 					"when": "view == pipelineView && viewItem == job"
 				}
 			],
-			"GitLabCode.GroupNode": [
+			"VSWorkbench.GroupNode": [
 				{
-					"command": "GitLabCode.createGroupProject",
+					"command": "VSWorkbench.createGroupProject",
 					"when": "view == groupView && viewItem == group",
 					"group": "navigation"
 				},
 				{
-					"command": "GitLabCode.createPersonalProject",
+					"command": "VSWorkbench.createPersonalProject",
 					"when": "view == groupView && viewItem == user",
 					"group": "inline"
 				},
 				{
-					"command": "GitLabCode.createPersonalSnippet",
+					"command": "VSWorkbench.createPersonalSnippet",
 					"when": "view == groupView && viewItem == user"
 				},
 				{
-					"command": "GitLabCode.createProjectSnippet",
+					"command": "VSWorkbench.createProjectSnippet",
 					"when": "view == groupView && viewItem == project"
 				},
 				{
-					"command": "GitLabCode.deleteNamespaceNode",
+					"command": "VSWorkbench.deleteNamespaceNode",
 					"when": "viewItem == project || viewItem == group"
 				},
 				{
-					"command": "GitLabCode.addMemberToProject",
+					"command": "VSWorkbench.addMemberToProject",
 					"when": "view == groupView && viewItem == project",
 					"comment": "TODO: add icon?"
 				},
 				{
-					"command": "GitLabCode.addMemberToGroup",
+					"command": "VSWorkbench.addMemberToGroup",
 					"when": "view == groupView && viewItem == group",
 					"comment": "TODO: add icon?"
 				}
 			],
-			"GitLabCode.IssueNode": [
+			"VSWorkbench.IssueNode": [
 				{
-					"command": "GitLabCode.viewIssue",
+					"command": "VSWorkbench.viewIssue",
 					"icon": "$(eye)"
 				}
 			],
 			"view/title": [
 				{
-					"command": "GitLabCode.refreshGroupView",
+					"command": "VSWorkbench.refreshGroupView",
 					"when": "view == groupView",
 					"group": "navigation"
 				},
 				{
-					"command": "GitLabCode.refreshIssueView",
+					"command": "VSWorkbench.refreshIssueView",
 					"when": "view == issueView",
 					"group": "navigation"
 				},
 				{
-					"command": "GitLabCode.refreshPipelineView",
+					"command": "VSWorkbench.refreshPipelineView",
 					"when": "view == pipelineView",
 					"group": "navigation"
 				},
 				{
-					"command": "GitLabCode.createGroup",
+					"command": "VSWorkbench.createGroup",
 					"when": "view == groupView",
 					"group": "navigation"
 				},
 				{
-					"submenu": "GitLabCode.GroupView",
+					"submenu": "VSWorkbench.GroupView",
 					"when": "view == groupView"
 				},
 				{
-					"command": "GitLabCode.viewIssueList",
+					"command": "VSWorkbench.viewIssueList",
 					"when": "view == issueView"
 				},
 				{
-					"command": "GitLabCode.openPipelinesInGitLab",
+					"command": "VSWorkbench.openPipelinesInGitLab",
 					"when": "view == pipelineView"
 				},
 				{
-					"command": "GitLabCode.viewPipelines",
+					"command": "VSWorkbench.viewPipelines",
 					"when": "view == pipelineView"
 				},
 				{
-					"command": "GitLabCode.viewIssueBoard",
+					"command": "VSWorkbench.viewIssueBoard",
 					"when": "view == issueView"
 				}
 			],
 			"view/item/context": [
 				{
-					"submenu": "GitLabCode.GroupNode",
+					"submenu": "VSWorkbench.GroupNode",
 					"group": "inline@10",
 					"when": "view == groupView"
 				},
 				{
-					"submenu": "GitLabCode.IssueNode",
+					"submenu": "VSWorkbench.IssueNode",
 					"group": "inline@10",
 					"when": "view == issueView"
 				},
 				{
-					"submenu": "GitLabCode.PipelineView",
+					"submenu": "VSWorkbench.PipelineView",
 					"group": "inline@10",
 					"when": "view == pipelineView"
 				},
 				{
-					"command": "GitLabCode.createSubGroup",
+					"command": "VSWorkbench.createSubGroup",
 					"group": "inline@1",
 					"when": "view == groupView && viewItem == group"
 				},
 				{
-					"command": "GitLabCode.openPipelinesInGitLab",
+					"command": "VSWorkbench.openPipelinesInGitLab",
 					"group": "Open Pipelines In GitLab",
 					"when": "view == pipelineView"
 				},
 				{
-					"command": "GitLabCode.openInGitLab",
+					"command": "VSWorkbench.openInGitLab",
 					"group": "inline@1"
 				},
 				{
-					"command": "GitLabCode.openSettingsInGitLab",
+					"command": "VSWorkbench.openSettingsInGitLab",
 					"group": "inline@2",
 					"when": "view == groupView"
 				}
@@ -405,27 +417,27 @@
 		},
 		"submenus": [
 			{
-				"id": "GitLabCode.GroupView",
+				"id": "VSWorkbench.GroupView",
 				"label": "More Actions",
 				"icon": "$(more)"
 			},
 			{
-				"id": "GitLabCode.IssueView",
+				"id": "VSWorkbench.IssueView",
 				"label": "More Actions",
 				"icon": "$(more)"
 			},
 			{
-				"id": "GitLabCode.GroupNode",
+				"id": "VSWorkbench.GroupNode",
 				"label": "More Actions",
 				"icon": "$(more)"
 			},
 			{
-				"id": "GitLabCode.PipelineView",
+				"id": "VSWorkbench.PipelineView",
 				"label": "More Actions",
 				"icon": "$(more)"
 			},
 			{
-				"id": "GitLabCode.IssueNode",
+				"id": "VSWorkbench.IssueNode",
 				"label": "More Actions",
 				"icon": "$(more)"
 			}

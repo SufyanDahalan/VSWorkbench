@@ -293,6 +293,6 @@ export class GroupView {
 			} //FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
 			// context.workspaceState.update(GROUP_VIEW_FOCUS, selection["selection"][0].node_id);
 		});
-		vscode.commands.registerCommand("GitLabCode.refreshGroupView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
+		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}
 }

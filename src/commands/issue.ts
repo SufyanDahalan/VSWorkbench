@@ -11,7 +11,7 @@ export function getProjectIssue() {
 }
 export function createProjectIssue() {
 	// https://docs.gitlab.com/ee/api/issues.html#new-issue
-	vscode.window.showInformationMessage("Hello World from GitLabCode!");
+	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 }
 export function openIssueInGitLab(){
     

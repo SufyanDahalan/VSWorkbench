@@ -21,14 +21,14 @@ export function activate(context: vscode.ExtensionContext) {
 	initStorage(context);
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
 
-	let helloWorldCommand = vscode.commands.registerCommand("GitLabCode.helloWorld", () => {
-		vscode.window.showInformationMessage("Hello World from GitLabCode!", "good"); // Display a message box to the user
+	let helloWorldCommand = vscode.commands.registerCommand("VSWorkbench.helloWorld", () => {
+		vscode.window.showInformationMessage("Hello World from VSWorkbench!", "good"); // Display a message box to the user
 	});
-	let addPersonalAccessTokenCommand = vscode.commands.registerCommand("GitLabCode.addPersonalAccessToken", () => {
+	let addPersonalAccessTokenCommand = vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", () => {
 		// MVP
 		GlobalFunctions.settings(context.globalState);
 	}); // MVP
-	let updatePersonalAccessTokenCommand = vscode.commands.registerCommand("GitLabCode.updatePersonalAccessToken", () => {
+	let updatePersonalAccessTokenCommand = vscode.commands.registerCommand("VSWorkbench.updatePersonalAccessToken", () => {
 		GlobalFunctions.settings(context.globalState);
 	});
 
@@ -51,46 +51,46 @@ export function activate(context: vscode.ExtensionContext) {
 		addPersonalAccessTokenCommand,
 		updatePersonalAccessTokenCommand,
 		helloWorldCommand,
-	// vscode.commands.registerCommand('GitLabCode.GroupView.refreshEntry', () => groupView.treeDataProvider.refresh()),
-		vscode.commands.registerCommand("GitLabCode.createIssue", createIssueCommand),
-		vscode.commands.registerCommand("GitLabCode.createPersonalProject", Commands.createPersonalProjectCommand),
-		vscode.commands.registerCommand("GitLabCode.createGroupProject", (node: GroupNode) => {
+	// vscode.commands.registerCommand('VSWorkbench.GroupView.refreshEntry', () => groupView.treeDataProvider.refresh()),
+		vscode.commands.registerCommand("VSWorkbench.createIssue", createIssueCommand),
+		vscode.commands.registerCommand("VSWorkbench.createPersonalProject", Commands.createPersonalProjectCommand),
+		vscode.commands.registerCommand("VSWorkbench.createGroupProject", (node: GroupNode) => {
 			node.createGroupProject();
 		}),
-		vscode.commands.registerCommand("GitLabCode.createGroup", Commands.createGroupCommand),
-        vscode.commands.registerCommand("GitLabCode.createSubGroup", (node:GroupNode)=>{
+		vscode.commands.registerCommand("VSWorkbench.createGroup", Commands.createGroupCommand),
+        vscode.commands.registerCommand("VSWorkbench.createSubGroup", (node:GroupNode)=>{
             node.createSubGroup()
         }),
-		vscode.commands.registerCommand("GitLabCode.createMergeRequest", Commands.createMergeRequestCommand),
-		// vscode.commands.registerCommand("GitLabCode.viewPipelines", Commands.viewPipelinesCommand),
-		vscode.commands.registerCommand("GitLabCode.viewIssue", Commands.viewIssue), // TODO: deGitLabCode.createGroupProjectlete
-		vscode.commands.registerCommand("GitLabCode.getUserGroups", Commands.getUserGroupsCommand),
-		vscode.commands.registerCommand("GitLabCode.deleteNamespaceNode", (node: GroupNode) => {
+		vscode.commands.registerCommand("VSWorkbench.createMergeRequest", Commands.createMergeRequestCommand),
+		// vscode.commands.registerCommand("VSWorkbench.viewPipelines", Commands.viewPipelinesCommand),
+		vscode.commands.registerCommand("VSWorkbench.viewIssue", Commands.viewIssue), // TODO: deVSWorkbench.createGroupProjectlete
+		vscode.commands.registerCommand("VSWorkbench.getUserGroups", Commands.getUserGroupsCommand),
+		vscode.commands.registerCommand("VSWorkbench.deleteNamespaceNode", (node: GroupNode) => {
         node.delete();
 		}),
-        vscode.commands.registerCommand("GitLabCode.createPersonalSnippet", Commands.createPersonalSnippet),
-        vscode.commands.registerCommand("GitLabCode.createProjectSnippet", Commands.createProjectSnippet),
+        vscode.commands.registerCommand("VSWorkbench.createPersonalSnippet", Commands.createPersonalSnippet),
+        vscode.commands.registerCommand("VSWorkbench.createProjectSnippet", Commands.createProjectSnippet),
 
         
-        vscode.commands.registerCommand("GitLabCode.viewIssueList", Commands.viewIssueList),
-        vscode.commands.registerCommand("GitLabCode.viewIssueBoard", Commands.viewIssueBoard),
+        vscode.commands.registerCommand("VSWorkbench.viewIssueList", Commands.viewIssueList),
+        vscode.commands.registerCommand("VSWorkbench.viewIssueBoard", Commands.viewIssueBoard),
 
-        vscode.commands.registerCommand("GitLabCode.openInGitLab", (node: Node)=>{
+        vscode.commands.registerCommand("VSWorkbench.openInGitLab", (node: Node)=>{
             node.openInGitlab();
         }),
 
-        vscode.commands.registerCommand("GitLabCode.openIssueBoardInGitLab", Commands.openIssueBoardInGitLab),
-        vscode.commands.registerCommand("GitLabCode.openIssueListInGitLab", Commands.openIssueListInGitLab),
-        vscode.commands.registerCommand("GitLabCode.openSettingsInGitLab", (node: GroupNode)=>{
+        vscode.commands.registerCommand("VSWorkbench.openIssueBoardInGitLab", Commands.openIssueBoardInGitLab),
+        vscode.commands.registerCommand("VSWorkbench.openIssueListInGitLab", Commands.openIssueListInGitLab),
+        vscode.commands.registerCommand("VSWorkbench.openSettingsInGitLab", (node: GroupNode)=>{
             node.openSettingsInGitlab()
         }),
         
-        vscode.commands.registerCommand("GitLabCode.addMemberToProject", Commands.addMemberToProject),
-        vscode.commands.registerCommand("GitLabCode.addMemberToGroup", Commands.addMemberToGroup),
-        vscode.commands.registerCommand("GitLabCode.openPipelinesInGitLab", Commands.openPipelinesInGitLab),
-        vscode.commands.registerCommand("GitLabCode.viewPipelines", Commands.viewPipelines),
-        vscode.commands.registerCommand("GitLabCode.viewPipeline", Commands.viewPipeline),
-        vscode.commands.registerCommand("GitLabCode.viewJob", Commands.viewJob)
+        vscode.commands.registerCommand("VSWorkbench.addMemberToProject", Commands.addMemberToProject),
+        vscode.commands.registerCommand("VSWorkbench.addMemberToGroup", Commands.addMemberToGroup),
+        vscode.commands.registerCommand("VSWorkbench.openPipelinesInGitLab", Commands.openPipelinesInGitLab),
+        vscode.commands.registerCommand("VSWorkbench.viewPipelines", Commands.viewPipelines),
+        vscode.commands.registerCommand("VSWorkbench.viewPipeline", Commands.viewPipeline),
+        vscode.commands.registerCommand("VSWorkbench.viewJob", Commands.viewJob)
         
         
         

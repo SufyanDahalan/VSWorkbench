@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 export class PipelineViewProvidor implements vscode.WebviewViewProvider {
-	public viewType = "GitLabCode.gitlabPipelines";
+	public viewType = "VSWorkbench.gitlabPipelines";
 	token: string;
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;

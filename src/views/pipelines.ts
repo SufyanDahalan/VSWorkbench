@@ -125,6 +125,6 @@ export class PipelineView {
 		const treeDataProvider = new PipelineTreeDataProvider(pipelineModel);
 		this.groupTreeViewer = vscode.window.createTreeView("pipelineView", { treeDataProvider });
 		context.subscriptions.push(this.groupTreeViewer);
-		vscode.commands.registerCommand("GitLabCode.refreshPipelineView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
+		vscode.commands.registerCommand("VSWorkbench.refreshPipelineView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}
 }

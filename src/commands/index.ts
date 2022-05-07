@@ -39,7 +39,7 @@ export function createGroupProjectCommand(groupID: number) {
 
 
 export async function getUserGroupsCommand() {
-	vscode.window.showInformationMessage("Hello World from GitLabCode!");
+	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 } // MVP
 
 /**
@@ -85,16 +85,16 @@ export function deleteProject(projectID: number) {
  * @memberof commands
  */
 export function createIssueCommand () {
-	vscode.window.showInformationMessage("Hello World from GitLabCode!");
+	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 } // MVP
 export function createMergeRequestCommand() {
-	vscode.window.showInformationMessage("Hello World from GitLabCode!");
+	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 } // MVP
 // export function viewPipelinesCommand() {
-// 	vscode.window.showInformationMessage("Hello World from GitLabCode!");
+// 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 // } // MVP
 export function viewIssue() {
-	vscode.window.showInformationMessage("Hello World from GitLabCode!");
+	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 } // MVP
 
 
@@ -112,7 +112,7 @@ export function createProjectSnippet() {
 	// user region
 }
 export function createPersonalSnippet() {
-	vscode.window.showInformationMessage("Hello World from GitLabCode!");
+	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 }
 
 export function modifySnippetComment() {

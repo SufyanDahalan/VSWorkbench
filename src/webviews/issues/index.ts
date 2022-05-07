@@ -2,7 +2,7 @@ import { AUTH_TOKEN_KEY } from "globals";
 import * as vscode from "vscode";
 
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
-	public viewType = "GitLabCode.gitlabIssues";
+	public viewType = "VSWorkbench.gitlabIssues";
 	token: string;
 	issues = [1, 2];
 	private _view?: vscode.WebviewView;

@@ -40,10 +40,10 @@ export function checkGitlabInstanceAndAuthToken(globalState:vscode.ExtensionCont
 	// TODO: actually test to authenticate with the token against the gitlab instance specified
 	// AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY
 	if (!!globalState.get(AUTH_TOKEN_KEY)) {
-		vscode.commands.executeCommand("setContext", "GitLabCode.authenticated", true);
+		vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", true);
 		return true;
 	} else {
-		vscode.commands.executeCommand("setContext", "GitLabCode.authenticated", false);
+		vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", false);
 		return false;
 	}
 }
