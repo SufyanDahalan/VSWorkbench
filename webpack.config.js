@@ -42,6 +42,10 @@ const extensionConfig = {
 	infrastructureLogging: {
 		level: "log", // enables logging required for problem matchers
 	},
+    optimization: {
+		minimize: true,
+		minimizer: [new TerserPlugin()],
+	},
 };
 const viewConfig = {
 	entry: "./src/webviews/issues/app/App.tsx",
@@ -77,10 +81,10 @@ const viewConfig = {
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".css"],
 	},
-	// optimization: {
-	// 	minimize: true,
-	// 	minimizer: [new TerserPlugin()],
-	// },
+	optimization: {
+		minimize: true,
+		minimizer: [new TerserPlugin()],
+	},
 };
 const pipelineConfig = {
 	entry: "./src/webviews/pipelines/app/App.tsx",
@@ -108,6 +112,10 @@ const pipelineConfig = {
 	},
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".css"],
+	},
+    optimization: {
+		minimize: true,
+		minimizer: [new TerserPlugin()],
 	},
 };
 

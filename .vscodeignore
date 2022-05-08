@@ -16,3 +16,4 @@ package-lock.json
 tsconfig.json
 webpack.config.js
 *.vsix
+jsdoc2md.json
