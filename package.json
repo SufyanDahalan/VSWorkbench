@@ -12,13 +12,13 @@
 		"name": "Sufyan Dahalan",
 		"email": "sufyan.dahalan@gmail.com"
 	},
-	"homepage": "vsworkbench.dahalan.de",
+	"homepage": "https://vsworkbench.dahalan.de",
 	"bugs": {
-		"url": "https://github.com/SufyanDahalan/vsworkbench/issues"
+		"url": "https://github.com/SufyanDahalan/VSWorkbench/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/SufyanDahalan/vsworkbench.git"
+		"url": "https://github.com/SufyanDahalan/VSWorkbench.git"
 	},
 	"main": "./dist/extension.js",
 	"extensionKind": [
