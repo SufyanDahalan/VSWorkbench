@@ -6,7 +6,7 @@ on:
       - 'v*'
 jobs:
   publish:
-    name: Test deployment
+    name: VSCode Marketplace Publishing
     runs-on: ubuntu-latest
     
     steps:
@@ -19,12 +19,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate Changelog
-        id: changelog
-        uses: mindsers/changelog-reader-action@v2
-        with:
-            version: 0.0.5
-            path: ./CHANGELOG.md
       - name: publish
         run: npm run deploy
 
