@@ -27,13 +27,11 @@ class IssueView extends Component<any, {}> {
 					name: comment.author.name,
 					id: comment.author.id,
 				};
-				// console.log(comment.body);
 			}
 			this.setState({ comments });
 		});
 	}
 	onSubmit = () => {
-		// alert("Submitted a todo");
 		api.createNewProjectIssueComment(this.state.issue.project_id, this.state.issue.iid, this.state.newComment);
 	};
 	render() {
@@ -53,7 +51,6 @@ class IssueView extends Component<any, {}> {
 						type="text"
 						onInput={(e: any) => {
 							this.setState({ newComment: e.target.value });
-							// console.log(e.target.value);
 						}}
 					/>
 					<button type="submit">post comment</button>

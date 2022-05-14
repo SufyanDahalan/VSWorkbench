@@ -78,10 +78,6 @@ export class Api {
         return Api.instance.api.get(`projects/${projectID}/issues/${issueID}/notes`)
     }
     createNewProjectIssueComment(projectID: number, issueIID: number, body: string){
-        console.log('Api.instance.api')
-        console.log(Api.instance.api.defaults.headers.get)
-        console.log(Api.instance.api.defaults.headers.post)
-        console.log(Api.instance.api.defaults.baseURL)
         Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/notes?body=${body}`)
     }
     editProjectIssueComment(projectID: number, issueID: number, note_id: number){
@@ -156,7 +152,6 @@ export class Api {
 	 * @returns no return
 	 */
 	getProjects(group: boolean, namespace_id: number): Promise<AxiosResponse> {
-		console.log(`group: ${group} namespace_id: ${namespace_id}`);
 		if (group) {
 			return Api.instance.api.get(`groups/${namespace_id}/projects`);
 		} else {

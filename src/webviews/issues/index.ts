@@ -7,9 +7,15 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	issues = [1, 2];
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
+	// private readonly _panel: vscode.WebviewPanel;
+
+
+
 	constructor(context: vscode.ExtensionContext, Token: string) {
 		// this._view = vscode.window.createWebviewPanel(this.viewType, 'gitlabIssues', vscode.ViewColumn.One, {})
-		vscode.window.registerWebviewViewProvider(this.viewType, this);
+		vscode.window.registerWebviewViewProvider(this.viewType, this, 
+            {webviewOptions: {retainContextWhenHidden: true}}
+            );
 		this._extensionUri = context.extensionUri;
 		// vscode.window.registerWebviewPanelSerializer(this.viewType, this)
 		// context.subscriptions.push(this);
@@ -24,19 +30,17 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		this._view = webviewView;
 		webviewView.webview.options = {
 			enableScripts: true,
-			// retainContextWhenHidden: true,
 			enableCommandUris: true,
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
 		this._view.webview.postMessage({ type: "Token", Token: this.token });
-        // webviewView.webview.cspSource='https://gitlab.com'
+        this._view.onDidChangeVisibility(()=>{/* console.log("visibility changed") */}, this)
 	}
 
+
 	private getHtml(webview: vscode.Webview): string {
-		// const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "src", "webviews", "main.js"));
 		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "dist", "issues", "main.js"));
-		// console.log(vscode.Uri.joinPath(this._extensionUri, "src", "webviews", "main.js"));
 		return `<!DOCTYPE html>
 			<html lang="en">
 			<head>

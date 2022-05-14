@@ -9,9 +9,7 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
 	}
-	public resolveWebviewView(
-		webviewView: vscode.WebviewView
-	): void | Thenable<void> {
+	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
 		webviewView.webview.options = {
 			enableScripts: true,
@@ -20,6 +18,7 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
 		this._view.webview.postMessage({ type: "Token", Token: this.token });
+        
 	}
 
 	private getHtml(webview: vscode.Webview): string {

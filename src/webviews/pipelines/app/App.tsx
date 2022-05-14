@@ -30,7 +30,6 @@ class App extends Component<{ api: Api }, {}> {
 	componentDidMount() {
 		this.api.getProjectPipelines(34436238).then((res: any) => {
 			const commits = res.data;
-			console.log(commits);
 			this.setState({ commits });
 		});
 	}

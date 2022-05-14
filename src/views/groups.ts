@@ -184,7 +184,6 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 				// }
 			}) as vscode.ProviderResult<GroupNode[]>;
 		} else if (element.contextValue === "group" || element.contextValue === "user") {
-			// console.log("1");
 			return api.getProjects(element.contextValue === "group", element.node_id).then((res: any) => {
 				// if (res.data.length > 0) {
 				let groups = new Array<GroupNode>();
@@ -202,10 +201,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 					);
 				}
 				if (element.contextValue === "group") {
-					// console.log("2");
 					return api.getSubGroups(element.node_id).then((res: any) => {
-						// console.log("res.data.length");
-						// console.log(res.data.length);
 						for (let i = 0; i < res.data.length; i++) {
 							groups.push(
 								new GroupNode(
