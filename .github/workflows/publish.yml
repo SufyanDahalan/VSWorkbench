@@ -23,7 +23,7 @@ jobs:
         id: changelog
         uses: mindsers/changelog-reader-action@v2
         with:
-            version: ${{ env.PACKAGE_VERSION }}
+            version: 0.0.5
             path: ./CHANGELOG.md
       - name: publish
         run: npm run deploy
