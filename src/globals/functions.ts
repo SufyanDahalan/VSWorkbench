@@ -1,7 +1,7 @@
 // https://devblogs.microsoft.com/typescript/announcing-typescript-2-2/
 // https://stackoverflow.com/a/45493827/16419931
 import * as vscode from 'vscode';
-
+import { FOCUED_TREEVIEW_ITEM, VALIDATION_RULES } from './constants';
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY } from "./constants";
 
 export function settings(globalState:vscode.ExtensionContext["globalState"]) {
@@ -46,4 +46,29 @@ export function checkGitlabInstanceAndAuthToken(globalState:vscode.ExtensionCont
 		vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", false);
 		return false;
 	}
+
+    
+}/**
+ * 
+ * @param value string value to be validated
+ * @param rule Rule to be used
+ * @returns true if value is valid according to the rule specified, false otherwise
+ */
+export function ValidateUserInput(value:string, rule: VALIDATION_RULES): Boolean{
+    let valid: Boolean = false;
+    switch (rule) {
+        case VALIDATION_RULES.GitlabGroupName:
+            valid = value !== null
+            break;
+        case VALIDATION_RULES.GitlabGroupPath:
+            valid = value !== null
+            break;
+        case VALIDATION_RULES.NotEmptyOrNull:
+            valid = !!value && value !== ""; 
+            break;
+        default:
+
+            break;
+    }
+    return valid;
 }

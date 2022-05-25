@@ -45,4 +45,13 @@ declare global {
 		 */
 		message: string;
 	}
+    interface SnippetObject{
+        title: string;
+        description?: string;
+        visibility?: enum;
+        files: {
+            file_path: string;
+            content: string;
+        }[]
+    }
 }

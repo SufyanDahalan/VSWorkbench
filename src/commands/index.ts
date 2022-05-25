@@ -1,11 +1,11 @@
 /**
- * @module commands 
+ * @module commands
  * @commands
  */
 import * as vscode from "vscode";
 // import { api } from "../api";
-import { Api } from '../api'
-const api = Api.Instance
+import { Api } from "../api";
+const api = Api.Instance;
 
 export function createPersonalProjectCommand() {
 	let projectName = "";
@@ -36,43 +36,37 @@ export function createGroupProjectCommand(groupID: number) {
 } // MVP
 
 
-
-
-export async function getUserGroupsCommand() {
-	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
-} // MVP
-
 /**
- * 
+ *
  */
 export async function createGroupCommand() {
-    let groupName = "";
-    let groupPath = "";
-    const inputSubGroupName = vscode.window.createInputBox();
-    const inputSubGroupPath = vscode.window.createInputBox();
+	let groupName = "";
+	let groupPath = "";
+	const inputSubGroupName = vscode.window.createInputBox();
+	const inputSubGroupPath = vscode.window.createInputBox();
 
-    inputSubGroupName.placeholder = "Please Enter Subgroup Name";
-    inputSubGroupPath.placeholder = "Please Enter Subgroup Path";
+	inputSubGroupName.placeholder = "Please Enter Subgroup Name";
+	inputSubGroupPath.placeholder = "Please Enter Subgroup Path";
 
-    inputSubGroupPath.onDidChangeValue((input) => {
-        groupPath = input;
-    });
-    inputSubGroupPath.onDidAccept(() => {
-        inputSubGroupPath.hide();
-        api.createGroup(groupName, groupPath);
-    });
+	inputSubGroupPath.onDidChangeValue((input) => {
+		groupPath = input;
+	});
+	inputSubGroupPath.onDidAccept(() => {
+		inputSubGroupPath.hide();
+		api.createGroup(groupName, groupPath);
+	});
 
-    inputSubGroupName.onDidChangeValue((input) => {
-        groupName = input;
-    });
-    inputSubGroupName.onDidAccept(() => {
-        inputSubGroupName.hide();
-        inputSubGroupPath.show();
-    });
-    inputSubGroupName.show();
+	inputSubGroupName.onDidChangeValue((input) => {
+		groupName = input;
+	});
+	inputSubGroupName.onDidAccept(() => {
+		inputSubGroupName.hide();
+		inputSubGroupPath.show();
+	});
+	inputSubGroupName.show();
 
-    // api.
-        // api.getUserProjects(api.getUserIDAsync())
+	// api.
+	// api.getUserProjects(api.getUserIDAsync())
 } // MVP
 export function deleteProject(projectID: number) {
 	api.deleteProject(projectID);
@@ -84,7 +78,7 @@ export function deleteProject(projectID: number) {
  * @typedef function
  * @memberof commands
  */
-export function createIssueCommand () {
+export function createIssueCommand() {
 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 } // MVP
 export function createMergeRequestCommand() {
@@ -97,20 +91,24 @@ export function viewIssue() {
 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 } // MVP
 
-
-export function addGroup() {
-	vscode.window.showInformationMessage("addGroup!");
-}
 export function cloneProject() {
 	// Project region
 }
 export function cloneNamespaceProjects() {
 	// Namespace/group region
 }
-export function createProjectSnippet() {
+// #region project
+export function createProjectSnippet(projectID: number, snippet: SnippetObject) {
+	api.createProjectSnippet(
+		projectID,
+		// {title: "TODO", files: [{file_path: "TODO", content: "Todo"}]}
+		snippet
+	);
+
 	// project region
 	// user region
 }
+//#endregion
 export function createPersonalSnippet() {
 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 }
@@ -127,26 +125,26 @@ export function openProjectSettingsInGitLab() {
 
 export function openPersonalSettingsInGitLab() {
 	// https://docs.gitlab.com/ee/api/notes.html#delete-a-snippet-note
-    /**
-     * @implement
-     * 
-     */
+	/**
+	 * @implement
+	 *
+	 */
 }
 
 export function addMemberToProject() {
-    /**
-     * @implement
-     * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
-     * 
-     */
+	/**
+	 * @implement
+	 * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
+	 *
+	 */
 }
 
 export function addMemberToGroup() {
-    /**
-     * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
-     * @implement
-     * 
-     */
+	/**
+	 * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
+	 * @implement
+	 *
+	 */
 }
 export function openGroupSettingsInGitLab() {
 	// https://docs.gitlab.com/ee/api/notes.html#delete-a-snippet-note
@@ -154,43 +152,41 @@ export function openGroupSettingsInGitLab() {
 /**
  * navigates to project in gitlab in default browser
  */
-export function openProjectInGitLab() {
-}
+export function openProjectInGitLab() {}
 /**
  * simply navigates to group in gitlab website in the default browser
  */
-export function openGroupInGitLab() {
+export function openGroupInGitLab() {}
+
+export function addSSHKey() {
+	// https://docs.gitlab.com/ee/api/users.html#add-ssh-key
+}
+export function deleteSSHKey() {
+	// https://docs.gitlab.com/ee/api/users.html#delete-ssh-key-for-current-user
 }
 
-export function addSSHKey(){
-    // https://docs.gitlab.com/ee/api/users.html#add-ssh-key
+export function addGPGKey() {
+	// https://docs.gitlab.com/ee/api/users.html#add-a-gpg-key
 }
-export function deleteSSHKey(){
-    // https://docs.gitlab.com/ee/api/users.html#delete-ssh-key-for-current-user
+export function deleteGPGKey() {
+	// https://docs.gitlab.com/ee/api/users.html#delete-a-gpg-key
 }
-
-export function addGPGKey(){
-    // https://docs.gitlab.com/ee/api/users.html#add-a-gpg-key
-}
-export function deleteGPGKey(){
-    // https://docs.gitlab.com/ee/api/users.html#delete-a-gpg-key
-}
-export function addEmail(){
-    // https://docs.gitlab.com/ee/api/users.html#add-email
+export function addEmail() {
+	// https://docs.gitlab.com/ee/api/users.html#add-email
 }
 
-export function createImpersonationToken(){
-    // https://docs.gitlab.com/ee/api/users.html#create-an-impersonation-token
+export function createImpersonationToken() {
+	// https://docs.gitlab.com/ee/api/users.html#create-an-impersonation-token
 }
-export function revokeImpersonationToken(){
-// https://docs.gitlab.com/ee/api/users.html#revoke-an-impersonation-token
+export function revokeImpersonationToken() {
+	// https://docs.gitlab.com/ee/api/users.html#revoke-an-impersonation-token
 }
 
-export function createPersonalAccessToken(){
-    // https://docs.gitlab.com/ee/api/users.html#create-a-personal-access-token
+export function createPersonalAccessToken() {
+	// https://docs.gitlab.com/ee/api/users.html#create-a-personal-access-token
 }
-export function listSSHKeys(){
-    // https://docs.gitlab.com/ee/api/users.html#list-ssh-keys-for-user
+export function listSSHKeys() {
+	// https://docs.gitlab.com/ee/api/users.html#list-ssh-keys-for-user
 }
 /**
  * opens namespaces, projects, issues, pipelines in gitlab
@@ -199,24 +195,20 @@ export function listSSHKeys(){
 
 // }
 
-
-
-
 // https://docs.gitlab.com/ee/api/runners.html
 
-export  * from './pipeline'
-import pipelinesCommands from './pipeline'
-export  * from './issue'
-import issueCommands from './issue'
+export * from "./pipeline";
+import pipelinesCommands from "./pipeline";
+export * from "./issue";
+import issueCommands from "./issue";
 
 /**
  * @module commands
  * @exports commands
  */
 export default {
-    ...pipelinesCommands,
-    ...issueCommands,
-	getUserGroupsCommand,
+	...pipelinesCommands,
+	...issueCommands,
 	createGroupProjectCommand,
 	deleteProject,
 	createPersonalProjectCommand,
@@ -225,15 +217,12 @@ export default {
 	createMergeRequestCommand,
 	// viewPipelinesCommand,
 	viewIssue,
-	addGroup,
-
 	createPersonalSnippet,
 	cloneNamespaceProjects,
 	createProjectSnippet,
 
-
 	modifySnippetComment,
 	deleteSnippetComment,
-    addMemberToProject,
-addMemberToGroup
+	addMemberToProject,
+	addMemberToGroup,
 };
