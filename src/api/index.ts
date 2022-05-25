@@ -1,43 +1,24 @@
 import axios, { Axios, AxiosResponse } from "axios";
-// import * as vscode from "vscode";
-// const userApi = require("./user.js");
-// import userApi from './user'
-// const groupApi = require("./group.js");
-// const projectApi = require("./project.js");
 
-// import  userApi from "./user.js";
-// import  groupApi from "./group.js";
-// import  projectApi from "./project.js";
-
-// const api = axios.create({
-// 	baseURL: "https://gitlab.com/api/v4/",
-// 	timeout: 5000,
-// });
-// api.interceptors.request.use(function (config:any) {
-//     console.log(config)
-//     return config;
-//     }, function (error:any) {
-//     return Promise.reject(error);
-//     });
-// export const api = (PRIVATE_TOKEN : string) => {return new Api(PRIVATE_TOKEN)}
-
+const GitLab_SaaS_Base_URL = "https://gitlab.com/api/v4/";
 export class Api {
 	api: Axios;
 	private static instance: Api;
 	timeout: number;
 	static baseURL: string;
 	static PRIVATE_TOKEN: string;
-	private constructor(PRIVATE_TOKEN: string = "", baseURL: string = "https://gitlab.com/api/v4/", timeout: number = 50000) {
+
+	private constructor(PRIVATE_TOKEN: string = "", baseURL: string = GitLab_SaaS_Base_URL, timeout: number = 50000) {
 		(Api.PRIVATE_TOKEN = PRIVATE_TOKEN), (Api.baseURL = baseURL);
 		this.timeout = timeout;
 		this.api = axios.create({
 			baseURL: Api.baseURL,
 			timeout: this.timeout,
 			// headers: {
-                /**
-                 *  @ToFix
-                 *  */
-			// 	'PRIVATE-TOKEN': Api.PRIVATE_TOKEN, 
+			/**
+			 *  @ToFix
+			 *  */
+			// 	'PRIVATE-TOKEN': Api.PRIVATE_TOKEN,
 			// },
 		});
 	}
@@ -47,18 +28,15 @@ export class Api {
 		}
 		return Api.instance;
 	}
-	// export const Api = {
-	// api,
 	public static updateBaseURL(newBaseURL: string) {
 		Api.baseURL = newBaseURL;
 		Api.instance.api.defaults.baseURL = newBaseURL;
-		//   Api.instance.
 	}
 	public static updateAuthToken(newAuthToken: string) {
 		Api.PRIVATE_TOKEN = newAuthToken;
 		Api.instance.api.defaults.headers.common["PRIVATE-TOKEN"] = newAuthToken;
 	}
-	// #region projectApi
+    //#region projects
 	getProjectIssueBoards(projectID: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`projects/${projectID}/boards`);
 	}
@@ -68,24 +46,23 @@ export class Api {
 	getGroupIssues(groupID: number): any {
 		return Api.instance.api.get(`groups/${groupID}/issues`);
 	}
-    getProjectIssue(projectID: number, issueID: number){
-        return Api.instance.api.get(`projects/${projectID}/issues/${issueID}`)
-    }
-
-
-
-    getProjectIssueComments(projectID: number, issueID: number){
-        return Api.instance.api.get(`projects/${projectID}/issues/${issueID}/notes`)
-    }
-    createNewProjectIssueComment(projectID: number, issueIID: number, body: string){
-        Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/notes?body=${body}`)
-    }
-    editProjectIssueComment(projectID: number, issueID: number, note_id: number){
-        return Api.instance.api.put(`projects/${projectID}/issues/${issueID}/notes/${note_id}`)
-    }
-
-
-
+	getProjectIssue(projectID: number, issueID: number) {
+		return Api.instance.api.get(`projects/${projectID}/issues/${issueID}`);
+	}
+	createProjectSnippet(projectId: number, snippet: SnippetObject) {
+		return Api.instance.api.post(`projects/${projectId}/snippets`, { snippet });
+	}
+	getProjectIssueComments(projectID: number, issueID: number) {
+		return Api.instance.api.get(`projects/${projectID}/issues/${issueID}/notes`);
+	}
+	async createNewProjectIssueComment(projectID: number, issueIID: number, body: string) {
+        await Promise.all([
+            Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/notes?body=${body}`)
+        ])
+	}
+	editProjectIssueComment(projectID: number, issueID: number, note_id: number) {
+		return Api.instance.api.put(`projects/${projectID}/issues/${issueID}/notes/${note_id}`);
+	}
 	getProjectPipelines(projectID: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`projects/${projectID}/pipelines`);
 	}
@@ -103,6 +80,7 @@ export class Api {
 		return Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/reorder`);
 	}
 	// #endregion
+    // #region user
 	getUserInfo(): Promise<AxiosResponse> {
 		return Api.instance.api.get(`user/`);
 	}
@@ -115,12 +93,14 @@ export class Api {
 		return Api.instance.api.post(`projects?name=${projectName}`);
 	}
 	createSubGroup(parentID: number, name: string, path: string = name) {
-		if (path) {
+		// if (path) {
 			return Api.instance.api.post(`groups?parent_id=${parentID}`, { name, path });
-		} else {
-			return Api.instance.api.post(`groups?parent_id=${parentID}`, { name, path: name });
-		}
+		// } else {
+		// 	return Api.instance.api.post(`groups?parent_id=${parentID}`, { name, path: name });
+		// }
 	}
+    // #endregion
+
 	/**
 	 *
 	 * cannot be used on GitLab SaaS!
@@ -129,12 +109,11 @@ export class Api {
 	 * @returns nothing
 	 */
 	createGroup(name: string, path: string = name) {
-		if (Api.baseURL == "https://gitlab.com/api/v4/") {
+		if (Api.baseURL == GitLab_SaaS_Base_URL) {
 			// vscode.window.showErrorMessage("Cannot create top level group for GitLab SaaS users!. see [GitLab API docs](https://docs.gitlab.com/ee/api/groups.html#new-group). Additionally view our [workaround](https://add.link.to.dragndrop.workaround).");
-            return null;
-		} 
-        return Api.instance.api.post(`groups`, { name, path: path? path : name });
-		
+			return null;
+		}
+		return Api.instance.api.post(`groups`, { name, path: path ? path : name });
 	}
 	// deletePersonalProject(projectID: string): AxiosResponse {
 	// 	return Api.instance.api.delete(`projects/${projectID}`);
@@ -192,16 +171,16 @@ export class Api {
 	// };
 	// export default Object.create(Api); //Object.create( deepmerge.all([Api, userApi, projectApi, groupApi]))
 
-    // getBranches(){
-    //     return Api.instance.api.get()
-    // }
+	// getBranches(){
+	//     return Api.instance.api.get()
+	// }
 
-    getBranches(projectID: number){
-        return Api.instance.api.get(`projects/${projectID}/repository/branches`)
-    }
+	getBranches(projectID: number) {
+		return Api.instance.api.get(`projects/${projectID}/repository/branches`);
+	}
 
-    getCommits(projectID: number){
-        return Api.instance.api.get(`projects/${projectID}/repository/commits`)
-    }
+	getCommits(projectID: number) {
+		return Api.instance.api.get(`projects/${projectID}/repository/commits`);
+	}
 }
 export default Api;

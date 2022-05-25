@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import  { Api }/* , * as API */ from "./api";
 
-import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals";
+import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals/";
 
 import * as Commands from "./commands";
 import {createIssueCommand} from "./commands";
@@ -17,7 +17,6 @@ function initStorage(context: vscode.ExtensionContext) {
 export function activate(context: vscode.ExtensionContext) {
 	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);
 
-	// api.updateI(context.globalState.get(GITLAB_INSTANCE_KEY));
 	initStorage(context);
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
 
@@ -36,22 +35,10 @@ export function activate(context: vscode.ExtensionContext) {
     let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
     let pipelineWebView = new PipelineViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string)
 
-
-	// new ProjectView(context)
-
-	// const groupModel = new GroupModel();
-	// vscode.window.registerTreeDataProvider("groupView", new GroupTreeDataProvider(groupModel) );
-
 	context.subscriptions.push(
-
-
-        // vscode.window.registerWebviewViewProvider(IssuesViewProvidor.viewType, issuesWebView),
-        // vscode.window.registerWebviewPanelSerializer(IssuesViewProvidor.viewType, issuesWebView),
-
 		addPersonalAccessTokenCommand,
 		updatePersonalAccessTokenCommand,
 		helloWorldCommand,
-	// vscode.commands.registerCommand('VSWorkbench.GroupView.refreshEntry', () => groupView.treeDataProvider.refresh()),
 		vscode.commands.registerCommand("VSWorkbench.createIssue", createIssueCommand),
 		vscode.commands.registerCommand("VSWorkbench.createPersonalProject", Commands.createPersonalProjectCommand),
 		vscode.commands.registerCommand("VSWorkbench.createGroupProject", (node: GroupNode) => {
@@ -62,9 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
             node.createSubGroup()
         }),
 		vscode.commands.registerCommand("VSWorkbench.createMergeRequest", Commands.createMergeRequestCommand),
-		// vscode.commands.registerCommand("VSWorkbench.viewPipelines", Commands.viewPipelinesCommand),
 		vscode.commands.registerCommand("VSWorkbench.viewIssue", Commands.viewIssue), // TODO: deVSWorkbench.createGroupProjectlete
-		vscode.commands.registerCommand("VSWorkbench.getUserGroups", Commands.getUserGroupsCommand),
 		vscode.commands.registerCommand("VSWorkbench.deleteNamespaceNode", (node: GroupNode) => {
         node.delete();
 		}),
@@ -90,8 +75,9 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("VSWorkbench.openPipelinesInGitLab", Commands.openPipelinesInGitLab),
         vscode.commands.registerCommand("VSWorkbench.viewPipelines", Commands.viewPipelines),
         vscode.commands.registerCommand("VSWorkbench.viewPipeline", Commands.viewPipeline),
-        vscode.commands.registerCommand("VSWorkbench.viewJob", Commands.viewJob)
+        vscode.commands.registerCommand("VSWorkbench.viewJob", Commands.viewJob),
         
+        vscode.commands.registerCommand("VSWorkbench.createNewProjectIssueCommand",  Commands.createNewProjectIssueCommand)
         
         
 
@@ -104,7 +90,6 @@ export function activate(context: vscode.ExtensionContext) {
         );
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
 /**
  * 
@@ -132,9 +117,4 @@ export function deactivate() {}
  * 7. integrate @Telemetry {@link https://code.visualstudio.com/docs/getstarted/telemetry}
  * ================================================================================================================================
  * ================================================================================================================================
- * On JSDoc...
- * 
- * @see {@link https://stackoverflow.com/a/48455477/16419931}
- * @see {@link https://stackoverflow.com/questions/52511753/jsdoc-broken-on-exports-default-in-vscode}
- * @see {@link https://jsdoc.app}
  */

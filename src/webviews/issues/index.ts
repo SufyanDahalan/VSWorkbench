@@ -1,5 +1,6 @@
-import { AUTH_TOKEN_KEY } from "globals";
 import * as vscode from "vscode";
+import { Api } from "../../api";
+let api = Api.Instance;
 
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabIssues";
@@ -7,26 +8,13 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	issues = [1, 2];
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
-	// private readonly _panel: vscode.WebviewPanel;
-
-
 
 	constructor(context: vscode.ExtensionContext, Token: string) {
-		// this._view = vscode.window.createWebviewPanel(this.viewType, 'gitlabIssues', vscode.ViewColumn.One, {})
-		vscode.window.registerWebviewViewProvider(this.viewType, this, 
-            {webviewOptions: {retainContextWhenHidden: true}}
-            );
+		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
-		// vscode.window.registerWebviewPanelSerializer(this.viewType, this)
-		// context.subscriptions.push(this);
 		this.token = Token;
 	}
-	public resolveWebviewView(
-		webviewView: vscode.WebviewView
-		// context: vscode.WebviewViewResolveContext<unknown>,
-		// token: vscode.CancellationToken
-	): void | Thenable<void> {
-		// throw new Error("Method not implemented.");
+	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
 		webviewView.webview.options = {
 			enableScripts: true,
@@ -35,9 +23,47 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
 		this._view.webview.postMessage({ type: "Token", Token: this.token });
-        this._view.onDidChangeVisibility(()=>{/* console.log("visibility changed") */}, this)
-	}
+		// this._view.webview.onDidReceiveMessage((event) => {
+		//     // console.log(event)
+		// api.createNewProjectIssueComment(event.project_id, event.issue_iid, event.newComment);
+		// this._view ? this._view.webview.html = this.getHtml(webviewView.webview):null;
+		// // vscode.commands.executeCommand('VSWorkbench.createNewProjectIssueCommand', {project_id: event.project_id, issue_iid: event.issue_iid, newComment: event.newComment})
+		//     return;
+		// })
+		// this._view.webview.onDidReceiveMessage(this.createMessageHandler(this._view));
+		this._view.webview.onDidReceiveMessage((message)=>{
+		api.createNewProjectIssueComment(message.project_id, message.issue_iid, message.newComment);
 
+        });
+        
+	}
+	private createMessageHandler =
+		(
+			panel: vscode.WebviewView
+			//   issuable: RestIssuable,
+			//   projectInRepository: ProjectInRepository,
+		) =>
+		async (message: any) => {
+			switch (message.command) {
+				case "postComment":{
+					console.log("message: ", message);
+		api.createNewProjectIssueComment(message.project_id, message.issue_iid, message.newComment);
+
+					// await vscode.commands.executeCommand("VSWorkbench.createNewProjectIssueCommand", {
+					// 	project_id: message.project_id,
+					// 	issue_iid: message.issue_iid,
+					// 	newComment: message.newComment,
+					// });
+
+					await panel.webview.postMessage({
+						type: "markdownRendered",
+					});
+					break;
+                }
+				default:
+					break;
+			}
+		};
 
 	private getHtml(webview: vscode.Webview): string {
 		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "dist", "issues", "main.js"));
@@ -45,16 +71,25 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
-
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 				<meta http-equiv="Content-Security-Policy">
-				<title>Cat Colors</title>
+				<title>GitLab Issues | VSWorkbench</title>
 			</head>
 			<body>
+            <script > function newComment(){
+                const vscode = acquireVsCodeApi();
+                console.log("new comment in progress");
+                vscode.postMessage({
+                    command: 'postComment',
+                    project_id: 35151212,
+                    issue_iid: 4,
+                    newComment: 'this.state.newComment'
+                });
+                }</script>
+            <button onclick="newComment()">new comment bliz</button>
             <div id="app"></div>
-                <script src="${scriptUri}"></script>
 
+                <script src="${scriptUri}"></script>
 			</body>
 			</html>`;
 	}

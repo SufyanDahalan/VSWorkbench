@@ -7,9 +7,10 @@ import Issue from "./Issue";
 import IssueView from "./issueView";
 import { Router, route } from "preact-router"; // https://www.npmjs.com/package/preact-router
 // @ts-ignore
-const vscode = acquireVsCodeApi();
-const previousState = vscode.getState();
-
+// const vscode = acquireVsCodeApi();
+// const previousState = vscode.getState();
+// @ts-ignore
+// window.vscode = vscode;
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case "Token": {
@@ -18,6 +19,10 @@ window.addEventListener("message", (event) => {
 			render(<App api={api} />, document.getElementById("app") as Element);
 			break;
 		}
+        case "markdownRendered": {
+            console.log('received markdownRendered')
+            break;
+        }
 	}
 });
 
@@ -27,10 +32,10 @@ class App extends Component<{ api: Api }, {}> {
 		issues: [{} as IIssue],
 	};
 	async getIssues() {
-		return this.api.getGroupIssues(16455408);
+		return this.api.getGroupIssues(12342806);
 	}
 	componentDidMount() {
-		this.api.getGroupIssues(16455408).then((res: any) => {
+		this.api.getGroupIssues(12342806).then((res: any) => {
 			const issues = res.data;
 			for (const issue of issues) {
 				issue.author = {
@@ -68,7 +73,7 @@ class App extends Component<{ api: Api }, {}> {
 							<Issue {...issue}></Issue>
 						))}
 					</div>
-					<IssueView path="/issue/:projectID/:issueID" />
+					{/* <IssueView vscode={vscode} path="/issue/:projectID/:issueID" /> */}
 				</Router>
 			</div>
 		);

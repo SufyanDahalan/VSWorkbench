@@ -2,11 +2,13 @@ import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import { Api } from "../api";
 // import { ProjectNode } from "./projects";
-import { AUTH_TOKEN_KEY, GROUP_VIEW_FOCUS } from "../globals";
+import { AUTH_TOKEN_KEY, GROUP_VIEW_FOCUS } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
 import { group } from "console";
+import { PipelineViewProvidor } from "../webviews/pipelines";
+import { pipeline } from "stream";
 const api = Api.Instance;
 
 export class GroupNode extends Node {
@@ -78,6 +80,7 @@ export class GroupNode extends Node {
 			groupName = input;
 		});
 		inputSubGroupName.onDidAccept(() => {
+            groupName.match
 			inputSubGroupName.hide();
 			inputSubGroupPath.show();
 		});
@@ -219,37 +222,8 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 					});
 				}
 				return groups;
-				// }
-				// else {
-				// 	return <GroupNode>{};
-				// }
 			});
 		}
-		// else if (element.contextValue === "project") {
-		// 	return api.getUserID().then((res: AxiosResponse) => {
-		// 		return api.getUserProjects(res.data.id).then((res: AxiosResponse) => {
-		// 			if (res.data.length > 0) {
-		// 				let groups = new Array<GroupNode>();
-		// 				for (let i = 0; i < res.data.length; i++) {
-		// 					groups.push(
-		// 						new GroupNode(
-		// 							res.data[i].id,
-		// 							res.data[i].namespace.id,
-		// 							res.data[i].visibility,
-		// 							res.data[i].web_url,
-		// 							"project",
-		// 							vscode.TreeItemCollapsibleState.None,
-		// 							res.data[i].name
-		// 						)
-		// 					);
-		// 				}
-		// 				return groups;
-		// 			} else {
-		// 				return <GroupNode>{};
-		// 			}
-		// 		});
-		// 	});
-		// }
 		else {
 			return Array<GroupNode>(); //<GroupNode>{}[];
 		}
@@ -260,7 +234,6 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
  */
 export class GroupView {
 	public groupTreeViewer: vscode.TreeView<GroupNode>;
-
 	constructor(context: vscode.ExtensionContext) {
 		const groupModel = new GroupModel();
 		const treeDataProvider = new GroupTreeDataProvider(groupModel);
@@ -280,7 +253,7 @@ export class GroupView {
 			// this.groupTreeViewer.selection[0].iconPath = new vscode.ThemeIcon('extensions-star-full') // TOFIX: it simply aint working
 			// treeDataProvider.refresh()
 			if (selection["selection"][0].contextValue == "project") {
-				new PipelineView(context, selection["selection"][0].node_id);
+				// new PipelineView(context, selection["selection"][0].node_id);
 			}
 			if (selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project") {
 				new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);

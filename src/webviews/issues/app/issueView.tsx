@@ -5,6 +5,8 @@ import "./App.css";
 import { Api } from "../../../api";
 let api = Api.Instance;
 import Comment from "./comments";
+
+
 class IssueView extends Component<any, {}> {
 	state = {
 		issue: {} as IIssue,
@@ -14,11 +16,13 @@ class IssueView extends Component<any, {}> {
 	constructor(props: any) {
 		super(props);
 	}
-	componentDidMount() {
-		api.getProjectIssue(this.props.projectID, this.props.issueID).then((res) => {
+	async componentDidMount() {
+        // this.props.vscode.postMessage({command: 'postComment'});
+
+		await api.getProjectIssue(this.props.projectID, this.props.issueID).then((res) => {
 			this.setState({ issue: res.data });
 		});
-		api.getProjectIssueComments(this.props.projectID, this.props.issueID).then((res) => {
+		await api.getProjectIssueComments(this.props.projectID, this.props.issueID).then((res) => {
 			let comments = res.data;
 			for (const comment of comments) {
 				comment.id = comment.noteable_iid;
@@ -30,9 +34,24 @@ class IssueView extends Component<any, {}> {
 			}
 			this.setState({ comments });
 		});
+        console.log(this.state)
 	}
 	onSubmit = () => {
-		api.createNewProjectIssueComment(this.state.issue.project_id, this.state.issue.iid, this.state.newComment);
+        // api.createNewProjectIssueComment(this.state.issue.project_id, this.state.issue.iid, this.state.newComment);
+        this.props.vscode.postMessage({
+            command: 'postComment',
+            project_id: this.state.issue.project_id,
+            issue_iid: this.state.issue.iid,
+            newComment: this.state.newComment
+        })
+        console.log('this.state')
+        console.log(this.state)
+        // console.log('command: ', 'postComment',
+        //     'project_id: ', this.state.issue.project_id,
+        //     'issue_iid: ', this.state.issue.iid,
+        //     'newComment: ', this.state.newComment)
+        // return;
+        // console.log('this.onSubmit')
 	};
 	render() {
 		return (
