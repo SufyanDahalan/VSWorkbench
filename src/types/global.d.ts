@@ -15,6 +15,9 @@ declare global {
 		project_id: number;
 	}
 	interface IComment {
+        issue_id: number;
+        issue_iid: number;
+        project_id: number;
 		id: number;
 		body: string;
 		author: { username: string; name: string; id: string }; // Sufyan Dahalan

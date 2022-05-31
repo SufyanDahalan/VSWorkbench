@@ -16,96 +16,25 @@ enum Routes {
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case IssueViewEvents.API_TOKEN: {
+            selection.value = Routes.PENDING
             Route(Routes.PENDING)
 			Api.updateAuthToken(event.data.Token);
 			break;
 		}
 		case IssueViewEvents.GROUP_SELECTED: {
-			selection.value = IssueViewEvents.GROUP_SELECTED;
+			selection.value = Routes.GROUP_ISSUES_ROUTE;
 			selection.id = event.data.id;
-
 			Route(Routes.GROUP_ISSUES_ROUTE);
 			break;
 		}
 		case IssueViewEvents.PROJECT_SELECTED: {
-			selection.value = IssueViewEvents.PROJECT_SELECTED;
+			selection.value = Routes.PROJECT_ISSUES_ROUTE;
 			selection.id = event.data.id;
 			Route(Routes.PROJECT_ISSUES_ROUTE);
 			break;
 		}
 	}
 });
-
-function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
-	const el = document.createElement(type);
-	el.innerHTML = innerHTML;
-	if (attributes) {
-		for (const attribute of attributes) {
-			const key = attribute.key as string;
-			const value = attribute.value;
-			if (key.startsWith("on") && typeof value === "function") {
-				el.addEventListener(key.substring(2) as keyof HTMLElementEventMap, value as EventListenerOrEventListenerObject);
-			} else if (typeof value === "boolean") {
-				el.setAttribute(key, "");
-			} else if (typeof value !== "function") {
-				el.setAttribute(key, value);
-			} else {
-				console.log("Error! Element attribute cannot be set");
-			}
-		}
-	}
-	return el;
-}
-function CreateCommentNode(comment: IComment): Node {
-	let commentNode = CreateHtmlNode("div", null, comment.body);
-	return commentNode;
-}
-function CreateNewCommentInput(issue: IIssue): Node {
-	let div = CreateHtmlNode("div", null, "");
-	div.appendChild(CreateHtmlNode("input", [{ key: "id", value: "NewCommentInputBox" }], ""));
-	div.appendChild(
-		CreateHtmlNode(
-			"button",
-			[
-				{
-					key: "onclick",
-					value: () => {
-						api.createNewProjectIssueComment(
-							issue.project_id,
-							issue.iid,
-							(document.getElementById("NewCommentInputBox") as HTMLInputElement)!.value
-						);
-					},
-				},
-			],
-			"post new comment"
-		)
-	);
-	return div;
-}
-function CreateIssueNode(issue: IIssue): Node {
-	let issueNode = CreateHtmlNode("div", null, "");
-	issueNode.appendChild(
-		CreateHtmlNode(
-			"h1",
-			[
-                { key: "class", value: "issue" },
-				{
-					key: "onclick",
-					value: () => {
-						Route(Routes.ISSUE_ROUTE, {project_id: issue.project_id, issue_iid: issue.iid });
-					},
-				},
-			],
-			issue.title
-		)
-	);
-	return issueNode;
-}
-interface x {
-	project_id: number;
-	issue_iid: number;
-}
 
 async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 	app!.innerHTML = "";
@@ -153,12 +82,15 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 				let issue: IIssue = IssueResultObject.data;
 				api.getProjectIssueComments(args!.project_id, args!.issue_iid).then((CommentsResultObject) => {
 					for (const comment of CommentsResultObject.data) {
-						comment.id = comment.noteable_iid;
+						// comment.id = comment.id;
 						comment.author = {
 							username: comment.author.username,
 							name: comment.author.name,
 							id: comment.author.id,
 						};
+                        comment.project_id = issue.project_id;
+                        comment.issue_id = comment.noteable_id;
+                        comment.issue_iid = comment.noteable_iid;
 					}
 					let comments: IComment[] = CommentsResultObject.data;
 					app!.appendChild(
@@ -185,4 +117,80 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 			break;
 		}
 	}
+}
+
+function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
+	const el = document.createElement(type);
+	el.innerHTML = innerHTML;
+	if (attributes) {
+		for (const attribute of attributes) {
+			const key = attribute.key as string;
+			const value = attribute.value;
+			if (key.startsWith("on") && typeof value === "function") {
+				el.addEventListener(key.substring(2) as keyof HTMLElementEventMap, value as EventListenerOrEventListenerObject);
+			} else if (typeof value === "boolean") {
+				el.setAttribute(key, "");
+			} else if (typeof value !== "function") {
+				el.setAttribute(key, value);
+			} else {
+				console.log("Error! Element attribute cannot be set");
+			}
+		}
+	}
+	return el;
+}
+function CreateCommentNode(comment: IComment): Node {
+	let commentNode = CreateHtmlNode("div", null, '');
+    commentNode.appendChild(CreateHtmlNode("div", null, comment.body))
+    /* comment.author === user ?  */commentNode.appendChild(CreateHtmlNode('div', [{key: 'onclick', value: ()=>{
+        api.deleteIssueNote(comment.project_id, comment.issue_iid, comment.id)
+    }}],'&#x1f5d1;'))
+    // : null; 
+	return commentNode;
+}
+function CreateNewCommentInput(issue: IIssue): Node {
+	let div = CreateHtmlNode("div", null, "");
+	div.appendChild(CreateHtmlNode("input", [{ key: "id", value: "NewCommentInputBox" }], ""));
+	div.appendChild(
+		CreateHtmlNode(
+			"button",
+			[
+				{
+					key: "onclick",
+					value: () => {
+						api.createNewProjectIssueComment(
+							issue.project_id,
+							issue.iid,
+							(document.getElementById("NewCommentInputBox") as HTMLInputElement)!.value
+						);
+					},
+				},
+			],
+			"post new comment"
+		)
+	);
+	return div;
+}
+function CreateIssueNode(issue: IIssue): Node {
+	let issueNode = CreateHtmlNode("div", null, "");
+	issueNode.appendChild(
+		CreateHtmlNode(
+			"h1",
+			[
+                { key: "class", value: "issue" },
+				{
+					key: "onclick",
+					value: () => {
+						Route(Routes.ISSUE_ROUTE, {project_id: issue.project_id, issue_iid: issue.iid });
+					},
+				},
+			],
+			issue.title
+		)
+	);
+	return issueNode;
+}
+interface x {
+	project_id: number;
+	issue_iid: number;
 }

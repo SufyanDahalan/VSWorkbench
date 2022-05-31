@@ -124,6 +124,9 @@ export class Api {
 	deleteGroup(groupID: number) {
 		return Api.instance.api.delete(`groups/${groupID}`);
 	}
+    deleteIssueNote(project_id: number, issue_iid: number, note_id: number){
+        return Api.instance.api.delete(`projects/${project_id}/issues/${issue_iid}/notes/${note_id}`)
+    }
 	/**
 	 *
 	 * @param group boolean, true means its a group namespace, false means its a user namespace
