@@ -8,3 +8,8 @@ export const enum VALIDATION_RULES {
 	GitlabGroupPath,
 	NotEmptyOrNull,
 }
+export enum IssueViewEvents {
+    GROUP_SELECTED = 0,//'GROUP_SELECTED',
+    PROJECT_SELECTED,// = 'PROJECT_SELECTED',
+    API_TOKEN,// = 'API_TOKEN'
+}

@@ -1,8 +1,6 @@
-import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import Api from "../api";
 const api = Api.Instance
-import { GROUP_VIEW_FOCUS } from "../globals";
 import {Node} from './node' 
 
 let ProjectID: number;

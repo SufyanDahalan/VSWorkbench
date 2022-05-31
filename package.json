@@ -28,12 +28,12 @@
 		"Other",
 		"SCM Providers"
 	],
-    "keywords": [
+	"keywords": [
 		"vsworkbench",
-        "gitlab",
-        "cicd",
-        "gitlab-pipelines",
-        "gitlab-ci"
+		"gitlab",
+		"cicd",
+		"gitlab-pipelines",
+		"gitlab-ci"
 	],
 	"activationEvents": [
 		"onStartupFinished"
@@ -445,7 +445,7 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
-        "ts": "npm run esbuild-base -- --minify",
+		"ts": "npm run esbuild-base -- --minify",
 		"compile": "webpack",
 		"watch": "webpack --watch",
 		"package": "webpack --mode production --devtool hidden-source-map",
@@ -469,6 +469,7 @@
 		"@types/glob": "^7.2.0",
 		"@types/mocha": "^9.1.0",
 		"@types/node": "14.x",
+		"@types/pubsub-js": "^1.8.3",
 		"@types/react": "^18.0.5",
 		"@types/react-dom": "^18.0.1",
 		"@types/vscode": "^1.66.0",
@@ -500,6 +501,8 @@
 		"axios": "^0.26.1",
 		"iconv-lite": "^0.6.3",
 		"preact": "^10.7.1",
-		"preact-router": "^4.0.1"
+		"preact-router": "^4.0.1",
+		"pubsub-js": "^1.9.4",
+		"react": "^18.1.0"
 	}
 }

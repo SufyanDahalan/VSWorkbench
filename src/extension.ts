@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import  { Api }/* , * as API */ from "./api";
 
-import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals";
+import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals/";
 
 import * as Commands from "./commands";
 import {createIssueCommand} from "./commands";
@@ -75,8 +75,9 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("VSWorkbench.openPipelinesInGitLab", Commands.openPipelinesInGitLab),
         vscode.commands.registerCommand("VSWorkbench.viewPipelines", Commands.viewPipelines),
         vscode.commands.registerCommand("VSWorkbench.viewPipeline", Commands.viewPipeline),
-        vscode.commands.registerCommand("VSWorkbench.viewJob", Commands.viewJob)
+        vscode.commands.registerCommand("VSWorkbench.viewJob", Commands.viewJob),
         
+        vscode.commands.registerCommand("VSWorkbench.createNewProjectIssueCommand",  Commands.createNewProjectIssueCommand)
         
         
 

@@ -201,6 +201,8 @@ export * from "./pipeline";
 import pipelinesCommands from "./pipeline";
 export * from "./issue";
 import issueCommands from "./issue";
+export * from './project';
+import projectCommands from './project';
 
 /**
  * @module commands
@@ -209,6 +211,7 @@ import issueCommands from "./issue";
 export default {
 	...pipelinesCommands,
 	...issueCommands,
+    ...projectCommands,
 	createGroupProjectCommand,
 	deleteProject,
 	createPersonalProjectCommand,

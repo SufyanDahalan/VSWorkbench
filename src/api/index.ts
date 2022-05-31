@@ -46,7 +46,7 @@ export class Api {
 	getGroupIssues(groupID: number): any {
 		return Api.instance.api.get(`groups/${groupID}/issues`);
 	}
-	getProjectIssue(projectID: number, issueID: number) {
+	getProjectIssue(projectID: number, issueID: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`projects/${projectID}/issues/${issueID}`);
 	}
 	createProjectSnippet(projectId: number, snippet: SnippetObject) {
@@ -55,8 +55,10 @@ export class Api {
 	getProjectIssueComments(projectID: number, issueID: number) {
 		return Api.instance.api.get(`projects/${projectID}/issues/${issueID}/notes`);
 	}
-	createNewProjectIssueComment(projectID: number, issueIID: number, body: string) {
-		Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/notes?body=${body}`);
+	async createNewProjectIssueComment(projectID: number, issueIID: number, body: string) {
+        await Promise.all([
+            Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/notes?body=${body}`)
+        ])
 	}
 	editProjectIssueComment(projectID: number, issueID: number, note_id: number) {
 		return Api.instance.api.put(`projects/${projectID}/issues/${issueID}/notes/${note_id}`);
