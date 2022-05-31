@@ -9,7 +9,10 @@ export const enum VALIDATION_RULES {
 	NotEmptyOrNull,
 }
 export enum IssueViewEvents {
-    GROUP_SELECTED = 0,//'GROUP_SELECTED',
-    PROJECT_SELECTED,// = 'PROJECT_SELECTED',
-    API_TOKEN,// = 'API_TOKEN'
+    GROUP_SELECTED = 0,
+    PROJECT_SELECTED,
+    PIPELINE_SELECTED,
+    JOB_SELECTED,
+    API_TOKEN,
+
 }

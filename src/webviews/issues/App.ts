@@ -1,23 +1,22 @@
 import { Api } from "../../api";
 import { IssueViewEvents } from "../../globals/constants";
+import './App.css' 
 
 let api = Api.Instance;
 let app = document.getElementById("app");
 let selection = { value: 0, id: 0 };
 
 enum Routes {
-	GROUP_ISSUES_ROUTE = 0,
+    PENDING = 0,
+	GROUP_ISSUES_ROUTE,
 	PROJECT_ISSUES_ROUTE,
 	ISSUE_ROUTE,
 }
 
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
-		case "Token": {
-			Api.updateAuthToken(event.data.Token);
-			break;
-		}
 		case IssueViewEvents.API_TOKEN: {
+            Route(Routes.PENDING)
 			Api.updateAuthToken(event.data.Token);
 			break;
 		}
@@ -25,13 +24,13 @@ window.addEventListener("message", (event) => {
 			selection.value = IssueViewEvents.GROUP_SELECTED;
 			selection.id = event.data.id;
 
-			Route(0);
+			Route(Routes.GROUP_ISSUES_ROUTE);
 			break;
 		}
 		case IssueViewEvents.PROJECT_SELECTED: {
 			selection.value = IssueViewEvents.PROJECT_SELECTED;
 			selection.id = event.data.id;
-			Route(1);
+			Route(Routes.PROJECT_ISSUES_ROUTE);
 			break;
 		}
 	}
@@ -57,7 +56,7 @@ function CreateHtmlNode(type: string, attributes: { key: string; value: string |
 	}
 	return el;
 }
-function CreateCommendNode(comment: IComment): Node {
+function CreateCommentNode(comment: IComment): Node {
 	let commentNode = CreateHtmlNode("div", null, comment.body);
 	return commentNode;
 }
@@ -94,7 +93,7 @@ function CreateIssueNode(issue: IIssue): Node {
 				{
 					key: "onclick",
 					value: () => {
-						Route(2, {project_id: issue.project_id, issue_iid: issue.iid });
+						Route(Routes.ISSUE_ROUTE, {project_id: issue.project_id, issue_iid: issue.iid });
 					},
 				},
 			],
@@ -111,6 +110,10 @@ interface x {
 async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 	app!.innerHTML = "";
 	switch (route) {
+        case Routes.PENDING: {
+            
+            break;
+        }
 		case Routes.GROUP_ISSUES_ROUTE: {
 			api.getGroupIssues(selection.id).then((res: any) => {
 				res.data;
@@ -174,7 +177,7 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 					);
 					app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "header" }], issue.title));
 					for (const comment of comments) {
-						app!.appendChild(CreateCommendNode(comment));
+						app!.appendChild(CreateCommentNode(comment));
 					}
 					app!.appendChild(CreateNewCommentInput(issue));
 				});

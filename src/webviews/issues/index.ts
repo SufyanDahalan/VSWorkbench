@@ -1,9 +1,8 @@
 import * as vscode from "vscode";
 import { Api } from "../../api";
-import PubSub from 'pubsub-js'
-import { IssueViewEvents } from '../../globals/'
+import PubSub from "pubsub-js";
+import { IssueViewEvents } from "../../globals/";
 let api = Api.Instance;
-
 
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabIssues";
@@ -16,12 +15,12 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
-        PubSub.subscribe(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], (msg: any, data: any)=>{
-		    this._view!.webview.postMessage({ type: 0, msg, id: data.id });
-        })
-        PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any)=>{
-		    this._view!.webview.postMessage({ type: 1, msg, id: data.id });
-        })
+		PubSub.subscribe(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], (msg: any, data: any) => {
+			this._view!.webview.postMessage({ type: IssueViewEvents.GROUP_SELECTED, msg, id: data.id });
+		});
+		PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
+			this._view!.webview.postMessage({ type: IssueViewEvents.PROJECT_SELECTED, msg, id: data.id });
+		});
 	}
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
@@ -32,11 +31,6 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
 		this._view.webview.postMessage({ type: IssueViewEvents.API_TOKEN, Token: this.token });
-		this._view.webview.onDidReceiveMessage((message)=>{
-		api.createNewProjectIssueComment(message.project_id, message.issue_iid, message.newComment);
-
-        });
-        
 	}
 
 	private getHtml(webview: vscode.Webview): string {
@@ -52,7 +46,6 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 			<body>
             <script >window.vscode = acquireVsCodeApi();</script>
             <div id="app"></div>
-
                 <script src="${scriptUri}"></script>
 			</body>
 			</html>`;

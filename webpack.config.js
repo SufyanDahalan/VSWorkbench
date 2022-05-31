@@ -59,14 +59,7 @@ const viewConfig = {
 			},
 			{
 				test: /\.css$/i,
-				use: [
-					"style-loader",
-					{
-						loader: "css-loader",
-						options: { import: true, modules: true, importLoaders: 1, sourceMap: true },
-					},
-					"postcss-loader",
-				],
+                use: ["style-loader", "css-loader", "postcss-loader"],
 			},
 		],
 	},
@@ -82,7 +75,7 @@ const viewConfig = {
 	// },
 };
 const pipelineConfig = {
-	entry: "./src/webviews/pipelines/app/App.tsx",
+	entry: "./src/webviews/pipelines/App.ts",
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: "pipelines/[name].js",

@@ -1,14 +1,17 @@
+import { IssueViewEvents } from "../../globals";
 import * as vscode from "vscode";
+import PubSub from "pubsub-js";
+
+
 export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabPipelines";
 	token: string;
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
-    focusedTreeViewItemId: number;
 	constructor(context: vscode.ExtensionContext, Token: string) {
-        // console.log("smth:", smth )
-        this.focusedTreeViewItemId = -1;
-
+		PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
+			this._view!.webview.postMessage({ type: IssueViewEvents.PROJECT_SELECTED, msg, id: data.id });
+		});
 		vscode.window.registerWebviewViewProvider(this.viewType, this,
             {webviewOptions: {retainContextWhenHidden: true}}
             );
@@ -23,8 +26,8 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
-        console.log('this.token', this.token)
-		this._view.webview.postMessage({ type: "Token", Token: this.token });
+		this._view.webview.postMessage({ type: IssueViewEvents.API_TOKEN, Token: this.token });
+
         
 	}
     public updateFocusedTreeViewItem(){
@@ -41,6 +44,7 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 				<title>GitLab CI | VSWorkbench</title>
 			</head>
 			<body>
+            <script >window.vscode = acquireVsCodeApi();</script>
             <div id="app"></div>
                 <script src="${scriptUri}"></script>
 			</body>

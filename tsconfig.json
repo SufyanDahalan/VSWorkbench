@@ -2,8 +2,6 @@
 	"compilerOptions": {
 		"typeRoots": ["./types"],
         // "types":["./src/Globals.d.ts"],
-		"jsx": "react-jsx",
-		"jsxImportSource": "preact",
 		"module": "es2015",
 		"target": "ES2020",
 		"lib": ["ES2020", "dom"],
