@@ -8,11 +8,8 @@ import { PipelineView } from "./pipelines";
 import { Node } from "./node";
 import PubSub from 'pubsub-js'
 
-// enum IssueViewEvents {
-//     GROUP_SELECTED = 0,//'GROUP_SELECTED',
-//     PROJECT_SELECTED,// = 'PROJECT_SELECTED',
-//     API_TOKEN,// = 'API_TOKEN'
-// }
+
+
 const api = Api.Instance;
 
 export class GroupNode extends Node {

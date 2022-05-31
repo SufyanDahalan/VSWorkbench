@@ -71,7 +71,6 @@ function CreateNewCommentInput(issue: IIssue): Node {
 				{
 					key: "onclick",
 					value: () => {
-						// let value = (document.getElementById('NewCommentInputBox') as HTMLInputElement)!.value;
 						api.createNewProjectIssueComment(
 							issue.project_id,
 							issue.iid,
