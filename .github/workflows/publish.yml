@@ -25,8 +25,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
           body: |
             Changes in this Release
             - First Change
@@ -41,11 +41,11 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./${{ github.ref }}.vsix
-            asset_name: ${{ github.ref }}.vsix
+            asset_path: ./${{ github.ref_name }}.vsix
+            asset_name: ${{ github.ref_name }}.vsix
             asset_content_type: application/zip
       - name: Publish Extension
-        run: vsce publish --no-yarn -i ./vsworkbench-${{github.ref}}.vsix -p ${{ secrets.VSCE_PAT }} 
+        run: vsce publish --no-yarn -i ./vsworkbench-${{github.ref_name}}.vsix -p ${{ secrets.VSCE_PAT }} 
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
