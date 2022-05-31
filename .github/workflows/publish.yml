@@ -27,10 +27,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
+          body:  Release ${{ github.ref_name }}
           draft: false
           prerelease: false
 
