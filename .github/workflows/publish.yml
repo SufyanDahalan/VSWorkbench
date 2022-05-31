@@ -1,5 +1,6 @@
 name: Publish Extension
-
+env: 
+  version: ${{ github.ref_name }}
 on:
   push:
     tags:
@@ -38,11 +39,11 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./vsworkbench-${${{github.ref_name}}:1:6}.vsix
-            asset_name: $vsworkbench-${${{github.ref_name}}:1:6}.vsix
+            asset_path: ./vsworkbench-${version:1}.vsix
+            asset_name: $vsworkbench-${version:1}.vsix
             asset_content_type: application/zip
       - name: Publish Extension
-        run: vsce publish --no-yarn -i ./vsworkbench-${${{github.ref_name}}:1:6}.vsix -p ${{ secrets.VSCE_PAT }} 
+        run: vsce publish --no-yarn -i ./vsworkbench-${version:1}.vsix -p ${{ secrets.VSCE_PAT }} 
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
