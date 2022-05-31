@@ -2,7 +2,7 @@
 	"name": "vsworkbench",
 	"displayName": "VSWorkbench",
 	"description": "",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"types": "./types",
 	"publisher": "SufyanDahalan",
 	"engines": {
