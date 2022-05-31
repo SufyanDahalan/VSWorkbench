@@ -54,4 +54,9 @@ declare global {
             content: string;
         }[]
     }
+    // enum IssueViewEvents {
+    //     GROUP_SELECTED = 0,//'GROUP_SELECTED',
+    //     PROJECT_SELECTED,// = 'PROJECT_SELECTED',
+    //     API_TOKEN,// = 'API_TOKEN'
+    // }
 }

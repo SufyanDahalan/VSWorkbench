@@ -2,13 +2,17 @@ import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import { Api } from "../api";
 // import { ProjectNode } from "./projects";
-import { AUTH_TOKEN_KEY, GROUP_VIEW_FOCUS } from "../globals/";
+import { AUTH_TOKEN_KEY, GROUP_VIEW_FOCUS, IssueViewEvents } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
-import { group } from "console";
-import { PipelineViewProvidor } from "../webviews/pipelines";
-import { pipeline } from "stream";
+import PubSub from 'pubsub-js'
+
+// enum IssueViewEvents {
+//     GROUP_SELECTED = 0,//'GROUP_SELECTED',
+//     PROJECT_SELECTED,// = 'PROJECT_SELECTED',
+//     API_TOKEN,// = 'API_TOKEN'
+// }
 const api = Api.Instance;
 
 export class GroupNode extends Node {
@@ -254,7 +258,10 @@ export class GroupView {
 			// treeDataProvider.refresh()
 			if (selection["selection"][0].contextValue == "project") {
 				// new PipelineView(context, selection["selection"][0].node_id);
-			}
+                PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], {id: selection['selection'][0].node_id})
+			} else if (selection["selection"][0].contextValue == "group"){
+                PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], {id: selection['selection'][0].node_id})
+            }
 			if (selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project") {
 				new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
 				// FIXME: for some reason this if block gets reached once and then never gets updated again.

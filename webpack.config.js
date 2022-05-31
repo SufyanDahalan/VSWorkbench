@@ -44,7 +44,7 @@ const extensionConfig = {
 	// },
 };
 const viewConfig = {
-	entry: "./src/webviews/issues/app/App.tsx",
+	entry: "./src/webviews/issues/App.ts",
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: "issues/[name].js",

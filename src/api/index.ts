@@ -46,7 +46,7 @@ export class Api {
 	getGroupIssues(groupID: number): any {
 		return Api.instance.api.get(`groups/${groupID}/issues`);
 	}
-	getProjectIssue(projectID: number, issueID: number) {
+	getProjectIssue(projectID: number, issueID: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`projects/${projectID}/issues/${issueID}`);
 	}
 	createProjectSnippet(projectId: number, snippet: SnippetObject) {

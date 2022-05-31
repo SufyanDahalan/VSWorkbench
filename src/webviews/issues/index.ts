@@ -1,7 +1,13 @@
 import * as vscode from "vscode";
 import { Api } from "../../api";
+import PubSub from 'pubsub-js'
+import { IssueViewEvents } from '../../globals/'
 let api = Api.Instance;
-
+// enum IssueViewEvents {
+//     GROUP_SELECTED = 0,//'GROUP_SELECTED',
+//     PROJECT_SELECTED,// = 'PROJECT_SELECTED',
+//     API_TOKEN,// = 'API_TOKEN'
+// }
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabIssues";
 	token: string;
@@ -13,6 +19,14 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
+        PubSub.subscribe(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], (msg: any, data: any)=>{
+            console.log('group selected, data: ',data)
+		    this._view!.webview.postMessage({ type: 0, msg, id: data.id });
+        })
+        PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any)=>{
+            console.log('group selected, data: ',data)
+		    this._view!.webview.postMessage({ type: 1, msg, id: data.id });
+        })
 	}
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
@@ -22,7 +36,7 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
-		this._view.webview.postMessage({ type: "Token", Token: this.token });
+		this._view.webview.postMessage({ type: IssueViewEvents.API_TOKEN, Token: this.token });
 		// this._view.webview.onDidReceiveMessage((event) => {
 		//     // console.log(event)
 		// api.createNewProjectIssueComment(event.project_id, event.issue_iid, event.newComment);
@@ -76,17 +90,7 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 				<title>GitLab Issues | VSWorkbench</title>
 			</head>
 			<body>
-            <script > function newComment(){
-                const vscode = acquireVsCodeApi();
-                console.log("new comment in progress");
-                vscode.postMessage({
-                    command: 'postComment',
-                    project_id: 35151212,
-                    issue_iid: 4,
-                    newComment: 'this.state.newComment'
-                });
-                }</script>
-            <button onclick="newComment()">new comment bliz</button>
+            <script >window.vscode = acquireVsCodeApi();</script>
             <div id="app"></div>
 
                 <script src="${scriptUri}"></script>
