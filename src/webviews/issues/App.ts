@@ -82,7 +82,6 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 				let issue: IIssue = IssueResultObject.data;
 				api.getProjectIssueComments(args!.project_id, args!.issue_iid).then((CommentsResultObject) => {
 					for (const comment of CommentsResultObject.data) {
-						// comment.id = comment.id;
 						comment.author = {
 							username: comment.author.username,
 							name: comment.author.name,
