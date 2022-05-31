@@ -38,8 +38,8 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./${{ github.ref_name }}.vsix
-            asset_name: ${{ github.ref_name }}.vsix
+            asset_path: ./vsworkbench-${{ github.ref_name }}.vsix
+            asset_name: $vsworkbench-{{ github.ref_name }}.vsix
             asset_content_type: application/zip
       - name: Publish Extension
         run: vsce publish --no-yarn -i ./vsworkbench-${{github.ref_name}}.vsix -p ${{ secrets.VSCE_PAT }} 
