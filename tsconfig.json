@@ -4,7 +4,7 @@
         // "types":["./src/Globals.d.ts"],
 		"module": "es2015",
 		"target": "ES2020",
-		"lib": ["ES2020", "dom"],
+		"lib": ["ES2021", "dom"],
 		"baseUrl": "src",
         "skipLibCheck": true,
         "paths": {

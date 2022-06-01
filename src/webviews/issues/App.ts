@@ -1,13 +1,13 @@
 import { Api } from "../../api";
 import { IssueViewEvents } from "../../globals/constants";
-import './App.css' 
+import "./App.css";
 
 let api = Api.Instance;
 let app = document.getElementById("app");
 let selection = { value: 0, id: 0 };
 
 enum Routes {
-    PENDING = 0,
+	PENDING = 0,
 	GROUP_ISSUES_ROUTE,
 	PROJECT_ISSUES_ROUTE,
 	ISSUE_ROUTE,
@@ -16,8 +16,8 @@ enum Routes {
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case IssueViewEvents.API_TOKEN: {
-            selection.value = Routes.PENDING
-            Route(Routes.PENDING)
+			selection.value = Routes.PENDING;
+			Route(Routes.PENDING);
 			Api.updateAuthToken(event.data.Token);
 			break;
 		}
@@ -39,41 +39,26 @@ window.addEventListener("message", (event) => {
 async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 	app!.innerHTML = "";
 	switch (route) {
-        case Routes.PENDING: {
-            
-            break;
-        }
+		case Routes.PENDING: {
+			break;
+		}
 		case Routes.GROUP_ISSUES_ROUTE: {
 			api.getGroupIssues(selection.id).then((res: any) => {
-				res.data;
 				for (const issue of res.data) {
-					issue.author = {
-						username: issue.author.username,
-						name: issue.author.name,
-						id: issue.author.id,
-					};
 					issue.reference = issue.references.full;
 				}
-				for (const issue of res.data as IIssue[]) {
-					app!.appendChild(CreateIssueNode(issue));
-				}
+				let issues: IIssue[] = res.data;
+				app!.appendChild(CreateIssuesUL(issues));
 			});
 			break;
 		}
 		case Routes.PROJECT_ISSUES_ROUTE: {
 			api.getProjectIssues(selection.id).then((res: any) => {
-				res.data;
 				for (const issue of res.data) {
-					issue.author = {
-						username: issue.author.username,
-						name: issue.author.name,
-						id: issue.author.id,
-					};
 					issue.reference = issue.references.full;
 				}
-				for (const issue of res.data as IIssue[]) {
-					app!.appendChild(CreateIssueNode(issue));
-				}
+				let issues: IIssue[] = res.data;
+				app!.appendChild(CreateIssuesUL(issues));
 			});
 			break;
 		}
@@ -87,9 +72,9 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 							name: comment.author.name,
 							id: comment.author.id,
 						};
-                        comment.project_id = issue.project_id;
-                        comment.issue_id = comment.noteable_id;
-                        comment.issue_iid = comment.noteable_iid;
+						comment.project_id = issue.project_id;
+						comment.issue_id = comment.noteable_id;
+						comment.issue_iid = comment.noteable_iid;
 					}
 					let comments: IComment[] = CommentsResultObject.data;
 					app!.appendChild(
@@ -106,7 +91,7 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 							"&#x21A9;"
 						)
 					);
-					app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "header" }], issue.title));
+					app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
 					for (const comment of comments) {
 						app!.appendChild(CreateCommentNode(comment));
 					}
@@ -139,12 +124,22 @@ function CreateHtmlNode(type: string, attributes: { key: string; value: string |
 	return el;
 }
 function CreateCommentNode(comment: IComment): Node {
-	let commentNode = CreateHtmlNode("div", null, '');
-    commentNode.appendChild(CreateHtmlNode("div", null, comment.body))
-    /* comment.author === user ?  */commentNode.appendChild(CreateHtmlNode('div', [{key: 'onclick', value: ()=>{
-        api.deleteIssueNote(comment.project_id, comment.issue_iid, comment.id)
-    }}],'&#x1f5d1;'))
-    // : null; 
+	let commentNode = CreateHtmlNode("div", null, "");
+	commentNode.appendChild(CreateHtmlNode("div", null, comment.body));
+	commentNode.appendChild(
+		CreateHtmlNode(
+			"div",
+			[
+				{
+					key: "onclick",
+					value: () => {
+						api.deleteIssueNote(comment.project_id, comment.issue_iid, comment.id);
+					},
+				},
+			],
+			"&#x1f5d1;"
+		)
+	);
 	return commentNode;
 }
 function CreateNewCommentInput(issue: IIssue): Node {
@@ -170,23 +165,44 @@ function CreateNewCommentInput(issue: IIssue): Node {
 	);
 	return div;
 }
+function CreateIssuesUL(issues: IIssue[]): Node {
+	let list = CreateHtmlNode("ul", [{ key: "class", value: "issues-list" }], "");
+	issues.forEach((issue: IIssue) => {
+		list.appendChild(CreateIssueNode(issue));
+	});
+	list.appendChild;
+	return list;
+}
 function CreateIssueNode(issue: IIssue): Node {
-	let issueNode = CreateHtmlNode("div", null, "");
+	let issueNode = CreateHtmlNode("li", null, "");
 	issueNode.appendChild(
 		CreateHtmlNode(
-			"h1",
+			"a",
 			[
-                { key: "class", value: "issue" },
+				{ key: "class", value: "issue-title" },
 				{
 					key: "onclick",
 					value: () => {
-						Route(Routes.ISSUE_ROUTE, {project_id: issue.project_id, issue_iid: issue.iid });
+						Route(Routes.ISSUE_ROUTE, { project_id: issue.project_id, issue_iid: issue.iid });
 					},
 				},
 			],
 			issue.title
 		)
 	);
+    let date = new Date(issue.created_at);
+    let meta  = CreateHtmlNode("div", [{ key: "class", value: "meta" }],'')
+    let metaBottom = CreateHtmlNode("div", [{ key: "class", value: "meta-bottom" }],'')
+    metaBottom.appendChild(CreateHtmlNode('span', [{key: 'class', value: 'authored'}], issue.references.short + ' · created on ' + date.toLocaleDateString() + ' by '))
+    metaBottom.appendChild(CreateHtmlNode('span', [{key: 'class', value: 'author'}], issue.author.name))
+    let labels = CreateHtmlNode('div', [{key: 'class', value: 'labels'}], '')
+    issue.labels.forEach(label => {
+        labels.appendChild(CreateHtmlNode("div", [{ key: "class", value: "label" }], label))
+    });
+	metaBottom.appendChild(labels);
+    meta.appendChild(metaBottom);
+	meta.appendChild(CreateHtmlNode("div", [{ key: "class", value: "meta-right" }], String(issue.user_notes_count) + ' &#x1f5ea;'));
+	issueNode.appendChild(meta)
 	return issueNode;
 }
 interface x {

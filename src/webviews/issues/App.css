@@ -1,3 +1,74 @@
-.header{
-    color:red;
+.title {
+    
 }
+
+.issues-list {
+	list-style-type: none;
+}
+.issues-list > li {
+    display: flex;
+    flex-direction: column;
+	border-bottom: 1px solid #4f4f4f;
+}
+
+.issues-list > li:last-child {
+	border-bottom: none;
+}
+a:hover {
+	cursor: pointer;
+}
+a {
+	color: inherit;
+}
+
+.issue-title {
+	font-size: 150%;
+	font-weight: bold;
+    flex: 1;
+
+}
+.meta-bottom{
+
+    display: inline-flex;
+
+}
+.meta-bottom > .authored {
+	font-weight: 400;
+	color: #999;
+}
+
+.meta-bottom > .author {
+	color: #fafafa;
+    margin-left: 4px;
+}
+.labels{
+    margin-left: 10px;
+}
+.labels > * {
+    margin-left: 10px;
+}
+.label {
+    background-color: violet;
+    border-radius: 0.75rem;
+}
+.meta-right {
+    /* float: inline-end; */
+}
+.meta {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+/*
+
+.meta-right {
+    float: right;
+}    
+.issue-title {
+    font-size: 70%;
+}
+
+
+
+*/

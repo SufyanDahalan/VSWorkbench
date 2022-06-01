@@ -9,15 +9,21 @@ declare global {
 		updated_at: string;
 		created_at: string;
 		labels: string[];
-		reference: string; // ie [Group Name]/[Repo/Project Name]#1
+		references: {
+			full: string;
+			relative: string;
+            short: string;
+		}; // ie [Group Name]/[Repo/Project Name]#1
 		due_date: string;
 		author: { username: string; name: string; id: string }; // Sufyan Dahalan
+		assignee: { username: string; name: string; id: string }; // Sufyan Dahalan
 		project_id: number;
+		user_notes_count: number;
 	}
 	interface IComment {
-        issue_id: number;
-        issue_iid: number;
-        project_id: number;
+		issue_id: number;
+		issue_iid: number;
+		project_id: number;
 		id: number;
 		body: string;
 		author: { username: string; name: string; id: string }; // Sufyan Dahalan
@@ -48,13 +54,13 @@ declare global {
 		 */
 		message: string;
 	}
-    interface SnippetObject{
-        title: string;
-        description?: string;
-        visibility?: enum;
-        files: {
-            file_path: string;
-            content: string;
-        }[]
-    }
+	interface SnippetObject {
+		title: string;
+		description?: string;
+		visibility?: enum;
+		files: {
+			file_path: string;
+			content: string;
+		}[];
+	}
 }
