@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import  { Api }/* , * as API */ from "./api";
 
-import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions, GROUP_VIEW_FOCUS } from "./globals/";
+import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions } from "./globals/";
 
 import * as Commands from "./commands";
 import {createIssueCommand} from "./commands";
@@ -12,7 +12,6 @@ import { PipelineViewProvidor } from "./webviews/pipelines";
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 	context.globalState.setKeysForSync([GITLAB_INSTANCE_KEY]);
-	// context.workspaceState.update(GROUP_VIEW_FOCUS, undefined);
 }
 export function activate(context: vscode.ExtensionContext) {
 	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);

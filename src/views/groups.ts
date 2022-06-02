@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import { Api } from "../api";
 // import { ProjectNode } from "./projects";
-import { AUTH_TOKEN_KEY, GROUP_VIEW_FOCUS, IssueViewEvents } from "../globals/";
+import { AUTH_TOKEN_KEY, IssueViewEvents } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
@@ -251,10 +251,9 @@ export class GroupView {
 		this.groupTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
 			// TODO: highlight the item selected using TreeItemLabel.highlight
 			// remote-explorer-get-started, extensions-star-empty, extensions-star-full, extensions-star-half, triangle-left, arrow-left, arrow-small-left, chevron-left
-			// this.groupTreeViewer.selection[0].iconPath = new vscode.ThemeIcon('extensions-star-full') // TOFIX: it simply aint working
 			// treeDataProvider.refresh()
 			if (selection["selection"][0].contextValue == "project") {
-				// new PipelineView(context, selection["selection"][0].node_id);
+				new PipelineView(context, selection["selection"][0].node_id);
                 PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], {id: selection['selection'][0].node_id})
 			} else if (selection["selection"][0].contextValue == "group"){
                 PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], {id: selection['selection'][0].node_id})
@@ -264,7 +263,6 @@ export class GroupView {
 				// FIXME: for some reason this if block gets reached once and then never gets updated again.
 				// just look for a better way of initializing and creating and disposing TreeViews
 			} //FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
-			// context.workspaceState.update(GROUP_VIEW_FOCUS, selection["selection"][0].node_id);
 		});
 		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}

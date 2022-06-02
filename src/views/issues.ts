@@ -4,7 +4,6 @@ import {Node} from './node'
 
 import Api from "../api";
 const api = Api.Instance
-// import { GROUP_VIEW_FOCUS } from "../globals";
 let issueKind: boolean;
 let parent_id: number;
 // export interface IssuesNode {
