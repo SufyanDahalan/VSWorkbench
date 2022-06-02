@@ -4,11 +4,11 @@
 TARGET    := thesis.pdf
 
 ## Input files
-MD_SRC    := $(wildcard include/*.md)
+MD_SRC    := $(wildcard Include/*.md)
 TEX_SRC   := $(patsubst %.md,%.tex,$(MD_SRC))
 RASTERIMG := $(wildcard images/*.png)
 VECTORIMG := $(wildcard images/*.svg)
-BIB       := include/Literatur.bib
+BIB       := Include/Literatur.bib
 
 
 .PHONY: all clean distclean
@@ -40,7 +40,7 @@ $(TARGET): $(TEX_SRC) $(RASTERIMG) $(patsubst %.svg,%.pdf,$(VECTORIMG)) $(BIB)
 clean:
 	-latexmk -c
 	rm -f *.aux *.idx *.ind *.out *.toc *.log *.bbl *.blg *.brf *.lof *.lot *.xmpdata *.bib *.lol *.run.xml
-	rm -f include/*.aux include/*.tex
+	rm -f Include/*.aux Include/*.tex
 
 ## Clean everything
 distclean: clean
