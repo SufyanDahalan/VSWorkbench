@@ -5,7 +5,7 @@ import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions } from "./globals/
 
 import * as Commands from "./commands";
 import { createIssueCommand } from "./commands";
-import { GroupView, GroupNode, ProjectNode, Node } from "./views";
+import { GroupView, GroupNode, Node } from "./views";
 import { IssuesViewProvidor } from "./webviews/issues";
 import { PipelineViewProvidor } from "./webviews/pipelines";
 
@@ -19,24 +19,17 @@ export function activate(context: vscode.ExtensionContext) {
 	initStorage(context);
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
 
-	let helloWorldCommand = vscode.commands.registerCommand("VSWorkbench.helloWorld", () => {
-		vscode.window.showInformationMessage("Hello World from VSWorkbench!", "good"); // Display a message box to the user
-	});
-	let addPersonalAccessTokenCommand = vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", () => {
-		GlobalFunctions.settings(context.globalState);
-	});
-	let updatePersonalAccessTokenCommand = vscode.commands.registerCommand("VSWorkbench.updatePersonalAccessToken", () => {
-		GlobalFunctions.settings(context.globalState);
-	});
-
 	let groupView = new GroupView(context);
 	let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
 	let pipelineWebView = new PipelineViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
 
 	context.subscriptions.push(
-		addPersonalAccessTokenCommand,
-		updatePersonalAccessTokenCommand,
-		helloWorldCommand,
+		vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", () => {
+			GlobalFunctions.settings(context.globalState);
+		}),
+		vscode.commands.registerCommand("VSWorkbench.updatePersonalAccessToken", () => {
+			GlobalFunctions.settings(context.globalState);
+		}),
 		vscode.commands.registerCommand("VSWorkbench.createIssue", createIssueCommand),
 		vscode.commands.registerCommand("VSWorkbench.createPersonalProject", Commands.createPersonalProjectCommand),
 		vscode.commands.registerCommand("VSWorkbench.createGroupProject", (node: GroupNode) => {
@@ -101,7 +94,6 @@ export function deactivate() {}
  * 3. {@link Api.getStarredProjects} and in treeViews
  * 4. {@link Commands.archiveProject} and in view/item/context
  * 5. {@link Commands.createIssueCommand}, and in view/item/context. First issue you should make should be about documenting this very project
- * 6. {@link ./treeViews/projects.ts } refactor. prob delete
  * 7. integrate @Telemetry {@link https://code.visualstudio.com/docs/getstarted/telemetry}
  * ================================================================================================================================
  * ================================================================================================================================

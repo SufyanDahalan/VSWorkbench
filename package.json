@@ -51,11 +51,6 @@
 		],
 		"commands": [
 			{
-				"command": "VSWorkbench.helloWorld",
-				"title": "Hello World",
-				"category": "VSWorkbench"
-			},
-			{
 				"command": "VSWorkbench.addPersonalAccessToken",
 				"title": "Authenticate",
 				"category": "VSWorkbench"
