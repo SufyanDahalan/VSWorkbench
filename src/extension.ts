@@ -5,7 +5,7 @@ import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions } from "./globals/
 
 import * as Commands from "./commands";
 import { createIssueCommand } from "./commands";
-import { GroupView, GroupNode, Node } from "./views";
+import { GroupTreeDataProvider, GroupNode, Node } from "./views";
 import { IssuesViewProvidor } from "./webviews/issues";
 import { PipelineViewProvidor } from "./webviews/pipelines";
 
@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 	initStorage(context);
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
 
-	let groupView = new GroupView(context);
+	let groupView = new GroupTreeDataProvider(context);
 	let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
 	let pipelineWebView = new PipelineViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
 

@@ -151,7 +151,29 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 	onDidChange?: vscode.Event<vscode.Uri>;
 	private _onDidChangeTreeData: vscode.EventEmitter<GroupNode | undefined | void> = new vscode.EventEmitter<GroupNode | undefined | void>();
 	readonly onDidChangeTreeData: vscode.Event<GroupNode | undefined | void> = this._onDidChangeTreeData.event;
-	constructor(private readonly model: GroupModel) {}
+	constructor(context: vscode.ExtensionContext/* private readonly model: GroupModel */) {
+        const groupModel = new GroupModel();
+		const view = vscode.window.createTreeView("groupView", {
+			treeDataProvider: this,
+			canSelectMany: false,
+			dragAndDropController: this,
+            showCollapseAll: true
+		});
+		context.subscriptions.push(view);
+		view.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
+			if (selection["selection"][0].contextValue == "project") {
+				new PipelineView(context, selection["selection"][0].node_id);
+				PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
+			} else if (selection["selection"][0].contextValue == "group") {
+				PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
+			}
+			if (selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project") {
+				new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
+			} //FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
+		});
+		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => this.refresh()); // FEATURE: hook up to button with refresh icon?
+
+    }
 
 	public refresh(): void {
 		this._onDidChangeTreeData.fire();
@@ -265,34 +287,5 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 				? this.refresh()
 				: vscode.window.showErrorMessage("TODO"); //.then((res: AxiosResponse) => {
 		}
-	}
-}
-/**
- * class GroupView
- */
-export class GroupView {
-	public groupTreeViewer: vscode.TreeView<GroupNode>;
-	constructor(context: vscode.ExtensionContext) {
-		const groupModel = new GroupModel();
-		const treeDataProvider = new GroupTreeDataProvider(groupModel);
-		this.groupTreeViewer = vscode.window.createTreeView("groupView", {
-			treeDataProvider,
-			canSelectMany: false,
-			dragAndDropController: treeDataProvider,
-		});
-		context.subscriptions.push(this.groupTreeViewer);
-		this.groupTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
-			// treeDataProvider.refresh()
-			if (selection["selection"][0].contextValue == "project") {
-				new PipelineView(context, selection["selection"][0].node_id);
-				PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
-			} else if (selection["selection"][0].contextValue == "group") {
-				PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
-			}
-			if (selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project") {
-				new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
-			} //FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
-		});
-		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
 	}
 }
