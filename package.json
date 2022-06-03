@@ -406,7 +406,8 @@
 				},
 				{
 					"command": "VSWorkbench.openInGitLab",
-					"group": "inline@1"
+					"group": "inline@1",
+					"when": "view == groupView"
 				},
 				{
 					"command": "VSWorkbench.openSettingsInGitLab",

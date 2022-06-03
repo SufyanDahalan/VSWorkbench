@@ -115,15 +115,12 @@ export class Api {
 	}
 
 	transferProjectToGroup(group_id: number, project_id: number): Promise<AxiosResponse> {
-		// return Api.instance.api.post(`groups/${group_id}/projects/${project_id}`);
+		// return Api.instance.api.post(`groups/${group_id}/projects/${project_id}`); // only available for instance admins =(
 		return Api.instance.api.put(`projects/${project_id}/transfer?namespace=${group_id}`);
 	}
 	transferGroup(id: number, group_id?: number): Promise<AxiosResponse> {
 		return group_id ? Api.instance.api.post(`groups/${id}/transfer`, { group_id }) : Api.instance.api.post(`groups/${id}/transfer`) ;
 	}
-	// deletePersonalProject(project_id: string): AxiosResponse {
-	// 	return Api.instance.api.delete(`projects/${project_id}`);
-	// }
 	deleteProject(project_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.delete(`projects/${project_id}`);
 	}

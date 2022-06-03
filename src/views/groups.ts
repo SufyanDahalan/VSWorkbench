@@ -237,28 +237,31 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 		if (!transferItem) {
 			return;
 		}
-		if (target === undefined && transferItem.value[0].contextValue === "group") {
-			(await api.transferGroup(transferItem.value[0].node_id)).status.toString()[0] === "2"
-				? this.refresh()
-				: vscode.window.showErrorMessage("TODO");
-		} else if (target !== undefined && target.node_id === transferItem.value[0].parent_id) {
-			vscode.window.showErrorMessage("-_- \n Cannot transfer a project to a project."); // fr. show it to user
+		let source = transferItem.value[0];
+		if (target === undefined && source.contextValue === "group") {
+			(await api.transferGroup(source.node_id)).status.toString()[0] === "2" ? this.refresh() : vscode.window.showErrorMessage("TODO");
+		} else if (
+			(target === undefined && source.contextValue === "project") ||
+			(target !== undefined &&
+				(target.node_id === source.parent_id || (target.contextValue === "project" && source.contextValue === "project")))
+		) {
+			vscode.window.showErrorMessage(`-_-. Operation probably not logical. Try again.`); // fr. show it to user
 		} else if (
 			target !== undefined &&
-			target.node_id !== transferItem.value[0].parent_id &&
-			transferItem.value[0].contextValue === "project" &&
+			target.node_id !== source.parent_id &&
+			source.contextValue === "project" &&
 			target.contextValue !== "project"
 		) {
-			(await api.transferProjectToGroup(target.node_id, transferItem.value[0].node_id)).status.toString()[0] === "2"
+			(await api.transferProjectToGroup(target.node_id, source.node_id)).status.toString()[0] === "2"
 				? this.refresh()
 				: vscode.window.showErrorMessage("TODO"); //.then((res: AxiosResponse) => {
 		} else if (
 			target !== undefined &&
-			target.node_id !== transferItem.value[0].parent_id &&
-			transferItem.value[0].contextValue === "group" &&
+			target.node_id !== source.parent_id &&
+			source.contextValue === "group" &&
 			target.contextValue !== "project"
 		) {
-			(await api.transferGroup(transferItem.value[0].node_id, target.node_id)).status.toString()[0] === "2"
+			(await api.transferGroup(source.node_id, target.node_id)).status.toString()[0] === "2"
 				? this.refresh()
 				: vscode.window.showErrorMessage("TODO"); //.then((res: AxiosResponse) => {
 		}
@@ -275,17 +278,10 @@ export class GroupView {
 		this.groupTreeViewer = vscode.window.createTreeView("groupView", {
 			treeDataProvider,
 			canSelectMany: false,
-			/**
-			 * @TODO :- implement {@link vscode.TreeDragAndDropController} +
-			 * {@link https://github.com/microsoft/vscode-extension-samples/blob/main/tree-view-sample/src/testViewDragAndDrop.ts}
-			 * will be used to move groups/subgroups/projects around from one group/namespace to another
-			 */
 			dragAndDropController: treeDataProvider,
 		});
 		context.subscriptions.push(this.groupTreeViewer);
 		this.groupTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
-			// TODO: highlight the item selected using TreeItemLabel.highlight
-			// remote-explorer-get-started, extensions-star-empty, extensions-star-full, extensions-star-half, triangle-left, arrow-left, arrow-small-left, chevron-left
 			// treeDataProvider.refresh()
 			if (selection["selection"][0].contextValue == "project") {
 				new PipelineView(context, selection["selection"][0].node_id);
@@ -295,8 +291,6 @@ export class GroupView {
 			}
 			if (selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project") {
 				new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
-				// FIXME: for some reason this if block gets reached once and then never gets updated again.
-				// just look for a better way of initializing and creating and disposing TreeViews
 			} //FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
 		});
 		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
