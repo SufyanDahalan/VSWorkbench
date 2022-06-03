@@ -36,51 +36,49 @@ export class Api {
 		Api.PRIVATE_TOKEN = newAuthToken;
 		Api.instance.api.defaults.headers.common["PRIVATE-TOKEN"] = newAuthToken;
 	}
-    //#region projects
-	getProjectIssueBoards(projectID: number): Promise<AxiosResponse> {
-		return Api.instance.api.get(`projects/${projectID}/boards`);
+	//#region projects
+	getProjectIssueBoards(project_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/boards`);
 	}
-	getProjectIssues(projectID: number): Promise<AxiosResponse> {
-		return Api.instance.api.get(`projects/${projectID}/issues`);
+	getProjectIssues(project_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/issues`);
 	}
-	getGroupIssues(groupID: number): any {
-		return Api.instance.api.get(`groups/${groupID}/issues`);
+	getGroupIssues(group_id: number): any {
+		return Api.instance.api.get(`groups/${group_id}/issues`);
 	}
-	getProjectIssue(projectID: number, issueID: number): Promise<AxiosResponse> {
-		return Api.instance.api.get(`projects/${projectID}/issues/${issueID}`);
+	getProjectIssue(project_id: number, issue_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/issues/${issue_id}`);
 	}
-	createProjectSnippet(projectId: number, snippet: SnippetObject) {
-		return Api.instance.api.post(`projects/${projectId}/snippets`, { snippet });
+	createProjectSnippet(project_id: number, snippet: SnippetObject): Promise<AxiosResponse> {
+		return Api.instance.api.post(`projects/${project_id}/snippets`, { snippet });
 	}
-	getProjectIssueComments(projectID: number, issueID: number) {
-		return Api.instance.api.get(`projects/${projectID}/issues/${issueID}/notes`);
+	getProjectIssueComments(project_id: number, issue_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/issues/${issue_id}/notes`);
 	}
-	async createNewProjectIssueComment(projectID: number, issueIID: number, body: string) {
-        await Promise.all([
-            Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/notes?body=${body}`)
-        ])
+	createNewProjectIssueComment(project_id: number, issueIID: number, body: string): Promise<AxiosResponse> {
+		return Api.instance.api.post(`projects/${project_id}/issues/${issueIID}/notes?body=${body}`);
 	}
-	editProjectIssueComment(projectID: number, issueID: number, note_id: number) {
-		return Api.instance.api.put(`projects/${projectID}/issues/${issueID}/notes/${note_id}`);
+	editProjectIssueComment(project_id: number, issue_id: number, note_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.put(`projects/${project_id}/issues/${issue_id}/notes/${note_id}`);
 	}
-	getProjectPipelines(projectID: number): Promise<AxiosResponse> {
-		return Api.instance.api.get(`projects/${projectID}/pipelines`);
+	getProjectPipelines(project_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/pipelines`);
 	}
-	getPipelineJobs(projectID: number, pipeline_id: number): Promise<AxiosResponse> {
-		return Api.instance.api.get(`projects/${projectID}/pipelines/${pipeline_id}/jobs`);
+	getPipelineJobs(project_id: number, pipeline_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/pipelines/${pipeline_id}/jobs`);
 	}
-	getPipeline(projectID: string, pipelineID: string): Promise<AxiosResponse> {
-		return Api.instance.api.get(`projects/${projectID}/pipelines/${pipelineID}`);
+	getPipeline(project_id: string, pipelineID: string): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/pipelines/${pipelineID}`);
 	}
-	createNewProjectIssue(projectID: string): Promise<AxiosResponse> {
-		return Api.instance.api.post(`projects/${projectID}/issues`);
+	createNewProjectIssue(project_id: string): Promise<AxiosResponse> {
+		return Api.instance.api.post(`projects/${project_id}/issues`);
 	}
-	reorderProjectIssue(projectID: string, issueIID: string): Promise<AxiosResponse> {
+	reorderProjectIssue(project_id: string, issueIID: string): Promise<AxiosResponse> {
 		// https://docs.gitlab.com/ee/#api/issues.html#reorder-an-issue
-		return Api.instance.api.post(`projects/${projectID}/issues/${issueIID}/reorder`);
+		return Api.instance.api.post(`projects/${project_id}/issues/${issueIID}/reorder`);
 	}
 	// #endregion
-    // #region user
+	// #region user
 	getUserInfo(): Promise<AxiosResponse> {
 		return Api.instance.api.get(`user/`);
 	}
@@ -93,13 +91,13 @@ export class Api {
 		return Api.instance.api.post(`projects?name=${projectName}`);
 	}
 	createSubGroup(parentID: number, name: string, path: string = name) {
-		// if (path) {
-			return Api.instance.api.post(`groups?parent_id=${parentID}`, { name, path });
+		// if (path) : Promise<AxiosResponse>{
+		return Api.instance.api.post(`groups?parent_id=${parentID}`, { name, path });
 		// } else {
 		// 	return Api.instance.api.post(`groups?parent_id=${parentID}`, { name, path: name });
 		// }
 	}
-    // #endregion
+	// #endregion
 
 	/**
 	 *
@@ -115,18 +113,26 @@ export class Api {
 		}
 		return Api.instance.api.post(`groups`, { name, path: path ? path : name });
 	}
-	// deletePersonalProject(projectID: string): AxiosResponse {
-	// 	return Api.instance.api.delete(`projects/${projectID}`);
+
+	transferProjectToGroup(group_id: number, project_id: number): Promise<AxiosResponse> {
+		// return Api.instance.api.post(`groups/${group_id}/projects/${project_id}`);
+		return Api.instance.api.put(`projects/${project_id}/transfer?namespace=${group_id}`);
+	}
+	transferGroup(id: number, group_id?: number): Promise<AxiosResponse> {
+		return group_id ? Api.instance.api.post(`groups/${id}/transfer`, { group_id }) : Api.instance.api.post(`groups/${id}/transfer`) ;
+	}
+	// deletePersonalProject(project_id: string): AxiosResponse {
+	// 	return Api.instance.api.delete(`projects/${project_id}`);
 	// }
-	deleteProject(projectID: number): Promise<AxiosResponse> {
-		return Api.instance.api.delete(`projects/${projectID}`);
+	deleteProject(project_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.delete(`projects/${project_id}`);
 	}
-	deleteGroup(groupID: number) {
-		return Api.instance.api.delete(`groups/${groupID}`);
+	deleteGroup(group_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.delete(`groups/${group_id}`);
 	}
-    deleteIssueNote(project_id: number, issue_iid: number, note_id: number){
-        return Api.instance.api.delete(`projects/${project_id}/issues/${issue_iid}/notes/${note_id}`)
-    }
+	deleteIssueNote(project_id: number, issue_iid: number, note_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.delete(`projects/${project_id}/issues/${issue_iid}/notes/${note_id}`);
+	}
 	/**
 	 *
 	 * @param group boolean, true means its a group namespace, false means its a user namespace
@@ -145,17 +151,17 @@ export class Api {
 	// getUserProjects(userID: string): AxiosResponse {
 	// 	return Api.instance.api.get(`users/${userID}/projects`);
 	// }
-	// getGroupProjects(groupID: string): AxiosResponse {
-	// 	return Api.instance.api.get(`groups/${groupID}/projects`);
+	// getGroupProjects(group_id: string): AxiosResponse {
+	// 	return Api.instance.api.get(`groups/${group_id}/projects`);
 	// }
-	async getUserGroups(): Promise<AxiosResponse> {
-		return await Api.instance.api.get(`groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc`);
+	getUserGroups(): Promise<AxiosResponse> {
+		return Api.instance.api.get(`groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc`);
 	}
 	getUserNamespaces(): Promise<AxiosResponse> {
 		return Api.instance.api.get(`namespaces`);
 	}
-	createGroupProject(projectName: string, groupID: number): Promise<AxiosResponse> {
-		return Api.instance.api.post(`projects?name=${projectName}&namespace_id=${groupID}`);
+	createGroupProject(projectName: string, group_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.post(`projects?name=${projectName}&namespace_id=${group_id}`);
 		// well, its basically a createPersonalProject but with the namespace_id specified
 	}
 	async getUserIDAsync(): Promise<AxiosResponse> {
@@ -165,25 +171,19 @@ export class Api {
 	getUserID(): Promise<AxiosResponse> {
 		return Api.instance.api.get("user");
 	}
-	async getGroupById(id: string): Promise<AxiosResponse> {
-		return await Api.instance.api.get(`groups/${id}`);
+	getGroupById(id: string): Promise<AxiosResponse> {
+		return Api.instance.api.get(`groups/${id}`);
 	}
-	async getSubGroups(parentID: number): Promise<AxiosResponse> {
-		return await Api.instance.api.get(`groups/${parentID}/subgroups`);
-	}
-	// };
-	// export default Object.create(Api); //Object.create( deepmerge.all([Api, userApi, projectApi, groupApi]))
-
-	// getBranches(){
-	//     return Api.instance.api.get()
-	// }
-
-	getBranches(projectID: number) {
-		return Api.instance.api.get(`projects/${projectID}/repository/branches`);
+	getSubGroups(parentID: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`groups/${parentID}/subgroups`);
 	}
 
-	getCommits(projectID: number) {
-		return Api.instance.api.get(`projects/${projectID}/repository/commits`);
+	getBranches(project_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/repository/branches`);
+	}
+
+	getCommits(project_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/repository/commits`);
 	}
 }
 export default Api;

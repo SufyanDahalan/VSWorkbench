@@ -6,9 +6,7 @@ import { AUTH_TOKEN_KEY, IssueViewEvents } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
-import PubSub from 'pubsub-js'
-
-
+import PubSub from "pubsub-js";
 
 const api = Api.Instance;
 
@@ -41,7 +39,6 @@ export class GroupNode extends Node {
 		});
 		inputProjectName.show();
 	}
-
 	delete() {
 		if (this.contextValue == "project") {
 			api.deleteProject(this.node_id);
@@ -81,7 +78,7 @@ export class GroupNode extends Node {
 			groupName = input;
 		});
 		inputSubGroupName.onDidAccept(() => {
-            groupName.match
+			groupName.match;
 			inputSubGroupName.hide();
 			inputSubGroupPath.show();
 		});
@@ -113,11 +110,11 @@ export class GroupNode extends Node {
 		});
 		inputSubGroupName.show();
 	}
-    cloneNameSpace(){
-        /**
-         * @Implement https://code.visualstudio.com/api/references/vscode-api#3548
-         *   */
-    }
+	cloneNameSpace() {
+		/**
+		 * @Implement https://code.visualstudio.com/api/references/vscode-api#3548
+		 *   */
+	}
 }
 
 export class GroupModel {
@@ -147,11 +144,13 @@ export class GroupModel {
 	}
 }
 
-export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode> {
+export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>, vscode.TreeDragAndDropController<GroupNode> {
+	dropMimeTypes = ["application/vnd.code.tree.groupView"];
+	dragMimeTypes = ["application/vnd.code.tree.groupView"];
+
 	onDidChange?: vscode.Event<vscode.Uri>;
 	private _onDidChangeTreeData: vscode.EventEmitter<GroupNode | undefined | void> = new vscode.EventEmitter<GroupNode | undefined | void>();
 	readonly onDidChangeTreeData: vscode.Event<GroupNode | undefined | void> = this._onDidChangeTreeData.event;
-
 	constructor(private readonly model: GroupModel) {}
 
 	public refresh(): void {
@@ -224,9 +223,44 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 				}
 				return groups;
 			});
-		}
-		else {
+		} else {
 			return Array<GroupNode>(); //<GroupNode>{}[];
+		}
+	}
+	public async handleDrag(source: GroupNode[], treeDataTransfer: vscode.DataTransfer, _token: vscode.CancellationToken): Promise<void> {
+		if (source[0].contextValue !== "user") {
+			treeDataTransfer.set("application/vnd.code.tree.groupView", new vscode.DataTransferItem(source));
+		}
+	}
+	public async handleDrop(target: GroupNode | undefined, sources: vscode.DataTransfer, _token: vscode.CancellationToken): Promise<void> {
+		const transferItem = sources.get("application/vnd.code.tree.groupView");
+		if (!transferItem) {
+			return;
+		}
+		if (target === undefined && transferItem.value[0].contextValue === "group") {
+			(await api.transferGroup(transferItem.value[0].node_id)).status.toString()[0] === "2"
+				? this.refresh()
+				: vscode.window.showErrorMessage("TODO");
+		} else if (target !== undefined && target.node_id === transferItem.value[0].parent_id) {
+			vscode.window.showErrorMessage("-_- \n Cannot transfer a project to a project."); // fr. show it to user
+		} else if (
+			target !== undefined &&
+			target.node_id !== transferItem.value[0].parent_id &&
+			transferItem.value[0].contextValue === "project" &&
+			target.contextValue !== "project"
+		) {
+			(await api.transferProjectToGroup(target.node_id, transferItem.value[0].node_id)).status.toString()[0] === "2"
+				? this.refresh()
+				: vscode.window.showErrorMessage("TODO"); //.then((res: AxiosResponse) => {
+		} else if (
+			target !== undefined &&
+			target.node_id !== transferItem.value[0].parent_id &&
+			transferItem.value[0].contextValue === "group" &&
+			target.contextValue !== "project"
+		) {
+			(await api.transferGroup(transferItem.value[0].node_id, target.node_id)).status.toString()[0] === "2"
+				? this.refresh()
+				: vscode.window.showErrorMessage("TODO"); //.then((res: AxiosResponse) => {
 		}
 	}
 }
@@ -238,15 +272,16 @@ export class GroupView {
 	constructor(context: vscode.ExtensionContext) {
 		const groupModel = new GroupModel();
 		const treeDataProvider = new GroupTreeDataProvider(groupModel);
-		this.groupTreeViewer = vscode.window.createTreeView("groupView", { treeDataProvider,
-			canSelectMany: false, // is it useful?
+		this.groupTreeViewer = vscode.window.createTreeView("groupView", {
+			treeDataProvider,
+			canSelectMany: false,
 			/**
-			 * @TODO :- implement {@link vscode.TreeDragAndDropController} + 
-             * {@link https://github.com/microsoft/vscode-extension-samples/blob/main/tree-view-sample/src/testViewDragAndDrop.ts}
-             * will be used to move groups/subgroups/projects around from one group/namespace to another
+			 * @TODO :- implement {@link vscode.TreeDragAndDropController} +
+			 * {@link https://github.com/microsoft/vscode-extension-samples/blob/main/tree-view-sample/src/testViewDragAndDrop.ts}
+			 * will be used to move groups/subgroups/projects around from one group/namespace to another
 			 */
-			// dragAndDropController: vscode.TreeDragAndDropController<GroupNode> = {}
-		 });
+			dragAndDropController: treeDataProvider,
+		});
 		context.subscriptions.push(this.groupTreeViewer);
 		this.groupTreeViewer.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
 			// TODO: highlight the item selected using TreeItemLabel.highlight
@@ -254,10 +289,10 @@ export class GroupView {
 			// treeDataProvider.refresh()
 			if (selection["selection"][0].contextValue == "project") {
 				new PipelineView(context, selection["selection"][0].node_id);
-                PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], {id: selection['selection'][0].node_id})
-			} else if (selection["selection"][0].contextValue == "group"){
-                PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], {id: selection['selection'][0].node_id})
-            }
+				PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
+			} else if (selection["selection"][0].contextValue == "group") {
+				PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
+			}
 			if (selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project") {
 				new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
 				// FIXME: for some reason this if block gets reached once and then never gets updated again.
