@@ -7,6 +7,14 @@ import * as vscode from "vscode";
 import { Api } from "../api";
 const api = Api.Instance;
 
+export async function cloneFromGitLab(/* id?: number, */ url: string/* , query?: string */): Promise<any> {
+	// if (query) {
+	// 	return vscode.window.showErrorMessage("Not Yet Implemented!");
+	// }
+    return await vscode.commands.executeCommand('git.clone', url) 
+    // return vscode.commands.executeCommand('git.clone', `https://gitlab.com/projects/${id}`)
+}
+
 export function createPersonalProjectCommand() {
 	let projectName = "";
 	const inputProjectName = vscode.window.createInputBox();
@@ -34,7 +42,6 @@ export function createGroupProjectCommand(groupID: number) {
 	});
 	inputProjectName.show();
 } // MVP
-
 
 /**
  *
@@ -201,8 +208,8 @@ export * from "./pipeline";
 import pipelinesCommands from "./pipeline";
 export * from "./issue";
 import issueCommands from "./issue";
-export * from './project';
-import projectCommands from './project';
+export * from "./project";
+import projectCommands from "./project";
 
 /**
  * @module commands
@@ -211,7 +218,8 @@ import projectCommands from './project';
 export default {
 	...pipelinesCommands,
 	...issueCommands,
-    ...projectCommands,
+	...projectCommands,
+    cloneFromGitLab,
 	createGroupProjectCommand,
 	deleteProject,
 	createPersonalProjectCommand,

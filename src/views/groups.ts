@@ -1,12 +1,12 @@
 import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import { Api } from "../api";
-// import { ProjectNode } from "./projects";
 import { AUTH_TOKEN_KEY, IssueViewEvents } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
 import PubSub from "pubsub-js";
+import { cloneFromGitLab } from "../commands";
 
 const api = Api.Instance;
 
@@ -40,20 +40,31 @@ export class GroupNode extends Node {
 		inputProjectName.show();
 	}
 	delete() {
-		if (this.contextValue == "project") {
+		if (this.contextValue === "project") {
 			api.deleteProject(this.node_id);
-		} else if (this.contextValue == "group") {
+		} else if (this.contextValue === "group") {
 			api.deleteGroup(this.node_id);
-		} else if (this.contextValue == "user") {
+		} else if (this.contextValue === "user") {
 			vscode.window.showErrorMessage("Can't delete personal namespace!");
 		}
 	}
+	archiveProject() {
+		if (this.contextValue === "project" /* && !this.archived */) {
+			return api.archiveProject(this.node_id);
+		} else if (this.contextValue === "project" && false /* this.archived */) {
+			return api.unArchiveProject(this.node_id);
+		}
+		return null;
+	}
+	unArchiveProject() {
+		return null;
+	}
 	openSettingsInGitlab() {
-		if (this.contextValue == "project") {
+		if (this.contextValue === "project") {
 			vscode.env.openExternal(vscode.Uri.parse(this.url.toString() + "/edit"));
-		} else if (this.contextValue == "group") {
+		} else if (this.contextValue === "group") {
 			vscode.env.openExternal(vscode.Uri.parse(this.url.toString() + "/-/edit"));
-		} else if (this.contextValue == "user") {
+		} else if (this.contextValue === "user") {
 			vscode.env.openExternal(vscode.Uri.parse("https://gitlab.com/-/profile"));
 		}
 	}
@@ -110,11 +121,28 @@ export class GroupNode extends Node {
 		});
 		inputSubGroupName.show();
 	}
-	cloneNameSpace() {
+	async cloneNameSpace() {
+        if(this.contextValue === 'project'){
+            return;
+        }
+        let res = await api.getProjects(this.contextValue === 'group', this.node_id)
+        res.data.forEach((project: {url: string}) => {
+            cloneFromGitLab(project.url)
+        });
 		/**
 		 * @Implement https://code.visualstudio.com/api/references/vscode-api#3548
 		 *   */
 	}
+    async cloneProject(){
+        if(this.contextValue !== 'project'){
+            // prob return a vscode showerrormsg message
+    return;
+        }
+    await cloneFromGitLab(this.url.toString())
+        /**
+		 * @Implement https://code.visualstudio.com/api/references/vscode-api#3548
+		 *   */
+    }
 }
 
 export class GroupModel {
@@ -123,7 +151,7 @@ export class GroupModel {
 	public async getGroups(): Promise<any> {
 		let res = await api.getUserGroups();
 
-		if (res.data.length == 0) {
+		if (res.data.length === 0) {
 			return {} as GroupNode;
 		} else if (res.data.length > 0) {
 			let groups = new Array<GroupNode>();
@@ -151,29 +179,28 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 	onDidChange?: vscode.Event<vscode.Uri>;
 	private _onDidChangeTreeData: vscode.EventEmitter<GroupNode | undefined | void> = new vscode.EventEmitter<GroupNode | undefined | void>();
 	readonly onDidChangeTreeData: vscode.Event<GroupNode | undefined | void> = this._onDidChangeTreeData.event;
-	constructor(context: vscode.ExtensionContext/* private readonly model: GroupModel */) {
-        const groupModel = new GroupModel();
+	constructor(context: vscode.ExtensionContext) {
+		const groupModel = new GroupModel();
 		const view = vscode.window.createTreeView("groupView", {
 			treeDataProvider: this,
 			canSelectMany: false,
 			dragAndDropController: this,
-            showCollapseAll: true
+			showCollapseAll: true,
 		});
 		context.subscriptions.push(view);
 		view.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
-			if (selection["selection"][0].contextValue == "project") {
+			if (selection["selection"][0].contextValue === "project") {
 				new PipelineView(context, selection["selection"][0].node_id);
 				PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
-			} else if (selection["selection"][0].contextValue == "group") {
+			} else if (selection["selection"][0].contextValue === "group") {
 				PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
 			}
-			if (selection["selection"][0].contextValue == "group" || selection["selection"][0].contextValue == "project") {
-				new IssueView(context, selection["selection"][0].contextValue == "group", selection["selection"][0].node_id);
+			if (selection["selection"][0].contextValue === "group" || selection["selection"][0].contextValue === "project") {
+				new IssueView(context, selection["selection"][0].contextValue === "group", selection["selection"][0].node_id);
 			} //FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
 		});
 		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => this.refresh()); // FEATURE: hook up to button with refresh icon?
-
-    }
+	}
 
 	public refresh(): void {
 		this._onDidChangeTreeData.fire();

@@ -51,8 +51,8 @@
 		],
 		"commands": [
 			{
-				"command": "VSWorkbench.addPersonalAccessToken",
-				"title": "Authenticate",
+				"command": "VSWorkbench.clone",
+				"title": "Clone",
 				"category": "VSWorkbench"
 			},
 			{
@@ -200,7 +200,19 @@
 				"title": "Open In GitLab",
 				"category": "VSWorkbench",
 				"icon": "$(globe)"
-			}
+			},
+            {
+                "command": "VSWorkbench.clone",
+				"title": "Clone Project",
+				"category": "VSWorkbench",
+                "icon": "$(clone)"
+            },
+            {
+                "command": "VSWorkbench.archiveProject",
+                "title": "Archive Project",
+                "category": "VSWorkbench",
+                "icon": "$(archive)"
+            }
 		],
 		"viewsContainers": {
 			"activitybar": [
@@ -278,6 +290,9 @@
 			]
 		},
 		"menus": {
+            "commandPalette": [
+                
+            ],
 			"VSWorkbench.GroupView": [],
 			"VSWorkbench.PipelineView": [
 				{
@@ -404,6 +419,16 @@
 					"group": "inline@1",
 					"when": "view == groupView"
 				},
+                {
+                    "command": "VSWorkbench.clone",
+                    "when": "view == groupView && viewItem == project",
+					"group": "inline@1"
+                },
+                {
+                    "command": "VSWorkbench.archiveProject",
+					"group": "inline@1",
+                    "when": "view == groupView && viewItem == project"
+                },
 				{
 					"command": "VSWorkbench.openSettingsInGitLab",
 					"group": "inline@2",
@@ -439,6 +464,9 @@
 			}
 		]
 	},
+    "extensionDependencies": [
+        "vscode.git"
+      ],
 	"scripts": {
 		"vscode:prepublish": "npm run package",
 		"ts": "npm run esbuild-base -- --minify",

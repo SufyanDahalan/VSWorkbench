@@ -37,6 +37,12 @@ export class Api {
 		Api.instance.api.defaults.headers.common["PRIVATE-TOKEN"] = newAuthToken;
 	}
 	//#region projects
+    archiveProject(project_id: number): Promise<AxiosResponse>{
+        return Api.Instance.api.post(`projects/${project_id}/archive`)
+    }
+    unArchiveProject(project_id: number): Promise<AxiosResponse>{
+        return Api.Instance.api.post(`projects/${project_id}/unarchive`)
+    }
 	getProjectIssueBoards(project_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`projects/${project_id}/boards`);
 	}
@@ -184,3 +190,4 @@ export class Api {
 	}
 }
 export default Api;
+export const api = Api.Instance
