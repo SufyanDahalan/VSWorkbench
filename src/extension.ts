@@ -8,6 +8,7 @@ import { createIssueCommand } from "./commands";
 import { GroupTreeDataProvider, GroupNode, Node } from "./views";
 import { IssuesViewProvidor } from "./webviews/issues";
 import { PipelineViewProvidor } from "./webviews/pipelines";
+// import { EditorView } from "./webviews/editor/editor";
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 	context.globalState.setKeysForSync([GITLAB_INSTANCE_KEY]);
@@ -21,7 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let groupView = new GroupTreeDataProvider(context);
 	let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
 	let pipelineWebView = new PipelineViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
-  
+    // let editorView = new EditorView(context, context.globalState.get(AUTH_TOKEN_KEY) as string) 
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", () => {
@@ -45,7 +46,13 @@ export function activate(context: vscode.ExtensionContext) {
 			node.delete();
 		}),
 		vscode.commands.registerCommand("VSWorkbench.createPersonalSnippet", Commands.createPersonalSnippet),
-		vscode.commands.registerCommand("VSWorkbench.createProjectSnippet", Commands.createProjectSnippet),
+		vscode.commands.registerCommand("VSWorkbench.wiki", (node: GroupNode) => {
+            node.openWiki()
+        }/* Commands.createProjectSnippet */),
+        vscode.commands.registerCommand("VSWorkbench.snippets", (node: GroupNode) => {
+            node.openSnippets()
+        }/* Commands.createProjectSnippet */),
+        
 
 		vscode.commands.registerCommand("VSWorkbench.viewIssueList", Commands.viewIssueList),
 		vscode.commands.registerCommand("VSWorkbench.viewIssueBoard", Commands.viewIssueBoard),

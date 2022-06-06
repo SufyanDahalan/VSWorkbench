@@ -1,55 +1,41 @@
-import { Api } from "../../api";
 import { ViewEvents } from "../../globals/constants";
+import { Api } from "../../api";
 import "./App.css";
 
 let api = Api.Instance;
 let app = document.getElementById("app");
-let selection = 0;
 
 enum Routes {
-	PENDING = 0,
-	PIPELINES,
-	PIPELINE,
+	Wiki = 0,
+	Snippet,
 }
 
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case ViewEvents.API_TOKEN: {
 			Api.updateAuthToken(event.data.Token);
-			Route(Routes.PENDING);
+			break;
+		}
+        case ViewEvents.GROUP_SELECTED: {
+            let id = event.data.id
 			break;
 		}
 		case ViewEvents.PROJECT_SELECTED: {
-			selection = event.data.id;
-			Route(Routes.PIPELINES);
+            let id = event.data.id
 			break;
 		}
 	}
 });
-
+app?.appendChild(CreateHtmlNode('div', null, Math.random().toString()))
 async function Route(route: Routes) {
 	switch (route) {
-		case Routes.PENDING: {
+		case Routes.Wiki: {
 			break;
 		}
-		case Routes.PIPELINES: {
-			api.getProjectPipelines(selection).then((res) => {
-				let pipelines: IPipelineListItem[] = res.data as IPipelineListItem[];
-				for (const pipeline of pipelines) {
-					app!.appendChild(CreatePipelineNode(pipeline));
-				}
-			});
-			break;
-		}
-		case Routes.PIPELINE: {
-			break;
+		case Routes.Snippet: {
+            break;
 		}
 	}
-}
-// https://graphemica.com/%E2%9F%B3
-function CreatePipelineNode(pipeline: IPipelineListItem): Node {
-	let el = CreateHtmlNode("div", null, pipeline.id + pipeline.status);
-	return el;
 }
 function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
 	const el = document.createElement(type);

@@ -39,6 +39,9 @@
 		"onStartupFinished"
 	],
 	"contributes": {
+        "configuration": {
+            "title": "VSWorkbench"
+        },
 		"viewsWelcome": [
 			{
 				"view": "authentication",
@@ -133,9 +136,16 @@
 				"category": "VSWorkbench"
 			},
 			{
-				"command": "VSWorkbench.createProjectSnippet",
-				"title": "Create Project Snippet",
-				"category": "VSWorkbench"
+				"command": "VSWorkbench.snippets",
+				"title": "Open Snippets",
+				"category": "VSWorkbench",
+				"icon": "$(zap)"
+			},
+            {
+				"command": "VSWorkbench.wiki",
+				"title": "Open Wiki",
+				"category": "VSWorkbench",
+				"icon": "$(zap)"
 			},
 			{
 				"command": "VSWorkbench.viewIssueList",
@@ -322,10 +332,6 @@
 					"when": "view == groupView && viewItem == user"
 				},
 				{
-					"command": "VSWorkbench.createProjectSnippet",
-					"when": "view == groupView && viewItem == project"
-				},
-				{
 					"command": "VSWorkbench.deleteNamespaceNode",
 					"when": "viewItem == project || viewItem == group"
 				},
@@ -433,6 +439,16 @@
 					"command": "VSWorkbench.openSettingsInGitLab",
 					"group": "inline@2",
 					"when": "view == groupView"
+				},
+                {
+					"command": "VSWorkbench.snippets",
+					"group": "inline@2",
+					"when": "view == groupView && viewItem == project || view == groupView && viewItem == user"
+				},
+                {
+					"command": "VSWorkbench.wiki",
+					"group": "inline@2",
+					"when": "view == groupView && (viewItem == project || (viewItem == group && gitlabpremium))"
 				}
 			]
 		},

@@ -7,11 +7,12 @@ export const enum VALIDATION_RULES {
 	GitlabGroupPath,
 	NotEmptyOrNull,
 }
-export enum IssueViewEvents {
+export enum ViewEvents {
     GROUP_SELECTED = 0,
     PROJECT_SELECTED,
     PIPELINE_SELECTED,
     JOB_SELECTED,
     API_TOKEN,
-
+    WIKI,
+    SNIPPET
 }

@@ -1,5 +1,5 @@
 import { Api } from "../../api";
-import { IssueViewEvents } from "../../globals/constants";
+import { ViewEvents } from "../../globals/constants";
 import "./App.css";
 
 let api = Api.Instance;
@@ -15,19 +15,19 @@ enum Routes {
 
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
-		case IssueViewEvents.API_TOKEN: {
+		case ViewEvents.API_TOKEN: {
 			selection.value = Routes.PENDING;
 			Route(Routes.PENDING);
 			Api.updateAuthToken(event.data.Token);
 			break;
 		}
-		case IssueViewEvents.GROUP_SELECTED: {
+		case ViewEvents.GROUP_SELECTED: {
 			selection.value = Routes.GROUP_ISSUES_ROUTE;
 			selection.id = event.data.id;
 			Route(Routes.GROUP_ISSUES_ROUTE);
 			break;
 		}
-		case IssueViewEvents.PROJECT_SELECTED: {
+		case ViewEvents.PROJECT_SELECTED: {
 			selection.value = Routes.PROJECT_ISSUES_ROUTE;
 			selection.id = event.data.id;
 			Route(Routes.PROJECT_ISSUES_ROUTE);

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { Api } from "../../api";
 import PubSub from "pubsub-js";
-import { IssueViewEvents } from "../../globals/";
+import { ViewEvents } from "../../globals/";
 let api = Api.Instance;
 
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
@@ -15,11 +15,11 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
-		PubSub.subscribe(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], (msg: any, data: any) => {
-			this._view!.webview.postMessage({ type: IssueViewEvents.GROUP_SELECTED, msg, id: data.id });
+		PubSub.subscribe(ViewEvents[ViewEvents.GROUP_SELECTED], (msg: any, data: any) => {
+			this._view!.webview.postMessage({ type: ViewEvents.GROUP_SELECTED, msg, id: data.id });
 		});
-		PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
-			this._view!.webview.postMessage({ type: IssueViewEvents.PROJECT_SELECTED, msg, id: data.id });
+		PubSub.subscribe(ViewEvents[ViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
+			this._view!.webview.postMessage({ type: ViewEvents.PROJECT_SELECTED, msg, id: data.id });
 		});
 	}
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
@@ -30,7 +30,7 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
-		this._view.webview.postMessage({ type: IssueViewEvents.API_TOKEN, Token: this.token });
+		this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: this.token });
 	}
 
 	private getHtml(webview: vscode.Webview): string {

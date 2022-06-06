@@ -74,6 +74,38 @@ const viewConfig = {
 	// 	minimizer: [new TerserPlugin()],
 	// },
 };
+const editorConfig = {
+	entry: "./src/webviews/editor/App.ts",
+	output: {
+		path: path.resolve(__dirname, "dist"),
+		filename: "editor/[name].js",
+	},
+	mode: "production",
+	module: {
+		rules: [
+			{
+				test: /\.(ts|tsx)$/i,
+				loader: "ts-loader",
+				exclude: /node_modules/,
+			},
+			{
+				test: /\.css$/i,
+				use: ["style-loader", "css-loader", "postcss-loader"],
+			},
+		],
+	},
+	externals: {
+		vscode: "commonjs vscode",
+	},
+	resolve: {
+		extensions: [".ts", ".tsx", ".js", ".css"],
+	},
+    // optimization: {
+	// 	minimize: true,
+	// 	minimizer: [new TerserPlugin()],
+	// },
+};
+
 const pipelineConfig = {
 	entry: "./src/webviews/pipelines/App.ts",
 	output: {
@@ -106,4 +138,4 @@ const pipelineConfig = {
 	// },
 };
 
-module.exports = [extensionConfig, viewConfig, pipelineConfig];
+module.exports = [extensionConfig, viewConfig, pipelineConfig, editorConfig];

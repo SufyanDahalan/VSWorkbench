@@ -1,11 +1,13 @@
 import * as vscode from "vscode";
 import { Api } from "../api";
-import { IssueViewEvents } from "../globals/";
+import { AUTH_TOKEN_KEY, ViewEvents } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
 import PubSub from "pubsub-js";
 import { cloneFromGitLab } from "../commands";
+import { EditorView } from "../webviews/editor/editor";
+const editorView = new EditorView() 
 
 const api = Api.Instance;
 
@@ -45,7 +47,7 @@ export class GroupNode extends Node {
 	archiveProject() {
 		if (this.contextValue === "project" && !this.archived) {
 			return api.archiveProject(this.node_id);
-		} else if (this.contextValue === "project" && /* false */ this.archived) {
+		} else if (this.contextValue === "project" && this.archived) {
 			return api.unArchiveProject(this.node_id);
 		}
 		return null;
@@ -129,7 +131,7 @@ export class GroupNode extends Node {
 		if (path === undefined || path[0] === undefined) {
 			return vscode.window.showErrorMessage("Please choose a folder to clone into");
 		}
-		res.data.forEach(async (project: any/* { http_url_to_repo: string, archived: boolean } */) => {
+		res.data.forEach(async (project: any) => {
             if(!project.archived){
                 await cloneFromGitLab(project.http_url_to_repo, path![0].path);
             } 
@@ -151,6 +153,14 @@ export class GroupNode extends Node {
 		}
 		return await cloneFromGitLab(this.url.toString(), path[0].path);
 	}
+    openWiki(){
+        editorView.open(ViewEvents.WIKI, this.contextValue === 'group', this.node_id)
+        
+    }
+    openSnippets()
+    {
+        editorView.open(ViewEvents.SNIPPET, this.contextValue === 'group', this.node_id)
+    }
 }
 
 export class GroupModel {
@@ -188,6 +198,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 	onDidChange?: vscode.Event<vscode.Uri>;
 	private _onDidChangeTreeData: vscode.EventEmitter<GroupNode | undefined | void> = new vscode.EventEmitter<GroupNode | undefined | void>();
 	readonly onDidChangeTreeData: vscode.Event<GroupNode | undefined | void> = this._onDidChangeTreeData.event;
+    // editorView: EditorView
 	constructor(context: vscode.ExtensionContext) {
 		const groupModel = new GroupModel();
 		const view = vscode.window.createTreeView("groupView", {
@@ -197,12 +208,14 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 			showCollapseAll: true,
 		});
 		context.subscriptions.push(view);
+        editorView.add(context, context.globalState.get(AUTH_TOKEN_KEY) as string) 
+
 		view.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
 			if (selection["selection"][0].contextValue === "project") {
 				new PipelineView(context, selection["selection"][0].node_id);
-				PubSub.publish(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
+				PubSub.publish(ViewEvents[ViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
 			} else if (selection["selection"][0].contextValue === "group") {
-				PubSub.publish(IssueViewEvents[IssueViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
+				PubSub.publish(ViewEvents[ViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
 			}
 			if (selection["selection"][0].contextValue === "group" || selection["selection"][0].contextValue === "project") {
 				new IssueView(context, selection["selection"][0].contextValue === "group", selection["selection"][0].node_id);

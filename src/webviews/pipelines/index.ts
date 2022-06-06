@@ -1,4 +1,4 @@
-import { IssueViewEvents } from "../../globals";
+import { ViewEvents } from "../../globals";
 import * as vscode from "vscode";
 import PubSub from "pubsub-js";
 
@@ -9,8 +9,8 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
 	constructor(context: vscode.ExtensionContext, Token: string) {
-		PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
-			this._view!.webview.postMessage({ type: IssueViewEvents.PROJECT_SELECTED, msg, id: data.id });
+		PubSub.subscribe(ViewEvents[ViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
+			this._view!.webview.postMessage({ type: ViewEvents.PROJECT_SELECTED, msg, id: data.id });
 		});
 		vscode.window.registerWebviewViewProvider(this.viewType, this,
             {webviewOptions: {retainContextWhenHidden: true}}
@@ -26,13 +26,10 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
-		this._view.webview.postMessage({ type: IssueViewEvents.API_TOKEN, Token: this.token });
+		this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: this.token });
 
         
 	}
-    public updateFocusedTreeViewItem(){
-
-    }
 	private getHtml(webview: vscode.Webview): string {
 		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "dist", "pipelines", "main.js"));
 		return `<!DOCTYPE html>
