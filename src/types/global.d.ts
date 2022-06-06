@@ -12,7 +12,7 @@ declare global {
 		references: {
 			full: string;
 			relative: string;
-            short: string;
+			short: string;
 		}; // ie [Group Name]/[Repo/Project Name]#1
 		due_date: string;
 		author: { username: string; name: string; id: string }; // Sufyan Dahalan
@@ -62,5 +62,15 @@ declare global {
 			file_path: string;
 			content: string;
 		}[];
+	}
+	interface GroupNodeOptions {
+		node_id: number;
+		parent_id: number;
+		visibility: string;
+		url: URL;
+		contextValue: string;
+		collapsible: vscode.TreeItemCollapsibleState;
+		label: string;
+		archived?: string;
 	}
 }

@@ -1,7 +1,6 @@
-import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import { Api } from "../api";
-import { AUTH_TOKEN_KEY, IssueViewEvents } from "../globals/";
+import { IssueViewEvents } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
@@ -12,18 +11,13 @@ const api = Api.Instance;
 
 export class GroupNode extends Node {
 	visibility: string; //can prob be made into an enum, TODO
-
-	constructor(
-		node_id: number,
-		parent_id: number,
-		visibility: string,
-		url: URL,
-		contextValue: string,
-		collapsible: vscode.TreeItemCollapsibleState,
-		label: string /* vscode.TreeItemLabel */
-	) {
-		super(node_id, parent_id, url, contextValue, collapsible, label);
-		this.visibility = visibility;
+	archived?: string;
+	constructor(options: GroupNodeOptions) {
+		super(options.node_id, options.parent_id, options.url, options.contextValue, options.collapsible, options.label);
+		this.visibility = options.visibility;
+		if (options.archived) {
+			this.archived = options.archived;
+		}
 	}
 	iconPath: vscode.ThemeIcon | undefined;
 	createGroupProject() {
@@ -49,9 +43,9 @@ export class GroupNode extends Node {
 		}
 	}
 	archiveProject() {
-		if (this.contextValue === "project" /* && !this.archived */) {
+		if (this.contextValue === "project" && !this.archived) {
 			return api.archiveProject(this.node_id);
-		} else if (this.contextValue === "project" && false /* this.archived */) {
+		} else if (this.contextValue === "project" && /* false */ this.archived) {
 			return api.unArchiveProject(this.node_id);
 		}
 		return null;
@@ -123,7 +117,7 @@ export class GroupNode extends Node {
 	}
 	async cloneNameSpace(): Promise<any> {
 		if (this.contextValue === "project") {
-			return vscode.window.showErrorMessage("Entity Chosen is not a Group!");
+			return vscode.window.showErrorMessage("Entity Chosen is not a Namespace!");
 		}
 
 		let res = await api.getProjects(this.contextValue === "group", this.node_id);
@@ -135,10 +129,13 @@ export class GroupNode extends Node {
 		if (path === undefined || path[0] === undefined) {
 			return vscode.window.showErrorMessage("Please choose a folder to clone into");
 		}
-		res.data.forEach(async (project: { http_url_to_repo: string }) => {
-			await cloneFromGitLab(project.http_url_to_repo, path![0].toString());
+		res.data.forEach(async (project: any/* { http_url_to_repo: string, archived: boolean } */) => {
+            if(!project.archived){
+                await cloneFromGitLab(project.http_url_to_repo, path![0].path);
+            } 
+
 		});
-        return true
+		return true;
 	}
 	async cloneProject(): Promise<any> {
 		if (this.contextValue !== "project") {
@@ -152,7 +149,7 @@ export class GroupNode extends Node {
 		if (path === undefined || path[0] === undefined) {
 			return vscode.window.showErrorMessage("Please choose a folder to clone into");
 		}
-		return await cloneFromGitLab(this.url.toString(), path[0].toString());
+		return await cloneFromGitLab(this.url.toString(), path[0].path);
 	}
 }
 
@@ -168,15 +165,16 @@ export class GroupModel {
 			let groups = new Array<GroupNode>();
 			for (let i = 0; i < res.data.length; i++) {
 				groups.push(
-					new GroupNode(
-						res.data[i].id,
-						res.data[i].parent_id,
-						res.data[i].visibility,
-						res.data[i].web_url,
-						res.data[i].kind,
-						vscode.TreeItemCollapsibleState.Collapsed,
-						res.data[i].name
-					)
+					new GroupNode({
+						node_id: res.data[i].id,
+						parent_id: res.data[i].parent_id,
+						visibility: res.data[i].visibility,
+						url: res.data[i].web_url,
+						contextValue: res.data[i].kind,
+						collapsible: vscode.TreeItemCollapsibleState.Collapsed,
+						label: res.data[i].name,
+						archived: res.data[i].kind === "project" ? res.data[i].archived : null,
+					})
 				);
 			}
 		}
@@ -224,58 +222,55 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 	public getChildren(element?: GroupNode): vscode.ProviderResult<GroupNode[]> {
 		if (!element) {
 			return api.getUserNamespaces().then((res: any) => {
-				// if (res.data.length > 0) {
 				let groups = new Array<GroupNode>();
 				for (let i = 0; i < res.data.length; i++) {
 					if (!res.data[i].parent_id) {
 						groups.push(
-							new GroupNode(
-								res.data[i].id,
-								res.data[i].parent_id,
-								res.data[i].visibility,
-								res.data[i].web_url,
-								res.data[i].kind,
-								vscode.TreeItemCollapsibleState.Collapsed,
-								res.data[i].name
-							)
+							new GroupNode({
+								node_id: res.data[i].id,
+								parent_id: res.data[i].parent_id,
+								visibility: res.data[i].visibility,
+								url: res.data[i].web_url,
+								contextValue: res.data[i].kind,
+								collapsible: vscode.TreeItemCollapsibleState.Collapsed,
+								label: res.data[i].name,
+								archived: res.data[i].kind === "project" ? res.data[i].archived : null,
+							})
 						);
 					}
 				}
 				return groups;
-				// } else {
-				// 	return <GroupNode>{};
-				// }
 			}) as vscode.ProviderResult<GroupNode[]>;
 		} else if (element.contextValue === "group" || element.contextValue === "user") {
 			return api.getProjects(element.contextValue === "group", element.node_id).then((res: any) => {
-				// if (res.data.length > 0) {
 				let groups = new Array<GroupNode>();
 				for (let i = 0; i < res.data.length; i++) {
 					groups.push(
-						new GroupNode(
-							res.data[i].id,
-							res.data[i].namespace.id,
-							res.data[i].visibility,
-							res.data[i].web_url,
-							"project",
-							vscode.TreeItemCollapsibleState.None,
-							res.data[i].name
-						)
+						new GroupNode({
+							node_id: res.data[i].id,
+							parent_id: res.data[i].parent_id,
+							visibility: res.data[i].visibility,
+							url: res.data[i].web_url,
+							contextValue: "project",
+							collapsible: vscode.TreeItemCollapsibleState.None,
+							label: res.data[i].name,
+							archived: res.data[i].archived,
+						})
 					);
 				}
 				if (element.contextValue === "group") {
 					return api.getSubGroups(element.node_id).then((res: any) => {
 						for (let i = 0; i < res.data.length; i++) {
 							groups.push(
-								new GroupNode(
-									res.data[i].id,
-									res.data[i].parent_id,
-									res.data[i].visibility,
-									res.data[i].web_url,
-									"group",
-									vscode.TreeItemCollapsibleState.Collapsed,
-									res.data[i].name
-								)
+								new GroupNode({
+									node_id: res.data[i].id,
+									parent_id: res.data[i].parent_id,
+									visibility: res.data[i].visibility,
+									url: res.data[i].web_url,
+									contextValue: "group",
+									collapsible: vscode.TreeItemCollapsibleState.Collapsed,
+									label: res.data[i].name,
+								})
 							);
 						}
 						return groups;
@@ -284,7 +279,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 				return groups;
 			});
 		} else {
-			return Array<GroupNode>(); //<GroupNode>{}[];
+			return Array<GroupNode>(); 
 		}
 	}
 	public async handleDrag(source: GroupNode[], treeDataTransfer: vscode.DataTransfer, _token: vscode.CancellationToken): Promise<void> {
@@ -305,7 +300,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 			(target !== undefined &&
 				(target.node_id === source.parent_id || (target.contextValue === "project" && source.contextValue === "project")))
 		) {
-			vscode.window.showErrorMessage(`-_-. Operation probably not logical. Try again.`); // fr. show it to user
+			vscode.window.showErrorMessage(`-_-. Operation probably not logical. Try again.`);
 		} else if (
 			target !== undefined &&
 			target.node_id !== source.parent_id &&
@@ -314,7 +309,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 		) {
 			(await api.transferProjectToGroup(target.node_id, source.node_id)).status.toString()[0] === "2"
 				? this.refresh()
-				: vscode.window.showErrorMessage("TODO"); //.then((res: AxiosResponse) => {
+				: vscode.window.showErrorMessage("TODO"); 
 		} else if (
 			target !== undefined &&
 			target.node_id !== source.parent_id &&
@@ -323,7 +318,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 		) {
 			(await api.transferGroup(source.node_id, target.node_id)).status.toString()[0] === "2"
 				? this.refresh()
-				: vscode.window.showErrorMessage("TODO"); //.then((res: AxiosResponse) => {
+				: vscode.window.showErrorMessage("TODO"); 
 		}
 	}
 }

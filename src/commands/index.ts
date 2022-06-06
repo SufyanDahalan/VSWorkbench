@@ -3,13 +3,11 @@
  * @commands
  */
 import * as vscode from "vscode";
-// import { api } from "../api";
 import { Api } from "../api";
 const api = Api.Instance;
 
 export async function cloneFromGitLab(url: string, path: string): Promise<any> {
-    console.log('@cloneFromGitlab with params: ', url, path)
-    return await vscode.commands.executeCommand('git.clone', url, path/* '/mnt/NVME2/git/p/temp' */) 
+    return await vscode.commands.executeCommand('git.clone', url, path) 
 }
 
 export function createPersonalProjectCommand() {
@@ -24,7 +22,7 @@ export function createPersonalProjectCommand() {
 		api.createPersonalProject(projectName);
 	});
 	inputProjectName.show();
-} // MVP
+} 
 
 export function createGroupProjectCommand(groupID: number) {
 	let projectName = "";
@@ -38,11 +36,9 @@ export function createGroupProjectCommand(groupID: number) {
 		api.createGroupProject(projectName, groupID);
 	});
 	inputProjectName.show();
-} // MVP
+} 
 
-/**
- *
- */
+
 export async function createGroupCommand() {
 	let groupName = "";
 	let groupPath = "";
@@ -69,9 +65,7 @@ export async function createGroupCommand() {
 	});
 	inputSubGroupName.show();
 
-	// api.
-	// api.getUserProjects(api.getUserIDAsync())
-} // MVP
+} 
 export function deleteProject(projectID: number) {
 	api.deleteProject(projectID);
 }
@@ -84,23 +78,17 @@ export function deleteProject(projectID: number) {
  */
 export function createIssueCommand() {
 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
-} // MVP
+} 
 export function createMergeRequestCommand() {
 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
-} // MVP
+}
 // export function viewPipelinesCommand() {
 // 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
-// } // MVP
+// } 
 export function viewIssue() {
 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
-} // MVP
+} 
 
-export function cloneProject() {
-	// Project region
-}
-export function cloneNamespaceProjects() {
-	// Namespace/group region
-}
 // #region project
 export function createProjectSnippet(projectID: number, snippet: SnippetObject) {
 	api.createProjectSnippet(
@@ -111,6 +99,12 @@ export function createProjectSnippet(projectID: number, snippet: SnippetObject) 
 
 	// project region
 	// user region
+}
+export function getWikis(){
+    throw new Error("Not yet implemented");
+    // https://docs.gitlab.com/ee/api/wikis.html
+    // https://docs.gitlab.com/ee/api/group_wikis.html
+    
 }
 //#endregion
 export function createPersonalSnippet() {
@@ -223,12 +217,10 @@ export default {
 	createGroupCommand,
 	createIssueCommand,
 	createMergeRequestCommand,
-	// viewPipelinesCommand,
 	viewIssue,
 	createPersonalSnippet,
-	cloneNamespaceProjects,
 	createProjectSnippet,
-
+    getWikis,
 	modifySnippetComment,
 	deleteSnippetComment,
 	addMemberToProject,
