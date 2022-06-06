@@ -8,8 +8,6 @@ import { createIssueCommand } from "./commands";
 import { GroupTreeDataProvider, GroupNode, Node } from "./views";
 import { IssuesViewProvidor } from "./webviews/issues";
 import { PipelineViewProvidor } from "./webviews/pipelines";
-// import { initializeGitExtension } from "./git/git";
-// import { GitExtensionWrapper } from './api/git'
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 	context.globalState.setKeysForSync([GITLAB_INSTANCE_KEY]);
@@ -26,9 +24,6 @@ export function activate(context: vscode.ExtensionContext) {
   
 
 	context.subscriptions.push(
-
-        // GitExtensionWrapper.registerToGitExtension(),
-
 		vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", () => {
 			GlobalFunctions.settings(context.globalState);
 		}),
@@ -75,9 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("VSWorkbench.viewJob", Commands.viewJob),
 
 		vscode.commands.registerCommand("VSWorkbench.createNewProjectIssueCommand", Commands.createNewProjectIssueCommand),
-        // vscode.commands.registerCommand("VSWorkbench.cloneRepository", () => vscode.commands.executeCommand('git.clone'))
-        vscode.commands.registerCommand("VSWorkbench.clone", async (node: GroupNode) => {await node.cloneProject()})
-        // initializeGitExtension()
+        vscode.commands.registerCommand("VSWorkbench.clone", async (node: GroupNode) => {node.contextValue === 'project' ?  await node.cloneProject() : await node.cloneNameSpace()})
 
 	);
 }

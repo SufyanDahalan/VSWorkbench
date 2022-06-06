@@ -121,28 +121,39 @@ export class GroupNode extends Node {
 		});
 		inputSubGroupName.show();
 	}
-	async cloneNameSpace() {
-        if(this.contextValue === 'project'){
-            return;
-        }
-        let res = await api.getProjects(this.contextValue === 'group', this.node_id)
-        res.data.forEach((project: {url: string}) => {
-            cloneFromGitLab(project.url)
-        });
-		/**
-		 * @Implement https://code.visualstudio.com/api/references/vscode-api#3548
-		 *   */
+	async cloneNameSpace(): Promise<any> {
+		if (this.contextValue === "project") {
+			return vscode.window.showErrorMessage("Entity Chosen is not a Group!");
+		}
+
+		let res = await api.getProjects(this.contextValue === "group", this.node_id);
+		let path: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
+			canSelectFiles: false,
+			canSelectFolders: true,
+			canSelectMany: false,
+		});
+		if (path === undefined || path[0] === undefined) {
+			return vscode.window.showErrorMessage("Please choose a folder to clone into");
+		}
+		res.data.forEach(async (project: { http_url_to_repo: string }) => {
+			await cloneFromGitLab(project.http_url_to_repo, path![0].toString());
+		});
+        return true
 	}
-    async cloneProject(){
-        if(this.contextValue !== 'project'){
-            // prob return a vscode showerrormsg message
-    return;
-        }
-    await cloneFromGitLab(this.url.toString())
-        /**
-		 * @Implement https://code.visualstudio.com/api/references/vscode-api#3548
-		 *   */
-    }
+	async cloneProject(): Promise<any> {
+		if (this.contextValue !== "project") {
+			return vscode.window.showErrorMessage("Entity Chosen is not a project!");
+		}
+		let path: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
+			canSelectFiles: false,
+			canSelectFolders: true,
+			canSelectMany: false,
+		});
+		if (path === undefined || path[0] === undefined) {
+			return vscode.window.showErrorMessage("Please choose a folder to clone into");
+		}
+		return await cloneFromGitLab(this.url.toString(), path[0].toString());
+	}
 }
 
 export class GroupModel {

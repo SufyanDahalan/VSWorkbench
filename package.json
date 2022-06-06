@@ -421,7 +421,7 @@
 				},
                 {
                     "command": "VSWorkbench.clone",
-                    "when": "view == groupView && viewItem == project",
+                    "when": "view == groupView",
 					"group": "inline@1"
                 },
                 {

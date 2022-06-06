@@ -7,12 +7,9 @@ import * as vscode from "vscode";
 import { Api } from "../api";
 const api = Api.Instance;
 
-export async function cloneFromGitLab(/* id?: number, */ url: string/* , query?: string */): Promise<any> {
-	// if (query) {
-	// 	return vscode.window.showErrorMessage("Not Yet Implemented!");
-	// }
-    return await vscode.commands.executeCommand('git.clone', url) 
-    // return vscode.commands.executeCommand('git.clone', `https://gitlab.com/projects/${id}`)
+export async function cloneFromGitLab(url: string, path: string): Promise<any> {
+    console.log('@cloneFromGitlab with params: ', url, path)
+    return await vscode.commands.executeCommand('git.clone', url, path/* '/mnt/NVME2/git/p/temp' */) 
 }
 
 export function createPersonalProjectCommand() {
