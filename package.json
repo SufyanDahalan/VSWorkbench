@@ -509,7 +509,6 @@
 		"@types/glob": "^7.2.0",
 		"@types/mocha": "^9.1.0",
 		"@types/node": "14.x",
-		"@types/pubsub-js": "^1.8.3",
 		"@types/vscode": "^1.66.0",
 		"@types/vscode-webview": "^1.57.0",
 		"@typescript-eslint/eslint-plugin": "^5.16.0",
@@ -537,7 +536,6 @@
 	},
 	"dependencies": {
 		"axios": "^0.26.1",
-		"iconv-lite": "^0.6.3",
-		"pubsub-js": "^1.9.4"
+		"iconv-lite": "^0.6.3"
 	}
 }

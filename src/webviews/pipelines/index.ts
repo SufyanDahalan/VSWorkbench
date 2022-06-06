@@ -1,6 +1,7 @@
 import { ViewEvents } from "../../globals";
 import * as vscode from "vscode";
-import PubSub from "pubsub-js";
+// import PubSub from "pubsub-js";
+import { changeValidEmitter } from "../../event";
 
 
 export class PipelineViewProvidor implements vscode.WebviewViewProvider {
@@ -9,15 +10,20 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
 	constructor(context: vscode.ExtensionContext, Token: string) {
-		PubSub.subscribe(ViewEvents[ViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
-			this._view!.webview.postMessage({ type: ViewEvents.PROJECT_SELECTED, msg, id: data.id });
-		});
+		// PubSub.subscribe(ViewEvents[ViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
+		// 	this._view!.webview.postMessage({ type: ViewEvents.PROJECT_SELECTED, msg, id: data.id });
+		// });
+        changeValidEmitter.event(this.funk, this)
+
 		vscode.window.registerWebviewViewProvider(this.viewType, this,
             {webviewOptions: {retainContextWhenHidden: true}}
             );
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
 	}
+    funk(data: any){
+        this._view!.webview.postMessage({ type: ViewEvents[data.event], msg: data.event, id: data.id });
+    }
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
 		webviewView.webview.options = {

@@ -1,6 +1,6 @@
 import { ViewEvents } from "../../globals";
 import * as vscode from "vscode";
-import PubSub from "pubsub-js";
+// import PubSub from "pubsub-js";
 
 export class EditorView {
 	public viewType = "VSWorkbench.editor";

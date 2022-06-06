@@ -4,9 +4,10 @@ import { AUTH_TOKEN_KEY, ViewEvents } from "../globals/";
 import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
-import PubSub from "pubsub-js";
+// import PubSub from "pubsub-js";
 import { cloneFromGitLab } from "../commands";
 import { EditorView } from "../webviews/editor/editor";
+import { changeValidEmitter } from "../event";
 const editorView = new EditorView() 
 
 const api = Api.Instance;
@@ -213,9 +214,12 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 		view.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
 			if (selection["selection"][0].contextValue === "project") {
 				new PipelineView(context, selection["selection"][0].node_id);
-				PubSub.publish(ViewEvents[ViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
+				// PubSub.publish(ViewEvents[ViewEvents.PROJECT_SELECTED], { id: selection["selection"][0].node_id });
+                changeValidEmitter.fire({event: ViewEvents[ViewEvents.PROJECT_SELECTED], id: selection["selection"][0].node_id })
+
 			} else if (selection["selection"][0].contextValue === "group") {
-				PubSub.publish(ViewEvents[ViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
+                changeValidEmitter.fire({event: ViewEvents[ViewEvents.GROUP_SELECTED], id: selection["selection"][0].node_id })
+				// PubSub.publish(ViewEvents[ViewEvents.GROUP_SELECTED], { id: selection["selection"][0].node_id });
 			}
 			if (selection["selection"][0].contextValue === "group" || selection["selection"][0].contextValue === "project") {
 				new IssueView(context, selection["selection"][0].contextValue === "group", selection["selection"][0].node_id);
