@@ -1,15 +1,10 @@
 import * as vscode from "vscode";
-import { Api } from "../../api";
-// import PubSub from "pubsub-js";
 import { ViewEvents } from "../../globals/";
-let api = Api.Instance;
 import { changeValidEmitter } from "../../event";
 
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabIssues";
 	token: string;
-    // public changeValidEmitter = new vscode.EventEmitter<void>();
-  // issues = [1, 2];
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
 
@@ -17,19 +12,10 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
-		// PubSub.subscribe(ViewEvents[ViewEvents.GROUP_SELECTED], (msg: any, data: any) => {
-        //     console.log('msg, data')
-        //     console.log(msg, data)
-		// 	this._view!.webview.postMessage({ type: ViewEvents.GROUP_SELECTED, msg, id: data.id });
-		// });
-        changeValidEmitter.event(this.a7a, this)
-
-		// PubSub.subscribe(ViewEvents[ViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {
-		// 	this._view!.webview.postMessage({ type: ViewEvents.PROJECT_SELECTED, msg, id: data.id });
-		// });
+        changeValidEmitter.event(this.eventCallback, this)
 	}
-    public a7a (data: any): void {
-        this._view!.webview.postMessage({ type: ViewEvents[data.event], msg: data.event, id: data.id });
+    public eventCallback (data: any): void {
+        this._view!.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
     }
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;

@@ -58,6 +58,9 @@ export class Api {
 	createProjectSnippet(project_id: number, snippet: SnippetObject): Promise<AxiosResponse> {
 		return Api.instance.api.post(`projects/${project_id}/snippets`, { snippet });
 	}
+    getProjectSnippets(project_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`projects/${project_id}/snippets`);
+    }
 	getProjectIssueComments(project_id: number, issue_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`projects/${project_id}/issues/${issue_id}/notes`);
 	}

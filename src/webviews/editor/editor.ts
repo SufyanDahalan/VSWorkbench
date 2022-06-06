@@ -1,6 +1,5 @@
 import { ViewEvents } from "../../globals";
 import * as vscode from "vscode";
-// import PubSub from "pubsub-js";
 
 export class EditorView {
 	public viewType = "VSWorkbench.editor";
@@ -8,15 +7,8 @@ export class EditorView {
 	context?: vscode.ExtensionContext;
 	private _views: Record<string, vscode.WebviewPanel | undefined> = {};
 	_extensionUri?: vscode.Uri;
-	// constructor(context: vscode.ExtensionContext, Token: string) {
-	// 	this.context = context;
-	// 	// PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {});
-	// 	this._extensionUri = context.extensionUri;
-	// 	this.token = Token;
-	// }
     add(context: vscode.ExtensionContext, Token: string) {
 		this.context = context;
-		// PubSub.subscribe(IssueViewEvents[IssueViewEvents.PROJECT_SELECTED], (msg: any, data: any) => {});
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
 	}
@@ -51,7 +43,7 @@ export class EditorView {
 		});
 		panel.webview.html = this.getHtml(panel.webview);
 		panel.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: this.token });
-		panel.webview.postMessage({ type, id, groupOrProject: isGroup });
+		panel.webview.postMessage({ type, id, isGroup });
 		return panel;
 	}
 	private getHtml(webview: vscode.Webview): string {

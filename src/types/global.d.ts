@@ -13,10 +13,10 @@ declare global {
 			full: string;
 			relative: string;
 			short: string;
-		}; // ie [Group Name]/[Repo/Project Name]#1
+		};
 		due_date: string;
-		author: { username: string; name: string; id: string }; // Sufyan Dahalan
-		assignee: { username: string; name: string; id: string }; // Sufyan Dahalan
+		author: { username: string; name: string; id: string };
+		assignee: { username: string; name: string; id: string };
 		project_id: number;
 		user_notes_count: number;
 	}
@@ -26,7 +26,7 @@ declare global {
 		project_id: number;
 		id: number;
 		body: string;
-		author: { username: string; name: string; id: string }; // Sufyan Dahalan
+		author: { username: string; name: string; id: string };
 	}
 
 	interface ICommit {

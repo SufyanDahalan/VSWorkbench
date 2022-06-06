@@ -5,38 +5,54 @@ import "./App.css";
 let api = Api.Instance;
 let app = document.getElementById("app");
 
-enum Routes {
-	Wiki = 0,
-	Snippet,
-}
-
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case ViewEvents.API_TOKEN: {
 			Api.updateAuthToken(event.data.Token);
 			break;
 		}
-        case ViewEvents.GROUP_SELECTED: {
-            let id = event.data.id
+		case ViewEvents.WIKI: {
+			Wiki(event.data.isGroup, event.data.id);
 			break;
 		}
-		case ViewEvents.PROJECT_SELECTED: {
-            let id = event.data.id
+		case ViewEvents.SNIPPET: {
+			Snippet(event.data.isGroup, event.data.id);
+
 			break;
 		}
 	}
 });
-app?.appendChild(CreateHtmlNode('div', null, Math.random().toString()))
-async function Route(route: Routes) {
-	switch (route) {
-		case Routes.Wiki: {
+async function Snippet(isGroup: boolean, id: number) {
+	switch (isGroup) {
+		case true: {
 			break;
 		}
-		case Routes.Snippet: {
-            break;
+
+		case false: {
+			api.getProjectSnippets(id).then((res) => {
+				let author: string = res.data[0].title;
+				app!.innerHTML = `<div>${author}<div>`;
+			});
+			break;
 		}
 	}
 }
+async function Wiki(isGroup: boolean, id: number) {
+	switch (isGroup) {
+		case true: {
+			break;
+		}
+
+		case false: {
+			api.getProjectSnippets(id).then((res) => {
+				let author: string = res.data[0].title;
+				app!.innerHTML = `<div>${author}<div>`;
+			});
+			break;
+		}
+	}
+}
+
 function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
 	const el = document.createElement(type);
 	el.innerHTML = innerHTML;

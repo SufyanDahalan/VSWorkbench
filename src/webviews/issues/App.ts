@@ -14,26 +14,20 @@ enum Routes {
 }
 
 window.addEventListener("message", (event) => {
-    console.log('event receied:',event.data.type)
-    console.log('match: ',event.data.type === ViewEvents.PROJECT_SELECTED)
-    
 	switch (event.data.type) {
 		case ViewEvents.API_TOKEN: {
-            console.log(1)
 			selection.value = Routes.PENDING;
 			Route(Routes.PENDING);
 			Api.updateAuthToken(event.data.Token);
 			break;
 		}
 		case ViewEvents.GROUP_SELECTED: {
-            console.log(2)
 			selection.value = Routes.GROUP_ISSUES_ROUTE;
 			selection.id = event.data.id;
 			Route(Routes.GROUP_ISSUES_ROUTE);
 			break;
 		}
 		case ViewEvents.PROJECT_SELECTED: {
-            console.log(3)
 			selection.value = Routes.PROJECT_ISSUES_ROUTE;
 			selection.id = event.data.id;
 			Route(Routes.PROJECT_ISSUES_ROUTE);
