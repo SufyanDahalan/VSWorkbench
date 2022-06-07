@@ -1,7 +1,7 @@
 import { Api } from "../../api";
 import { ViewEvents, CreateHtmlNode } from "../../globals/constants";
 // import { CreateHtmlNode, } from "../../globals/functions";
-import { issueQuerywParam } from "../../api/Queries";
+import { issueQuery } from "../../api/Queries";
 
 import "./App.css";
 
@@ -47,7 +47,7 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 		}
 		case Routes.GROUP_ISSUES_ROUTE: {
 			api.getGroupIssues(selection.id).then((res: any) => {
-                api.graphql(issueQuerywParam("strtporg/backend-chef", "52")).then((res) => {
+                api.graphql(issueQuery("strtporg/backend-chef", "52")).then((res) => {
                     console.log(res);
                 });
 				for (const issue of res.data) {
