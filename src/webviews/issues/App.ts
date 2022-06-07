@@ -1,5 +1,8 @@
 import { Api } from "../../api";
-import { ViewEvents } from "../../globals/constants";
+import { ViewEvents, CreateHtmlNode } from "../../globals/constants";
+// import { CreateHtmlNode, } from "../../globals/functions";
+import { issueQuerywParam } from "../../api/Queries";
+
 import "./App.css";
 
 let api = Api.Instance;
@@ -44,6 +47,9 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 		}
 		case Routes.GROUP_ISSUES_ROUTE: {
 			api.getGroupIssues(selection.id).then((res: any) => {
+                api.graphql(issueQuerywParam("strtporg/backend-chef", "52")).then((res) => {
+                    console.log(res);
+                });
 				for (const issue of res.data) {
 					issue.reference = issue.references.full;
 				}
@@ -92,6 +98,8 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 						)
 					);
 					app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
+
+		
 					for (const comment of comments) {
 						app!.appendChild(CreateCommentNode(comment));
 					}
@@ -103,26 +111,6 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 	}
 }
 
-function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
-	const el = document.createElement(type);
-	el.innerHTML = innerHTML;
-	if (attributes) {
-		for (const attribute of attributes) {
-			const key = attribute.key as string;
-			const value = attribute.value;
-			if (key.startsWith("on") && typeof value === "function") {
-				el.addEventListener(key.substring(2) as keyof HTMLElementEventMap, value as EventListenerOrEventListenerObject);
-			} else if (typeof value === "boolean") {
-				el.setAttribute(key, "");
-			} else if (typeof value !== "function") {
-				el.setAttribute(key, value);
-			} else {
-				console.log("Error! Element attribute cannot be set");
-			}
-		}
-	}
-	return el;
-}
 function CreateCommentNode(comment: IComment): Node {
 	let commentNode = CreateHtmlNode("div", null, "");
 	commentNode.appendChild(CreateHtmlNode("div", null, comment.body));
@@ -190,19 +178,21 @@ function CreateIssueNode(issue: IIssue): Node {
 			issue.title
 		)
 	);
-    let date = new Date(issue.created_at);
-    let meta  = CreateHtmlNode("div", [{ key: "class", value: "meta" }],'')
-    let metaBottom = CreateHtmlNode("div", [{ key: "class", value: "meta-bottom" }],'')
-    metaBottom.appendChild(CreateHtmlNode('span', [{key: 'class', value: 'authored'}], issue.references.short + ' · created on ' + date.toLocaleDateString() + ' by '))
-    metaBottom.appendChild(CreateHtmlNode('span', [{key: 'class', value: 'author'}], issue.author.name))
-    let labels = CreateHtmlNode('div', [{key: 'class', value: 'labels'}], '')
-    issue.labels.forEach(label => {
-        labels.appendChild(CreateHtmlNode("div", [{ key: "class", value: "label" }], label))
-    });
+	let date = new Date(issue.created_at);
+	let meta = CreateHtmlNode("div", [{ key: "class", value: "meta" }], "");
+	let metaBottom = CreateHtmlNode("div", [{ key: "class", value: "meta-bottom" }], "");
+	metaBottom.appendChild(
+		CreateHtmlNode("span", [{ key: "class", value: "authored" }], issue.references.short + " · created on " + date.toLocaleDateString() + " by ")
+	);
+	metaBottom.appendChild(CreateHtmlNode("span", [{ key: "class", value: "author" }], issue.author.name));
+	let labels = CreateHtmlNode("div", [{ key: "class", value: "labels" }], "");
+	issue.labels.forEach((label) => {
+		labels.appendChild(CreateHtmlNode("div", [{ key: "class", value: "label" }], label));
+	});
 	metaBottom.appendChild(labels);
-    meta.appendChild(metaBottom);
-	meta.appendChild(CreateHtmlNode("div", [{ key: "class", value: "meta-right" }], String(issue.user_notes_count) + ' &#x1f5ea;'));
-	issueNode.appendChild(meta)
+	meta.appendChild(metaBottom);
+	meta.appendChild(CreateHtmlNode("div", [{ key: "class", value: "meta-right" }], String(issue.user_notes_count) + " &#x1f5ea;"));
+	issueNode.appendChild(meta);
 	return issueNode;
 }
 interface x {

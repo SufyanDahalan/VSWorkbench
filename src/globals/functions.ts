@@ -45,9 +45,7 @@ export function checkGitlabInstanceAndAuthToken(globalState:vscode.ExtensionCont
 	} else {
 		vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", false);
 		return false;
-	}
-
-    
+	}   
 }/**
  * 
  * @param value string value to be validated
@@ -72,3 +70,4 @@ export function ValidateUserInput(value:string, rule: VALIDATION_RULES): Boolean
     }
     return valid;
 }
+

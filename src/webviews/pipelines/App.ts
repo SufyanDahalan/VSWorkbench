@@ -1,5 +1,6 @@
 import { Api } from "../../api";
-import { ViewEvents } from "../../globals/constants";
+import { ViewEvents, CreateHtmlNode } from "../../globals/constants";
+// import { CreateHtmlNode } from "../../globals/functions";
 import "./App.css";
 
 let api = Api.Instance;
@@ -8,7 +9,7 @@ let selection = 0;
 
 enum Routes {
 	PENDING = 0,
-	PIPELINES,
+	PIPELINES, 
 	PIPELINE,
 }
 
@@ -49,25 +50,5 @@ async function Route(route: Routes) {
 // https://graphemica.com/%E2%9F%B3
 function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	let el = CreateHtmlNode("div", null, pipeline.id + pipeline.status);
-	return el;
-}
-function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
-	const el = document.createElement(type);
-	el.innerHTML = innerHTML;
-	if (attributes) {
-		for (const attribute of attributes) {
-			const key = attribute.key as string;
-			const value = attribute.value;
-			if (key.startsWith("on") && typeof value === "function") {
-				el.addEventListener(key.substring(2) as keyof HTMLElementEventMap, value as EventListenerOrEventListenerObject);
-			} else if (typeof value === "boolean") {
-				el.setAttribute(key, "");
-			} else if (typeof value !== "function") {
-				el.setAttribute(key, value);
-			} else {
-				console.log("Error! Element attribute cannot be set");
-			}
-		}
-	}
 	return el;
 }
