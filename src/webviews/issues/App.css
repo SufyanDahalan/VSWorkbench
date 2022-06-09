@@ -48,7 +48,7 @@ a {
     margin-left: 10px;
 }
 .label {
-    background-color: violet;
+    /* background-color: violet; */
     border-radius: 0.75rem;
 }
 .meta-right {

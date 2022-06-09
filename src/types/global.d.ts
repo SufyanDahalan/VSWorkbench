@@ -8,25 +8,33 @@ declare global {
 		state: string;
 		updated_at: string;
 		created_at: string;
-		labels: string[];
+		// labels: string[];
 		references: {
 			full: string;
 			relative: string;
 			short: string;
 		};
-		due_date: string;
-		author: { username: string; name: string; id: string };
-		assignee: { username: string; name: string; id: string };
+		due_date?: string;
+		author: { username: string; name: string; id: string; avatarUrl: string };
+		assignee?: { username: string; name: string; id: string; avatarUrl: string };
 		project_id: number;
 		user_notes_count: number;
+        labels?: {
+            color: string;
+            title: string;
+        }[]
 	}
+    interface ILabel {
+		color: string;
+        title: string;
+    }
 	interface IComment {
 		issue_id: number;
 		issue_iid: number;
 		project_id: number;
 		id: number;
 		body: string;
-		author: { username: string; name: string; id: string };
+		author: { username: string; name: string; id: string; avatarUrl: string };
 	}
 
 	interface ICommit {

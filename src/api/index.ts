@@ -38,7 +38,6 @@ export class Api {
 		Api.instance.api.defaults.headers.common["Authorization"] = `Bearer ${newAuthToken}`;
 	}
     graphql(query: string): Promise<AxiosResponse>{
-        console.log(1)
         return Api.Instance.api.post('graphql', query)
     }
 
@@ -134,7 +133,7 @@ export class Api {
 		return Api.instance.api.put(`v4/projects/${project_id}/transfer?namespace=${group_id}`);
 	}
 	transferGroup(id: number, group_id?: number): Promise<AxiosResponse> {
-		return group_id ? Api.instance.api.post(`v4/groups/${id}/transfer`, { group_id }) : Api.instance.api.post(`groups/${id}/transfer`) ;
+		return Api.instance.api.post(`v4/groups/${id}/transfer`, group_id ?? null)
 	}
 	deleteProject(project_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.delete(`v4/projects/${project_id}`);

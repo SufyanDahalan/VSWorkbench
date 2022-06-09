@@ -39,7 +39,7 @@ window.addEventListener("message", (event) => {
 	}
 });
 
-async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
+async function Route(route: Routes, args?: /* object | */ RouteArguments): Promise<void> {
 	app!.innerHTML = "";
 	switch (route) {
 		case Routes.PENDING: {
@@ -47,9 +47,6 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 		}
 		case Routes.GROUP_ISSUES_ROUTE: {
 			api.getGroupIssues(selection.id).then((res: any) => {
-                api.graphql(issueQuery("strtporg/backend-chef", "52")).then((res) => {
-                    console.log(res);
-                });
 				for (const issue of res.data) {
 					issue.reference = issue.references.full;
 				}
@@ -69,42 +66,48 @@ async function Route(route: Routes, args?: /* object | */ x): Promise<void> {
 			break;
 		}
 		case Routes.ISSUE_ROUTE: {
-			api.getProjectIssue(args!.project_id, args!.issue_iid).then((IssueResultObject) => {
-				let issue: IIssue = IssueResultObject.data;
-				api.getProjectIssueComments(args!.project_id, args!.issue_iid).then((CommentsResultObject) => {
-					for (const comment of CommentsResultObject.data) {
-						comment.author = {
-							username: comment.author.username,
-							name: comment.author.name,
-							id: comment.author.id,
-						};
-						comment.project_id = issue.project_id;
-						comment.issue_id = comment.noteable_id;
-						comment.issue_iid = comment.noteable_iid;
-					}
-					let comments: IComment[] = CommentsResultObject.data;
-					app!.appendChild(
-						CreateHtmlNode(
-							"button",
-							[
-								{
-									key: "onclick",
-									value: () => {
-										Route(selection.value);
-									},
-								},
-							],
-							"&#x21A9;"
-						)
-					);
-					app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
+			api.graphql(issueQuery(args!.issue_iid.toString())).then((result) => {
+				let res = result.data.data.issue;
+				if (res.assignees.nodes.length) {
+					res.assignee = res.assignees.nodes[0];
+				}
+				res.project_id = res.projectId;
+				res.user_notes_count = res.userNotesCount;
 
-		
-					for (const comment of comments) {
-						app!.appendChild(CreateCommentNode(comment));
-					}
-					app!.appendChild(CreateNewCommentInput(issue));
-				});
+				let issue: IIssue = res;
+
+				for (const comment of res.notes.nodes) {
+					comment.author = {
+						username: comment.author.username,
+						name: comment.author.name,
+						id: comment.author.id,
+					};
+					comment.id = comment.id.split("/")[comment.id.split("/").length - 1];
+					comment.project_id = res.projectId;
+					comment.issue_id = args!.issue_iid;
+					comment.issue_iid = res.iid;
+				}
+				let comments: IComment[] = res.notes.nodes;
+				app!.appendChild(
+					CreateHtmlNode(
+						"button",
+						[
+							{
+								key: "onclick",
+								value: () => {
+									Route(selection.value);
+								},
+							},
+						],
+						"&#x21A9;"
+					)
+				);
+				app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
+
+				for (const comment of comments) {
+					app!.appendChild(CreateCommentNode(comment));
+				}
+				app!.appendChild(CreateNewCommentInput(issue));
 			});
 			break;
 		}
@@ -171,7 +174,7 @@ function CreateIssueNode(issue: IIssue): Node {
 				{
 					key: "onclick",
 					value: () => {
-						Route(Routes.ISSUE_ROUTE, { project_id: issue.project_id, issue_iid: issue.iid });
+						Route(Routes.ISSUE_ROUTE, { project_id: issue.project_id, issue_iid: issue.id });
 					},
 				},
 			],
@@ -186,8 +189,17 @@ function CreateIssueNode(issue: IIssue): Node {
 	);
 	metaBottom.appendChild(CreateHtmlNode("span", [{ key: "class", value: "author" }], issue.author.name));
 	let labels = CreateHtmlNode("div", [{ key: "class", value: "labels" }], "");
-	issue.labels.forEach((label) => {
-		labels.appendChild(CreateHtmlNode("div", [{ key: "class", value: "label" }], label));
+	issue.labels!.forEach((label) => {
+		labels.appendChild(
+			CreateHtmlNode(
+				"div",
+				[
+					{ key: "class", value: "label" },
+					{ key: "style", value: `background-color: ${label.color}` },
+				],
+				label.title
+			)
+		);
 	});
 	metaBottom.appendChild(labels);
 	meta.appendChild(metaBottom);
@@ -195,7 +207,7 @@ function CreateIssueNode(issue: IIssue): Node {
 	issueNode.appendChild(meta);
 	return issueNode;
 }
-interface x {
+interface RouteArguments {
 	project_id: number;
 	issue_iid: number;
 }

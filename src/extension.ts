@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import { Api } from "./api";
-// import { issueQuery, issueQuerywParam } from "./api/Queries";
 
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions } from "./globals/";
 
@@ -24,20 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
 	let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
 	let pipelineWebView = new PipelineViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
     // let editorView = new EditorView(context, context.globalState.get(AUTH_TOKEN_KEY) as string) 
-    // if(q1.length !== q2.length){
-    //     console.log('not equal length')
-    // } else {
-    //  for (let i = 0; i < q1.length; i++) {
-    //      console.log(`{${i}}: ${q1[i] === q2[i] } === (${q1[i]})`)
-         
-    //  }
-    // }
-    // console.log(api.graphql(q2))
-    // Api.Instance.graphql(q2).then((res) => {
-    //     console.log(res)
-    //     console.log(res.data)
-    // })
-    // console.log(q1 === q2)
 	context.subscriptions.push(
 		vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", () => {
 			GlobalFunctions.settings(context.globalState);

@@ -213,7 +213,7 @@
 			},
             {
                 "command": "VSWorkbench.clone",
-				"title": "Clone Project",
+				"title": "Clone",
 				"category": "VSWorkbench",
                 "icon": "$(clone)"
             },

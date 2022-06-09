@@ -209,17 +209,28 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 		editorView.add(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
 
 		view.onDidChangeSelection((selection: vscode.TreeViewSelectionChangeEvent<GroupNode>) => {
-			if (selection["selection"][0].contextValue === "project") {
-				new PipelineView(context, selection["selection"][0].node_id);
-				changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PROJECT_SELECTED], id: selection["selection"][0].node_id });
-			} else if (selection["selection"][0].contextValue === "group") {
-				changeValidEmitter.fire({ event: ViewEvents[ViewEvents.GROUP_SELECTED], id: selection["selection"][0].node_id });
+			if (selection["selection"].length != 0) {
+				let newSelection: any = selection["selection"][0];
+				switch (newSelection.contextValue) {
+					case "project":
+						new PipelineView(context, newSelection.node_id); // TODO: dispose if contextValue 'user' is chosen or selection is null
+						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PROJECT_SELECTED], id: newSelection.node_id }); // TODO: dispose if contextValue 'user' is chosen   or selection is null
+						new IssueView(context, newSelection.contextValue === "group", newSelection.node_id); // TODO: dispose if contextValue 'user' is chosen or selection is null
+						break;
+					case "group":
+						new IssueView(context, newSelection.contextValue === "group", newSelection.node_id); // TODO: dispose if contextValue 'user' is chosen or selection is null
+						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.GROUP_SELECTED], id: selection["selection"][0].node_id }); // TODO: dispose if contextValue 'user' is chosen or selection is null
+						break;
+					case "user":
+						break;
+					// default:
+					//     // log some information
+					//     break;
+				}
+			} else {
 			}
-			if (selection["selection"][0].contextValue === "group" || selection["selection"][0].contextValue === "project") {
-				new IssueView(context, selection["selection"][0].contextValue === "group", selection["selection"][0].node_id);
-			} //FIXME: fix the annoying `ee.filter is not a function` error that pops up semi randomly
 		});
-		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => this.refresh()); // FEATURE: hook up to button with refresh icon?
+		vscode.commands.registerCommand("VSWorkbench.refreshGroupView", () => this.refresh());
 	}
 
 	public refresh(): void {
@@ -305,7 +316,12 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 		}
 		let source = transferItem.value[0];
 		if (target === undefined && source.contextValue === "group") {
-			(await api.transferGroup(source.node_id)).status.toString()[0] === "2" ? this.refresh() : vscode.window.showErrorMessage("TODO");
+			try {
+				(await api.transferGroup(source.node_id)).status.toString()[0] === "2" ? this.refresh() : vscode.window.showErrorMessage("TODO");
+				// fails in case name is taken on top level. does not show the TODO error message. Hence the try catch blocks
+			} catch (error) {
+				vscode.window.showErrorMessage("TODO");
+			}
 		} else if (
 			(target === undefined && source.contextValue === "project") ||
 			(target !== undefined &&
