@@ -28,10 +28,15 @@ window.addEventListener("message", (event) => {
 			Route(Routes.PIPELINES);
 			break;
 		}
+        case ViewEvents.PENDING: {
+            Route(Routes.PENDING)
+            break;
+        }
 	}
 });
 
 async function Route(route: Routes) {
+	app!.innerHTML = "";
 	switch (route) {
 		case Routes.PENDING: {
 			break;

@@ -38,6 +38,10 @@ window.addEventListener("message", (event) => {
 			Route(Routes.PROJECT_ISSUES_ROUTE);
 			break;
 		}
+        case ViewEvents.PENDING: {
+            Route(Routes.PENDING)
+            break;
+        }
 	}
 });
 

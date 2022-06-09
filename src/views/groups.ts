@@ -233,10 +233,12 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.GROUP_SELECTED], id: selection["selection"][0].node_id }); // TODO: dispose if contextValue 'user' is chosen or selection is null
 						break;
 					case "user":
+						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PENDING], id: null }); // TODO: dispose if contextValue 'user' is chosen or selection is null
 						break;
-					// default:
-					//     // log some information
-					//     break;
+					default:
+						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PENDING], id: null }); // TODO: dispose if contextValue 'user' is chosen or selection is null
+					    // log some information
+					    break;
 				}
 			} else {
 			}

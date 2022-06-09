@@ -15,7 +15,8 @@ export enum ViewEvents {
     JOB_SELECTED,
     API_TOKEN,
     WIKI,
-    SNIPPET
+    SNIPPET,
+    PENDING
 }
 export function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
 	const el = document.createElement(type);

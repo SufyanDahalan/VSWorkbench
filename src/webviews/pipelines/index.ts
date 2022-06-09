@@ -1,6 +1,6 @@
 import { ViewEvents } from "../../globals";
 import * as vscode from "vscode";
-import { changeValidEmitter } from "../../globals/event";
+import { changeValidEmitter, newAuthentication } from "../../globals/event";
 import { Api } from "../../api";
 
 export class PipelineViewProvidor implements vscode.WebviewViewProvider {
@@ -8,7 +8,7 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	// token: string;
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
-	constructor(context: vscode.ExtensionContext/* , Token: string */) {
+	constructor(context: vscode.ExtensionContext) {
 		changeValidEmitter.event(this.eventCallback, this);
 
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
@@ -26,8 +26,12 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
-		this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
-	}
+        this.updateApi()
+        newAuthentication.event(this.updateApi, this)
+    }
+    public updateApi(): void{
+		this._view!.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
+    }
 	private getHtml(webview: vscode.Webview): string {
 		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "dist", "pipelines", "main.js"));
 		return `<!DOCTYPE html>

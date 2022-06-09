@@ -8,7 +8,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 /** @type WebpackConfig */
 const extensionConfig = {
 	target: "node",
-	mode: "none",
+	mode: "production",
 	entry: "./src/extension.ts",
 	output: {
 		path: path.resolve(__dirname, "dist"),
@@ -38,10 +38,7 @@ const extensionConfig = {
 	infrastructureLogging: {
 		level: "log",
 	},
-    // optimization: {
-	// 	minimize: true,
-	// 	minimizer: [new TerserPlugin()],
-	// },
+	optimization: { minimize: true },
 };
 const viewConfig = {
 	entry: "./src/webviews/issues/App.ts",
@@ -59,7 +56,7 @@ const viewConfig = {
 			},
 			{
 				test: /\.css$/i,
-                use: ["style-loader", "css-loader", "postcss-loader"],
+				use: ["style-loader", "css-loader", "postcss-loader"],
 			},
 		],
 	},
@@ -69,10 +66,7 @@ const viewConfig = {
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".css"],
 	},
-	// optimization: {
-	// 	minimize: true,
-	// 	minimizer: [new TerserPlugin()],
-	// },
+	optimization: { minimize: true },
 };
 const editorConfig = {
 	entry: "./src/webviews/editor/App.ts",
@@ -100,10 +94,7 @@ const editorConfig = {
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".css"],
 	},
-    // optimization: {
-	// 	minimize: true,
-	// 	minimizer: [new TerserPlugin()],
-	// },
+	optimization: { minimize: true },
 };
 
 const pipelineConfig = {
@@ -132,10 +123,7 @@ const pipelineConfig = {
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".css"],
 	},
-    // optimization: {
-	// 	minimize: true,
-	// 	minimizer: [new TerserPlugin()],
-	// },
+	optimization: { minimize: true },
 };
 
 module.exports = [extensionConfig, viewConfig, pipelineConfig, editorConfig];
