@@ -1,3 +1,4 @@
+import { pipelinesQuery } from "../../api/Queries";
 import { Api } from "../../api";
 import { ViewEvents, CreateHtmlNode } from "../../globals/constants";
 // import { CreateHtmlNode } from "../../globals/functions";
@@ -42,12 +43,17 @@ async function Route(route: Routes) {
 			break;
 		}
 		case Routes.PIPELINES: {
-			api.getProjectPipelines(selection).then((res) => {
-				let pipelines: IPipelineListItem[] = res.data as IPipelineListItem[];
+            let res = await api.graphql(pipelinesQuery(selection.toString()))
+            	let pipelines: IPipelineListItem[] = res.data as IPipelineListItem[];
 				for (const pipeline of pipelines) {
 					app!.appendChild(CreatePipelineNode(pipeline));
-				}
-			});
+                }
+			// api.getProjectPipelines(selection).then((res) => {
+			// 	let pipelines: IPipelineListItem[] = res.data as IPipelineListItem[];
+			// 	for (const pipeline of pipelines) {
+			// 		app!.appendChild(CreatePipelineNode(pipeline));
+			// 	}
+			// });
 			break;
 		}
 		case Routes.PIPELINE: {

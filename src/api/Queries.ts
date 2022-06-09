@@ -2,8 +2,6 @@
  * Includes frequently used GraphQL queries
  */
 
-export const getUser = ""; // first example GraphQL query
-
 /**
  * Issue Query
  * @param fullpath path of project, i.e. [GroupName]/[ProjectName]
@@ -20,6 +18,7 @@ export const issueQuery = (issue_gid: string): string =>
       userNotesCount
       iid
       title
+      description
       labels {
         nodes {
           id
@@ -65,26 +64,26 @@ export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
 	JSON.stringify({
 		query: `
 {
-    ${isGroup ? 'group' : 'project'}(fullPath: "${fullpath}") {
+    ${isGroup ? "group" : "project"}(fullPath: "${fullpath}") {
       issues {
         nodes {
           title
+          id
+          iid
+          userNotesCount
+          createdAt
+          closedAt
           labels {
             nodes {
               title
               color
             }
           }
-          id
-          iid
-          userNotesCount
           author {
             id
             avatarUrl
             name
           }
-          createdAt
-          closedAt
         }
       }
     }
@@ -92,5 +91,37 @@ export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
 `,
 	});
 
-// export const issueQuery = (fullpath: string, issue_iid: string): string =>
-// 	JSON.stringify({query: `{ project ( fullPath: "${fullpath}" ) { issue ( iid: "${issue_iid}" ) { title labels { edges { node { id color title } } } author { id name avatarUrl } notes { edges { node { id body } } } assignees { edges { node { id } } } } } }`,});
+
+export const pipelinesQuery = (fullpath: string): string =>
+	JSON.stringify({
+		query: `
+        {
+            project(fullPath: "${fullpath}") {
+              pipelines {
+                nodes {
+                  id
+                  status
+                  duration
+                  ref
+                  commit {
+                    id
+                    message
+                    shortId
+                  }
+                  user {
+                    id
+                    name
+                    avatarUrl
+                  }
+                  stages {
+                      nodes {
+                        id
+                        status
+                      }
+                  }
+                }
+              }
+            }
+          }
+`,
+	});

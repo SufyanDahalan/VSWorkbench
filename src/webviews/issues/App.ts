@@ -109,6 +109,7 @@ async function Route(route: Routes, args?: /* object | */ RouteArguments): Promi
 					)
 				);
 				app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
+				app!.appendChild(CreateHtmlNode("p", null, issue.description));
 
 				for (const comment of comments) {
 					app!.appendChild(CreateCommentNode(comment));

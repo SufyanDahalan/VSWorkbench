@@ -23,6 +23,7 @@ declare global {
             color: string;
             title: string;
         }[]
+        description: string
 	}
     interface ILabel {
 		color: string;

@@ -16,7 +16,9 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 		// this.token = Token;
 	}
 	eventCallback(data: any) {
-		this._view!.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
+        if(this._view){
+            this._view.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
+        }
 	}
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
@@ -30,7 +32,9 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
         newAuthentication.event(this.updateApi, this)
     }
     public updateApi(): void{
-		this._view!.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
+        if(this._view){
+            this._view!.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
+        }
     }
 	private getHtml(webview: vscode.Webview): string {
 		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "dist", "pipelines", "main.js"));
