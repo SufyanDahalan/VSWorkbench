@@ -4,8 +4,7 @@
 
 /**
  * Issue Query
- * @param fullpath path of project, i.e. [GroupName]/[ProjectName]
- * @param issue_iid issue_iid. The Id used in link
+ * @param issue_gid issue_iid. The Id used in link
  * @returns GraphQL query for an issue, including adequate  information about their labels
  * and notes and authors of notes
  */
@@ -57,7 +56,7 @@ export const issueQuery = (issue_gid: string): string =>
 /**
  * Issues Query
  * @param isGroup describes whether the query targets a group or a project
- * @param fullpath full path of project, i.e. 'gitlab-org/gitlab-foss'
+ * @param fullpath full path of group or project, i.e. 'gitlab-orgs' or  'gitlab-org/gitlab-foss'
  * @returns Issues of the specified project with adequate information about them
  */
 export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
@@ -91,7 +90,11 @@ export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
 `,
 	});
 
-
+/**
+ * Pipeline Query
+ * @param fullpath full path of project, i.e.  'gitlab-org/gitlab-foss'
+ * @returns Pipelines of the specified project with adequate information about them
+ */
 export const pipelinesQuery = (fullpath: string): string =>
 	JSON.stringify({
 		query: `

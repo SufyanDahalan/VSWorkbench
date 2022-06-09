@@ -20,6 +20,9 @@
 		"type": "git",
 		"url": "https://github.com/SufyanDahalan/VSWorkbench.git"
 	},
+    "sponsor": {
+        "url": "https://github.com/sponsors/SufyanDahalan"
+    },
 	"main": "./dist/extension.js",
 	"extensionKind": [
 		"ui"
