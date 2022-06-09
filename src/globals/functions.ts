@@ -1,10 +1,13 @@
 // https://devblogs.microsoft.com/typescript/announcing-typescript-2-2/
 // https://stackoverflow.com/a/45493827/16419931
-import * as vscode from 'vscode';
-import { FOCUED_TREEVIEW_ITEM, VALIDATION_RULES } from './constants';
-import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY } from "./constants";
+import * as vscode from "vscode";
+import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GitLab_SaaS_Base_URL, VALIDATION_RULES } from "./constants";
+import { Api } from "../api";
+import { newAuthentication } from "./event";
+const api = Api.Instance;
 
-export function settings(globalState:vscode.ExtensionContext["globalState"]) {
+
+export async function settings(globalState: vscode.ExtensionContext["globalState"]) {
 	// get personal auth token and gitlab instance
 	let gitlabInstance = "",
 		gitlabAuthToken = "";
@@ -13,11 +16,19 @@ export function settings(globalState:vscode.ExtensionContext["globalState"]) {
 	inputPersonalAuthToken.onDidChangeValue((tokenInput) => {
 		gitlabAuthToken = tokenInput;
 	});
-	inputPersonalAuthToken.onDidAccept(() => {
-		globalState.update(AUTH_TOKEN_KEY, gitlabAuthToken);
+	inputPersonalAuthToken.onDidAccept(async () => {
 		inputPersonalAuthToken.hide();
-		if (!checkGitlabInstanceAndAuthToken(globalState)) {
-			// optionally show some error message
+        let res = await checkGitlabInstanceAndAuthToken(gitlabAuthToken, gitlabInstance);
+        
+		if (res) {
+            globalState.update(GITLAB_INSTANCE_KEY, gitlabInstance);
+            globalState.update(AUTH_TOKEN_KEY, gitlabAuthToken);
+            // TODO update all views and apps via an eventbus event/notification
+            newAuthentication.fire();
+        } else if (!res){
+            Api.updateAuthToken(globalState.get(AUTH_TOKEN_KEY) as string);
+            Api.updateBaseURL(globalState.get(GITLAB_INSTANCE_KEY) as string);
+			// optionally show some error message depending on whats wrong
 			inputGitlabInstance.show();
 		}
 	});
@@ -28,46 +39,58 @@ export function settings(globalState:vscode.ExtensionContext["globalState"]) {
 		gitlabInstance = tokenInput;
 	});
 	inputGitlabInstance.onDidAccept(() => {
+        gitlabInstance = gitlabInstance.length ? gitlabInstance :  GitLab_SaaS_Base_URL
 		inputGitlabInstance.hide();
-		globalState.update(GITLAB_INSTANCE_KEY, gitlabInstance);
 		inputPersonalAuthToken.show();
 	});
 	inputGitlabInstance.show();
 }
 
-export function checkGitlabInstanceAndAuthToken(globalState:vscode.ExtensionContext["globalState"]) {
+export async function checkGitlabInstanceAndAuthToken(token: string, baseurl: string, startup?: boolean /* globalState: vscode.ExtensionContext["globalState"] */) {
 	// console.log(`auth token from chechAuthToken: |${globalState.get(AUTH_TOKEN_KEY)}|`);
-	// TODO: actually test to authenticate with the token against the gitlab instance specified
-	// AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY
-	if (!!globalState.get(AUTH_TOKEN_KEY)) {
-		vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", true);
-		return true;
-	} else {
-		vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", false);
-		return false;
-	}   
-}/**
- * 
+	Api.updateAuthToken(token);
+	Api.updateBaseURL(baseurl);
+    try{
+        let res = await api.getUserInfo()//.then((res) => {
+            if (res.status.toString()[0] === "2") {
+                if(startup){
+                    vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", true);
+                }
+                return true;
+            } else {
+                if(startup){
+                    vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", false);
+                }
+                return false;
+            }
+    } catch {
+        if(startup){
+            vscode.commands.executeCommand("setContext", "VSWorkbench.authenticated", false);
+        }
+        return false;
+    }
+	// });
+}
+/**
+ *
  * @param value string value to be validated
  * @param rule Rule to be used
  * @returns true if value is valid according to the rule specified, false otherwise
  */
-export function ValidateUserInput(value:string, rule: VALIDATION_RULES): Boolean{
-    let valid: Boolean = false;
-    switch (rule) {
-        case VALIDATION_RULES.GitlabGroupName:
-            valid = value !== null
-            break;
-        case VALIDATION_RULES.GitlabGroupPath:
-            valid = value !== null
-            break;
-        case VALIDATION_RULES.NotEmptyOrNull:
-            valid = !!value && value !== ""; 
-            break;
-        default:
-
-            break;
-    }
-    return valid;
+export function ValidateUserInput(value: string, rule: VALIDATION_RULES): Boolean {
+	let valid: Boolean = false;
+	switch (rule) {
+		case VALIDATION_RULES.GitlabGroupName:
+			valid = value !== null;
+			break;
+		case VALIDATION_RULES.GitlabGroupPath:
+			valid = value !== null;
+			break;
+		case VALIDATION_RULES.NotEmptyOrNull:
+			valid = !!value && value !== "";
+			break;
+		default:
+			break;
+	}
+	return valid;
 }
-

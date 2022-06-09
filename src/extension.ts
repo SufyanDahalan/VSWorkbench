@@ -15,20 +15,21 @@ function initStorage(context: vscode.ExtensionContext) {
 }
 export function activate(context: vscode.ExtensionContext) {
 	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);
+	Api.updateBaseURL(context.globalState.get(GITLAB_INSTANCE_KEY) as string); // needed
 
 	initStorage(context);
-	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState);
+	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string, context.globalState.get(GITLAB_INSTANCE_KEY) as string, true);
 
 	let groupView = new GroupTreeDataProvider(context);
-	let issuesWebView = new IssuesViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
-	let pipelineWebView = new PipelineViewProvidor(context, context.globalState.get(AUTH_TOKEN_KEY) as string);
+	let issuesWebView = new IssuesViewProvidor(context/*,  context.globalState.get(AUTH_TOKEN_KEY) as string */);
+	let pipelineWebView = new PipelineViewProvidor(context/*,  context.globalState.get(AUTH_TOKEN_KEY) as string */);
     // let editorView = new EditorView(context, context.globalState.get(AUTH_TOKEN_KEY) as string) 
 	context.subscriptions.push(
-		vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", () => {
-			GlobalFunctions.settings(context.globalState);
+		vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", async () => {
+			await GlobalFunctions.settings(context.globalState);
 		}),
-		vscode.commands.registerCommand("VSWorkbench.updatePersonalAccessToken", () => {
-			GlobalFunctions.settings(context.globalState);
+		vscode.commands.registerCommand("VSWorkbench.updatePersonalAccessToken", async () => {
+			await GlobalFunctions.settings(context.globalState);
 		}),
 		vscode.commands.registerCommand("VSWorkbench.createIssue", createIssueCommand),
 		vscode.commands.registerCommand("VSWorkbench.createPersonalProject", Commands.createPersonalProjectCommand),

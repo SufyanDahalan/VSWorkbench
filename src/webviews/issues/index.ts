@@ -1,17 +1,17 @@
 import * as vscode from "vscode";
 import { ViewEvents } from "../../globals/";
-import { changeValidEmitter } from "../../event";
-
+import { changeValidEmitter } from "../../globals/event";
+import {Api} from "../../api";
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabIssues";
-	token: string;
+	// token: string;
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
 
-	constructor(context: vscode.ExtensionContext, Token: string) {
+	constructor(context: vscode.ExtensionContext) {
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
-		this.token = Token;
+		// this.token = Token;
         changeValidEmitter.event(this.eventCallback, this)
 	}
     public eventCallback (data: any): void {
@@ -25,7 +25,7 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
-		this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: this.token });
+		this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
 	}
 
 	private getHtml(webview: vscode.Webview): string {

@@ -1,7 +1,8 @@
 export const AUTH_TOKEN_KEY = "GITLABCODE_PEROSONAL_AUTH_TOKEN";
 export const GITLAB_INSTANCE_KEY = "GITLABCODE_GITLAB_INSTANCE_KEY";
-export const FOCUED_TREEVIEW_ITEM = "FOCUED_TREEVIEW_ITEM";
 export const UPDATE_FOCUSED_TV_ITEM = 'UPDATE_FOCUSED_TV_ITEM'
+export const GitLab_SaaS_Base_URL = "https://gitlab.com/api/";
+
 export const enum VALIDATION_RULES {
 	GitlabGroupName = 0,
 	GitlabGroupPath,

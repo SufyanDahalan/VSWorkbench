@@ -16,7 +16,10 @@ enum Routes {
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case ViewEvents.API_TOKEN: {
-			Api.updateAuthToken(event.data.Token);
+			// Api.updateAuthToken(event.data.Token);
+            Api.updateAuthToken(event.data.Token);
+            Api.updateBaseURL(event.data.baseURL);
+        
 			Route(Routes.PENDING);
 			break;
 		}

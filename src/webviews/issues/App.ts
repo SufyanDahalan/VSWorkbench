@@ -20,8 +20,10 @@ window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case ViewEvents.API_TOKEN: {
 			selection.value = Routes.PENDING;
+			// Api.updateAuthToken(event.data.Token);
+            Api.updateAuthToken(event.data.Token);
+            Api.updateBaseURL(event.data.baseURL);
 			Route(Routes.PENDING);
-			Api.updateAuthToken(event.data.Token);
 			break;
 		}
 		case ViewEvents.GROUP_SELECTED: {

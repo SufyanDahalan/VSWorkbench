@@ -1,25 +1,23 @@
 import { ViewEvents } from "../../globals";
 import * as vscode from "vscode";
-import { changeValidEmitter } from "../../event";
-
+import { changeValidEmitter } from "../../globals/event";
+import { Api } from "../../api";
 
 export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabPipelines";
-	token: string;
+	// token: string;
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
-	constructor(context: vscode.ExtensionContext, Token: string) {
-        changeValidEmitter.event(this.eventCallback, this)
+	constructor(context: vscode.ExtensionContext/* , Token: string */) {
+		changeValidEmitter.event(this.eventCallback, this);
 
-		vscode.window.registerWebviewViewProvider(this.viewType, this,
-            {webviewOptions: {retainContextWhenHidden: true}}
-            );
+		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
-		this.token = Token;
+		// this.token = Token;
 	}
-    eventCallback(data: any){
-        this._view!.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
-    }
+	eventCallback(data: any) {
+		this._view!.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
+	}
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
 		webviewView.webview.options = {
@@ -28,9 +26,7 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 			localResourceRoots: [this._extensionUri],
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
-		this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: this.token });
-
-        
+		this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
 	}
 	private getHtml(webview: vscode.Webview): string {
 		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "dist", "pipelines", "main.js"));

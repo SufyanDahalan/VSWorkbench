@@ -6,7 +6,8 @@ import { PipelineView } from "./pipelines";
 import { Node } from "./node";
 import { cloneFromGitLab } from "../commands";
 import { EditorView } from "../webviews/editor/editor";
-import { changeValidEmitter } from "../event";
+import { changeValidEmitter, newAuthentication } from "../globals/event";
+
 const editorView = new EditorView();
 
 const api = Api.Instance;
@@ -61,7 +62,16 @@ export class GroupNode extends Node {
 		} else if (this.contextValue === "group") {
 			vscode.env.openExternal(vscode.Uri.parse(this.url.toString() + "/-/edit"));
 		} else if (this.contextValue === "user") {
-			vscode.env.openExternal(vscode.Uri.parse("https://gitlab.com/-/profile"));
+			let url = this.url.toString();
+			vscode.env.openExternal(
+				vscode.Uri.parse(
+					url
+						.split("/")
+						.slice(0, url.split("/").length - 1)
+						.toString()
+						.replaceAll(",", "/") + "/-/profile"
+				)
+			);
 		}
 	}
 	createSubGroup() {
@@ -197,7 +207,8 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 	readonly onDidChangeTreeData: vscode.Event<GroupNode | undefined | void> = this._onDidChangeTreeData.event;
 	// editorView: EditorView
 	constructor(context: vscode.ExtensionContext) {
-		const groupModel = new GroupModel();
+        newAuthentication.event(this.refresh, this)
+        const groupModel = new GroupModel();
 
 		const view = vscode.window.createTreeView("groupView", {
 			treeDataProvider: this,

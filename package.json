@@ -49,7 +49,7 @@
 			},
 			{
 				"view": "settings",
-				"contents": "Update Authentication Information [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Update Perosnal Authentication Token](command:VSWorkbench.updatePersonalAccessToken)"
+				"contents": "Update Authentication Information [learn more](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token/).\n[Update Personal Authentication Token](command:VSWorkbench.updatePersonalAccessToken)"
 			}
 		],
 		"commands": [
@@ -337,13 +337,11 @@
 				},
 				{
 					"command": "VSWorkbench.addMemberToProject",
-					"when": "view == groupView && viewItem == project",
-					"comment": "TODO: add icon?"
+					"when": "view == groupView && viewItem == project"
 				},
 				{
 					"command": "VSWorkbench.addMemberToGroup",
-					"when": "view == groupView && viewItem == group",
-					"comment": "TODO: add icon?"
+					"when": "view == groupView && viewItem == group"
 				}
 			],
 			"VSWorkbench.IssueNode": [

@@ -1,6 +1,7 @@
-import axios, { Axios, AxiosResponse } from "axios";
+import axios, { Axios, AxiosRequestConfig, AxiosResponse } from "axios";
+import {GitLab_SaaS_Base_URL } from '../globals/constants'
 
-const GitLab_SaaS_Base_URL = "https://gitlab.com/api/";
+
 export class Api {
 	api: Axios;
 	private static instance: Api;
@@ -15,19 +16,24 @@ export class Api {
 			baseURL: Api.baseURL,
 			timeout: this.timeout,
 			headers: {
-			/**
-			 *  @ToFix
-			 *  */
 				'Content-Type': 'application/json',
 			},
 		});
+        // this.api.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
+        //     console.log('Api Request Config: ', config)
+        //     return config
+        // })
+        // this.api.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
+        //     console.log('Api Response: ', response)
+        //     return response
+        // })
 	}
 	public static get Instance() {
 		if (!this.instance) {
 			this.instance = new Api();
 		}
 		return Api.instance;
-	}
+	} 
 	public static updateBaseURL(newBaseURL: string) {
 		Api.baseURL = newBaseURL;
 		Api.instance.api.defaults.baseURL = newBaseURL;
@@ -133,7 +139,7 @@ export class Api {
 		return Api.instance.api.put(`v4/projects/${project_id}/transfer?namespace=${group_id}`);
 	}
 	transferGroup(id: number, group_id?: number): Promise<AxiosResponse> {
-		return Api.instance.api.post(`v4/groups/${id}/transfer`, group_id ?? null)
+        return Api.instance.api.post(`v4/groups/${id}/transfer`, group_id ? {group_id} :  null)
 	}
 	deleteProject(project_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.delete(`v4/projects/${project_id}`);
