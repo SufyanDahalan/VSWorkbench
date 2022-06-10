@@ -19,7 +19,9 @@ export async function settings(globalState: vscode.ExtensionContext["globalState
 		inputPersonalAuthToken.hide();
 		if (gitlabInstance.endsWith('/') && !gitlabInstance.endsWith('/api/')) {
             gitlabInstance += "api/";
-		}
+		} else {
+            gitlabInstance += "/api/";
+        }
 		let res = await checkGitlabInstanceAndAuthToken(gitlabAuthToken, gitlabInstance);
 
 		if (res) {
