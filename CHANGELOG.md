@@ -15,3 +15,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Viewing groups, subgroups and projects 
 - Viewing issues of groups, subgroups and projects
 - Viewing pipelines and jobs of projects
+- Support for SaaS and on premise gitlab instances
