@@ -15,12 +15,16 @@ const api = Api.Instance;
 export class GroupNode extends Node {
 	visibility: string; //can prob be made into an enum, TODO
 	archived?: string;
+    path_with_namespace?: string
 	constructor(options: GroupNodeOptions) {
 		super(options.node_id, options.parent_id, options.url, options.contextValue, options.collapsible, options.label);
 		this.visibility = options.visibility;
 		if (options.archived) {
 			this.archived = options.archived;
 		}
+        if(options.path_with_namespace){
+            this.path_with_namespace = options.path_with_namespace
+        }
 	}
 	iconPath: vscode.ThemeIcon | undefined;
 	createGroupProject() {
@@ -191,6 +195,7 @@ export class GroupModel {
 						collapsible: vscode.TreeItemCollapsibleState.Collapsed,
 						label: res.data[i].name,
 						archived: res.data[i].kind === "project" ? res.data[i].archived : null,
+						path_with_namespace: res.data[i].kind === "project" ? res.data[i].path_with_namespace : null,
 					})
 				);
 			}
@@ -225,7 +230,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 				switch (newSelection.contextValue) {
 					case "project":
 						new PipelineView(context, newSelection.node_id); // TODO: dispose if contextValue 'user' is chosen or selection is null
-						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PROJECT_SELECTED], id: newSelection.node_id }); // TODO: dispose if contextValue 'user' is chosen   or selection is null
+						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PROJECT_SELECTED], id: newSelection.node_id, fullpath: newSelection.path_with_namespace }); // TODO: dispose if contextValue 'user' is chosen   or selection is null
 						new IssueView(context, newSelection.contextValue === "group", newSelection.node_id); // TODO: dispose if contextValue 'user' is chosen or selection is null
 						break;
 					case "group":
@@ -269,7 +274,8 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 								contextValue: res.data[i].kind,
 								collapsible: vscode.TreeItemCollapsibleState.Collapsed,
 								label: res.data[i].name,
-								archived: res.data[i].kind === "project" ? res.data[i].archived : null,
+                                archived: res.data[i].kind === "project" ? res.data[i].archived : null,
+                                path_with_namespace: res.data[i].kind === "project" ? res.data[i].path_with_namespace : null,
 							})
 						);
 					}
@@ -290,6 +296,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 							collapsible: vscode.TreeItemCollapsibleState.None,
 							label: res.data[i].name,
 							archived: res.data[i].archived,
+                            path_with_namespace: res.data[i].path_with_namespace,
 						})
 					);
 				}

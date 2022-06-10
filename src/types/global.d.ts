@@ -19,16 +19,16 @@ declare global {
 		assignee?: { username: string; name: string; id: string; avatarUrl: string };
 		project_id: number;
 		user_notes_count: number;
-        labels?: {
-            color: string;
-            title: string;
-        }[]
-        description: string
+		labels?: {
+			color: string;
+			title: string;
+		}[];
+		description: string;
 	}
-    interface ILabel {
+	interface ILabel {
 		color: string;
-        title: string;
-    }
+		title: string;
+	}
 	interface IComment {
 		issue_id: number;
 		issue_iid: number;
@@ -53,15 +53,34 @@ declare global {
 	interface IPipelineListItem {
 		status: string;
 		source: string; //can prob be made into an enum, TODO
-		id: number;
+		id: string;
 		iid: number;
 		project_id: number;
 		web_url: URL;
+		duration: number;
+		ref: string;
 		/**
 		 * commit message of triggering commit
 		 * should be fetched over commit api
 		 */
-		message: string;
+		commit: {
+			message: string;
+			id: string;
+			shortId: string;
+			authorGravatar: string;
+		};
+		user: {
+			avatarUrl: string;
+			id: string;
+			name: string;
+		};
+        stages: {
+            nodes: {
+                id: string;
+                status: string
+                name: string
+            }[]
+        }
 	}
 	interface SnippetObject {
 		title: string;
@@ -81,5 +100,6 @@ declare global {
 		collapsible: vscode.TreeItemCollapsibleState;
 		label: string;
 		archived?: string;
+		path_with_namespace?: string;
 	}
 }

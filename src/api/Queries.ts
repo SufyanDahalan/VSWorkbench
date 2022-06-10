@@ -98,33 +98,35 @@ export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
 export const pipelinesQuery = (fullpath: string): string =>
 	JSON.stringify({
 		query: `
-        {
-            project(fullPath: "${fullpath}") {
-              pipelines {
-                nodes {
-                  id
-                  status
-                  duration
-                  ref
-                  commit {
-                    id
-                    message
-                    shortId
-                  }
-                  user {
-                    id
-                    name
-                    avatarUrl
-                  }
-                  stages {
-                      nodes {
-                        id
-                        status
-                      }
-                  }
+    {
+        project(fullPath: "${fullpath}") {
+            pipelines {
+            nodes {
+                id
+                status
+                duration
+                ref
+                commit {
+                id
+                message
+                authorGravatar
+                shortId
                 }
-              }
+                user {
+                id
+                name
+                avatarUrl
+                }
+                stages {
+                    nodes {
+                    id
+                    status
+                    name
+                    }
+                }
             }
-          }
+            }
+        }
+        }
 `,
 	});

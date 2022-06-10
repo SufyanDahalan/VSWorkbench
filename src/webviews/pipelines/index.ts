@@ -17,7 +17,7 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	}
 	eventCallback(data: any) {
         if(this._view){
-            this._view.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
+            this._view.webview.postMessage({ type: ViewEvents[data.event], id: data.id, fullpath: data.fullpath });
         }
 	}
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
