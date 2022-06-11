@@ -48,7 +48,8 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 				<title>GitLab Issues | VSWorkbench</title>
 			</head>
 			<body>
-            <script >window.vscode = acquireVsCodeApi();</script>
+            <script>window.vscode = acquireVsCodeApi();</script>
+            <style> </style>
             <div id="app"></div>
                 <script src="${scriptUri}"></script>
 			</body>

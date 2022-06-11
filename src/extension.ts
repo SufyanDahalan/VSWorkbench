@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import { Api } from "./api";
 
 import { AUTH_TOKEN_KEY, GITLAB_INSTANCE_KEY, GlobalFunctions } from "./globals/";
-
 import * as Commands from "./commands";
 import { createIssueCommand } from "./commands";
 import { GroupTreeDataProvider, GroupNode, Node } from "./views";
@@ -13,10 +12,11 @@ function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 	context.globalState.setKeysForSync([GITLAB_INSTANCE_KEY]);
 }
+
+// let s = Object.keys(object as IPipelineListItem);
 export function activate(context: vscode.ExtensionContext) {
 	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);
 	Api.updateBaseURL(context.globalState.get(GITLAB_INSTANCE_KEY) as string); // needed
-
 	initStorage(context);
 	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string, context.globalState.get(GITLAB_INSTANCE_KEY) as string, true);
 

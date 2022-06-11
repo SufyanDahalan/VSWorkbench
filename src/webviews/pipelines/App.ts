@@ -5,7 +5,7 @@ import { ViewEvents, CreateHtmlNode } from "../../globals/constants";
 import "./App.css";
 
 let api = Api.Instance;
-let app = document.getElementById("app");
+let app = document.getElementById("app")!;
 let selection = 0;
 let fullpath = "";
 
@@ -86,7 +86,7 @@ function Route(route: Routes) {
 function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	let row = CreateHtmlNode("tr", null, "");
 
-	let statusRow = CreateHtmlNode("th", null, "");
+	let statusRow = CreateHtmlNode("td", null, "");
 	statusRow.appendChild(
 		CreateHtmlNode(
 			"button",
@@ -96,11 +96,11 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 					value: "status-button",
 				},
 				{
-					key: pipeline.status,
+					key: pipeline.detailedStatus.text,
 					value: true,
 				},
-            ],
-			pipeline.status
+			],
+			pipeline.detailedStatus.text
 		)
 	);
 	statusRow.appendChild(
@@ -108,17 +108,16 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 			"div",
 			[
 				{
-					//
 					key: "class",
 					value: "placeholder",
 				},
 			],
-			"&#128337;" + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24)
+			"&#9201;" + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24)
 		)
 	);
 
-	let pipelineRow = CreateHtmlNode("th", null, "");
-	pipelineRow.appendChild(CreateHtmlNode("p", null, pipeline.commit.message));
+	let pipelineRow = CreateHtmlNode("td", null, "");
+	pipelineRow.appendChild(CreateHtmlNode("p", null, pipeline.commit.title));
 	pipelineRow.appendChild(
 		CreateHtmlNode(
 			"div",
@@ -161,53 +160,97 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 			pipeline.commit.shortId
 		)
 	);
-	pipelineRow.appendChild(
+	let a = CreateHtmlNode(
+		"a",
+		[
+			{
+				key: "href",
+				value: `${pipeline.commit.author ?  pipeline.commit.author.webUrl : "mailto:" + pipeline.commit.authorEmail}`,
+			},
+		],
+		""
+	);
+	a.appendChild(
 		CreateHtmlNode(
 			"img",
 			[
 				{
-					key: "src",
-					value: pipeline.commit.authorGravatar,
+					key: "title",
+					value: pipeline.commit.authorName,
 				},
 				{
+					key: "src",
+					value: pipeline.commit.author ? checkUrl(pipeline.commit.author.avatarUrl, pipeline.commit.author.webUrl) : checkUrl(pipeline.commit.authorGravatar, pipeline.commit.webUrl),
+				},
+                {
 					key: "alt",
-					value: true,
+					value: 'Author Avatar',
+				},
+				{
+					key: "style",
+					value: `width: 16px; height: 16px;`,
+				},
+				{
+					key: "class",
+					value: "avatar",
 				},
 			],
 			""
 		)
 	);
 
-	let triggererRow = CreateHtmlNode("th", [{ key: "class", value: "triggererRow" }], "");
-	triggererRow.appendChild(
-		CreateHtmlNode(
+	pipelineRow.appendChild(a);
+
+	let triggererRow = CreateHtmlNode("td", [{ key: "class", value: "triggererRow" }], "");
+    a = CreateHtmlNode(
+        "a",
+        [
+            {
+                key: "href",
+                value: `${pipeline.user.webUrl}`,
+            },
+        ],
+        ""
+    ) 
+    a.appendChild(
+        CreateHtmlNode(
 			"img",
 			[
 				{
-					key: "src",
-					value: pipeline.user.avatarUrl,
+					key: "title",
+					value: pipeline.user.name,
 				},
 				{
+					key: "src",
+					value: checkUrl(pipeline.user.avatarUrl, pipeline.commit.webUrl),
+				},
+                {
 					key: "alt",
-					value: true,
+					value: 'Triggerer Avatar',
+				},
+				{
+					key: "style",
+					value: `width: 32px; height: 32px;`,
+				},
+				{
+					key: "class",
+					value: "avatar",
 				},
 			],
 			""
 		)
+    )
+	triggererRow.appendChild(a);
+	let stagesRow = CreateHtmlNode(
+		"td",
+		[
+			{
+				key: "class",
+				value: "stages",
+			},
+		],
+		""
 	);
-	triggererRow.appendChild(
-		CreateHtmlNode(
-			"span",
-			[
-				{
-					key: "class",
-					value: "triggerer-tooltip",
-				}, // see https://stackoverflow.com/questions/36921421/how-to-add-tooltip-to-image-on-hover-with-css
-			],
-			pipeline.user.name
-		)
-	);
-	let stagesRow = CreateHtmlNode("th", null, "");
 	pipeline.stages.nodes.forEach((stage) => {
 		stagesRow.appendChild(
 			CreateHtmlNode(
@@ -217,18 +260,21 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 						key: stage.status,
 						value: "",
 					},
+                    {
+                        key: "class",
+                        value: "stage",
+                    },
 					{
-						key: "class",
-						value: "stage",
+						key: "title",
+						value: stage.name + ": " + stage.detailedStatus.text,
 					},
 				],
-				""
+				stage.status === "success" ? "&#10003;" : "&#10005;"
 			)
 		);
-		stagesRow.appendChild(CreateHtmlNode("span", [{ key: "class", value: "" }], stage.name + ": " + stage.status));
 	});
 
-	let optionsRow = CreateHtmlNode("th", null, "");
+	let optionsRow = CreateHtmlNode("td", null, "");
 
 	row.appendChild(statusRow); // Status
 	row.appendChild(pipelineRow); // Pipeline
@@ -238,4 +284,12 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	// let el = CreateHtmlNode("div", null, pipeline.id + pipeline.status);
 	// return el;
 	return row;
+}
+function checkUrl(url: string, someFullUrl: string): string{
+    let domain = someFullUrl.split('/').slice(0, 3).toString().replaceAll(',', '/')
+    if(url.startsWith('https://'))
+        return url;
+    else {
+        return domain + url
+    }
 }

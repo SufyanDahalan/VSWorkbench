@@ -56,7 +56,7 @@ export const issueQuery = (issue_gid: string): string =>
 /**
  * Issues Query
  * @param isGroup describes whether the query targets a group or a project
- * @param fullpath full path of group or project, i.e. 'gitlab-orgs' or  'gitlab-org/gitlab-foss'
+ * @param fullpath full path of group or project, i.e. 'gitlab-org' or  'gitlab-org/gitlab-foss'
  * @returns Issues of the specified project with adequate information about them
  */
 export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
@@ -101,32 +101,50 @@ export const pipelinesQuery = (fullpath: string): string =>
     {
         project(fullPath: "${fullpath}") {
             pipelines {
-            nodes {
-                id
-                status
-                duration
-                ref
-                commit {
-                id
-                message
-                authorGravatar
-                shortId
-                }
-                user {
-                id
-                name
-                avatarUrl
-                }
-                stages {
-                    nodes {
+                nodes {
+                  id
+                  status
+                  duration
+                  ref
+                  updatedAt
+                  detailedStatus {
+                    text
+                  }
+                  commit {
                     id
-                    status
-                    name
+                    title
+                    shortId
+                    webUrl
+                    author {
+                      name
+                      avatarUrl
+                      webUrl
                     }
+                    authorName
+                    authorGravatar
+                    authorEmail
+                  }
+                  user {
+                    id
+                    name
+                    avatarUrl
+                    webUrl
+                  }
+                  stages {
+                    nodes {
+                      id
+                      status
+                      detailedStatus {
+                        text
+                      }
+                      name
+                    }
+                  }
                 }
+              }
             }
-            }
-        }
-        }
+          }
+          
+          
 `,
 	});

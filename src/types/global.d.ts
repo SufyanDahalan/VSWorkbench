@@ -51,7 +51,7 @@ declare global {
 	}
 
 	interface IPipelineListItem {
-		status: string;
+		detailedStatus: { text: string };
 		source: string; //can prob be made into an enum, TODO
 		id: string;
 		iid: number;
@@ -64,23 +64,33 @@ declare global {
 		 * should be fetched over commit api
 		 */
 		commit: {
-			message: string;
+			author: {
+				name: string;
+				avatarUrl: string;
+				webUrl: string;
+			};
+			webUrl: string;
+			title: string;
 			id: string;
 			shortId: string;
 			authorGravatar: string;
+			authorName: string;
+			authorEmail: string;
 		};
 		user: {
 			avatarUrl: string;
 			id: string;
 			name: string;
+			webUrl: string;
 		};
-        stages: {
-            nodes: {
-                id: string;
-                status: string
-                name: string
-            }[]
-        }
+		stages: {
+			nodes: {
+				id: string;
+				status: string;
+				name: string;
+				detailedStatus: { text: string };
+			}[];
+		};
 	}
 	interface SnippetObject {
 		title: string;

@@ -47,7 +47,8 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 				<title>GitLab CI | VSWorkbench</title>
 			</head>
 			<body>
-            <script >window.vscode = acquireVsCodeApi();</script>
+            <script>window.vscode = acquireVsCodeApi();</script>
+            <style> </style>
             <div id="app"></div>
                 <script src="${scriptUri}"></script>
 			</body>
