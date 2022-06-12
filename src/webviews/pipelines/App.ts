@@ -1,6 +1,6 @@
 import { pipelinesQuery } from "../../api/Queries";
 import { Api } from "../../api";
-import { ViewEvents, CreateHtmlNode } from "../../globals/constants";
+import { ViewEvents, CreateHtmlNode, loadingSpinner } from "../../globals/constants";
 // import { CreateHtmlNode } from "../../globals/functions";
 import "./App.css";
 
@@ -18,7 +18,6 @@ enum Routes {
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case ViewEvents.API_TOKEN: {
-			// Api.updateAuthToken(event.data.Token);
 			Api.updateAuthToken(event.data.Token);
 			Api.updateBaseURL(event.data.baseURL);
 
@@ -35,13 +34,27 @@ window.addEventListener("message", (event) => {
 			Route(Routes.PENDING);
 			break;
 		}
+		default: {
+			Route(Routes.PENDING);
+			break;
+		}
 	}
 });
 
 function Route(route: Routes) {
-	app!.innerHTML = "";
+	app.innerHTML = "";
+	app.append(loadingSpinner());
 	switch (route) {
 		case Routes.PENDING: {
+			app.innerHTML = "";
+			app.appendChild(
+				CreateHtmlNode(
+					"p",
+					[{ key: "class", value: "pending" }],
+					"Please choose a project from the groups view in order to load the chosen project's pipelines"
+				)
+			);
+
 			break;
 		}
 		case Routes.PIPELINES: {
@@ -67,12 +80,13 @@ function Route(route: Routes) {
 				rows.forEach((row: Node) => {
 					table.appendChild(row);
 				});
-				app!.appendChild(table);
+				app.innerHTML = "";
+				app.appendChild(table);
 			});
 			// api.getProjectPipelines(selection).then((res) => {
 			// 	let pipelines: IPipelineListItem[] = res.data as IPipelineListItem[];
 			// 	for (const pipeline of pipelines) {
-			// 		app!.appendChild(CreatePipelineNode(pipeline));
+			// 		app.appendChild(CreatePipelineNode(pipeline));
 			// 	}
 			// });
 			break;
@@ -103,30 +117,30 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 			pipeline.detailedStatus.text
 		)
 	);
-	statusRow.appendChild(
-		CreateHtmlNode(
-			"div",
-			[
-				{
-					key: "class",
-					value: "placeholder",
-				},
-			],
-			"&#9201;" + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24)
-		)
-	);
+	if (pipeline.duration) {
+		statusRow.appendChild(
+			CreateHtmlNode(
+				"div",
+				[
+					{
+						key: "class",
+						value: "placeholder",
+					},
+				],
+				"&#9201; " + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24)
+			)
+		);
+	}
 
 	let pipelineRow = CreateHtmlNode("td", null, "");
-	pipelineRow.appendChild(CreateHtmlNode("p", null, pipeline.commit.title));
+	pipelineRow.appendChild(CreateHtmlNode("a", [{ key: "href", value: pipeline.commit.webUrl }], pipeline.commit.title));
 	pipelineRow.appendChild(
 		CreateHtmlNode(
-			"div",
+			"a",
 			[
 				{
-					key: "onclick",
-					value: () => {
-						//go to commit or smth
-					},
+					key: "href",
+					value: checkUrl(pipeline.path, pipeline.commit.webUrl),
 				},
 			],
 			pipeline.id.split("/").pop() ?? "Error. please report an issue in VSWorkbench GitHub Repository. Thank you"
@@ -134,13 +148,11 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	);
 	pipelineRow.appendChild(
 		CreateHtmlNode(
-			"div",
+			"a",
 			[
 				{
-					key: "onclick",
-					value: () => {
-						//go to commit or smth
-					},
+					key: "href",
+					value: checkUrl(pipeline.ref, pipeline.commit.webUrl),
 				},
 			],
 			pipeline.ref
@@ -148,13 +160,11 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	);
 	pipelineRow.appendChild(
 		CreateHtmlNode(
-			"div",
+			"a",
 			[
 				{
-					key: "onclick",
-					value: () => {
-						//go to commit or smth
-					},
+					key: "href",
+					value: pipeline.commit.webUrl,
 				},
 			],
 			pipeline.commit.shortId
@@ -165,7 +175,7 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 		[
 			{
 				key: "href",
-				value: `${pipeline.commit.author ?  pipeline.commit.author.webUrl : "mailto:" + pipeline.commit.authorEmail}`,
+				value: `${pipeline.commit.author ? pipeline.commit.author.webUrl : "mailto:" + pipeline.commit.authorEmail}`,
 			},
 		],
 		""
@@ -180,11 +190,13 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 				},
 				{
 					key: "src",
-					value: pipeline.commit.author ? checkUrl(pipeline.commit.author.avatarUrl, pipeline.commit.author.webUrl) : checkUrl(pipeline.commit.authorGravatar, pipeline.commit.webUrl),
+					value: pipeline.commit.author
+						? checkUrl(pipeline.commit.author.avatarUrl, pipeline.commit.webUrl)
+						: checkUrl(pipeline.commit.authorGravatar, pipeline.commit.webUrl),
 				},
-                {
+				{
 					key: "alt",
-					value: 'Author Avatar',
+					value: "Author Avatar",
 				},
 				{
 					key: "style",
@@ -202,18 +214,18 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	pipelineRow.appendChild(a);
 
 	let triggererRow = CreateHtmlNode("td", [{ key: "class", value: "triggererRow" }], "");
-    a = CreateHtmlNode(
-        "a",
-        [
-            {
-                key: "href",
-                value: `${pipeline.user.webUrl}`,
-            },
-        ],
-        ""
-    ) 
-    a.appendChild(
-        CreateHtmlNode(
+	a = CreateHtmlNode(
+		"a",
+		[
+			{
+				key: "href",
+				value: `${pipeline.user.webUrl}`,
+			},
+		],
+		""
+	);
+	a.appendChild(
+		CreateHtmlNode(
 			"img",
 			[
 				{
@@ -224,9 +236,9 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 					key: "src",
 					value: checkUrl(pipeline.user.avatarUrl, pipeline.commit.webUrl),
 				},
-                {
+				{
 					key: "alt",
-					value: 'Triggerer Avatar',
+					value: "Triggerer Avatar",
 				},
 				{
 					key: "style",
@@ -239,7 +251,7 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 			],
 			""
 		)
-    )
+	);
 	triggererRow.appendChild(a);
 	let stagesRow = CreateHtmlNode(
 		"td",
@@ -260,10 +272,10 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 						key: stage.status,
 						value: "",
 					},
-                    {
-                        key: "class",
-                        value: "stage",
-                    },
+					{
+						key: "class",
+						value: "stage",
+					},
 					{
 						key: "title",
 						value: stage.name + ": " + stage.detailedStatus.text,
@@ -285,11 +297,11 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	// return el;
 	return row;
 }
-function checkUrl(url: string, someFullUrl: string): string{
-    let domain = someFullUrl.split('/').slice(0, 3).toString().replaceAll(',', '/')
-    if(url.startsWith('https://'))
-        return url;
-    else {
-        return domain + url
-    }
+function checkUrl(url: string, someFullUrl: string): string {
+	let domain = someFullUrl.split("/").slice(0, 3).toString().replaceAll(",", "/");
+	if (url.startsWith("https://")) {
+		return url;
+	} else {
+		return domain + url;
+	}
 }

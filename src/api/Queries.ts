@@ -107,6 +107,7 @@ export const pipelinesQuery = (fullpath: string): string =>
                   duration
                   ref
                   updatedAt
+                  path
                   detailedStatus {
                     text
                   }
@@ -144,7 +145,5 @@ export const pipelinesQuery = (fullpath: string): string =>
               }
             }
           }
-          
-          
 `,
 	});

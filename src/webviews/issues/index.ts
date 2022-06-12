@@ -1,7 +1,10 @@
 import * as vscode from "vscode";
 import { ViewEvents } from "../../globals/";
 import { changeValidEmitter, newAuthentication } from "../../globals/event";
-import {Api} from "../../api";
+import { Api } from "../../api";
+
+let pendingData: any = null;
+
 export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabIssues";
 	// token: string;
@@ -12,13 +15,15 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
 		// this.token = Token;
-        changeValidEmitter.event(this.eventCallback, this)
+		changeValidEmitter.event(this.eventCallback, this);
 	}
-    public eventCallback (data: any): void {
-        if(this._view){
-            this._view.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
-        }
-    }
+	public eventCallback(data: any): void {
+		if (this._view) {
+			this._view.webview.postMessage({ type: ViewEvents[data.event], id: data.id });
+		} else {
+			pendingData = { type: ViewEvents[data.event], id: data.id, fullpath: data.fullpath };
+		}
+	}
 	public resolveWebviewView(webviewView: vscode.WebviewView): void | Thenable<void> {
 		this._view = webviewView;
 		webviewView.webview.options = {
@@ -28,15 +33,18 @@ export class IssuesViewProvidor implements vscode.WebviewViewProvider {
 		};
 		webviewView.webview.html = this.getHtml(webviewView.webview);
 		// this._view.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
-        this.updateApi()
-        newAuthentication.event(this.updateApi, this)
-
+		this.updateApi();
+		newAuthentication.event(this.updateApi, this);
+		if (pendingData !== null) {
+			this.eventCallback(pendingData);
+			pendingData = null;
+		}
 	}
-    public updateApi(): void{
-        if(this._view){
-            this._view!.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
-        }
-    }
+	public updateApi(): void {
+		if (this._view) {
+			this._view!.webview.postMessage({ type: ViewEvents.API_TOKEN, Token: Api.PRIVATE_TOKEN, baseURL: Api.baseURL });
+		}
+	}
 	private getHtml(webview: vscode.Webview): string {
 		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "dist", "issues", "main.js"));
 		return `<!DOCTYPE html>

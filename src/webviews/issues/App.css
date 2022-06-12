@@ -1,13 +1,49 @@
-.title {
-    
+.app {
+	width: 100%;
+	height: 100%;
+	min-width: 100%;
+	min-height: 100%;
+    text-align: center;
+
+}
+/* 
+    credited to https://loading.io/
+*/
+.lds-dual-ring {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+}
+.lds-dual-ring:after {
+	content: " ";
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: 8px;
+	border-radius: 50%;
+	border: 6px solid #fff;
+	border-color: #fff transparent #fff transparent;
+	animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.pending {
+	text-align: center;
+	font-size: 30px;
 }
 
 .issues-list {
 	list-style-type: none;
 }
 .issues-list > li {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 	border-bottom: 1px solid #4f4f4f;
 }
 
@@ -24,13 +60,10 @@ a {
 .issue-title {
 	font-size: 150%;
 	font-weight: bold;
-    flex: 1;
-
+	flex: 1;
 }
-.meta-bottom{
-
-    display: inline-flex;
-
+.meta-bottom {
+	display: inline-flex;
 }
 .meta-bottom > .authored {
 	font-weight: 400;
@@ -39,26 +72,30 @@ a {
 
 .meta-bottom > .author {
 	color: #fafafa;
-    margin-left: 4px;
+	margin-left: 4px;
 }
-.labels{
-    margin-left: 10px;
+.labels {
+	margin-left: 10px;
 }
 .labels > * {
-    margin-left: 10px;
+	margin-left: 10px;
 }
 .label {
-    /* background-color: violet; */
-    border-radius: 0.75rem;
+	/* background-color: violet; */
+	border-radius: 0.75rem;
 }
 .meta-right {
-    /* float: inline-end; */
+	/* float: inline-end; */
 }
 .meta {
-    flex: 2;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+	flex: 2;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+a[href] {
+	display: contents;
 }
 /*
 

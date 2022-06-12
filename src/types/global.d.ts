@@ -56,7 +56,7 @@ declare global {
 		id: string;
 		iid: number;
 		project_id: number;
-		web_url: URL;
+		path: string;
 		duration: number;
 		ref: string;
 		/**

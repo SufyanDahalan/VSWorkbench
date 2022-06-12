@@ -1,6 +1,6 @@
 export const AUTH_TOKEN_KEY = "GITLABCODE_PEROSONAL_AUTH_TOKEN";
 export const GITLAB_INSTANCE_KEY = "GITLABCODE_GITLAB_INSTANCE_KEY";
-export const UPDATE_FOCUSED_TV_ITEM = 'UPDATE_FOCUSED_TV_ITEM'
+export const UPDATE_FOCUSED_TV_ITEM = "UPDATE_FOCUSED_TV_ITEM";
 export const GitLab_SaaS_Base_URL = "https://gitlab.com/api/";
 
 export const enum VALIDATION_RULES {
@@ -9,14 +9,14 @@ export const enum VALIDATION_RULES {
 	NotEmptyOrNull,
 }
 export enum ViewEvents {
-    GROUP_SELECTED = 0,
-    PROJECT_SELECTED,
-    PIPELINE_SELECTED,
-    JOB_SELECTED,
-    API_TOKEN,
-    WIKI,
-    SNIPPET,
-    PENDING
+	GROUP_SELECTED = 0,
+	PROJECT_SELECTED,
+	PIPELINE_SELECTED,
+	JOB_SELECTED,
+	API_TOKEN,
+	WIKI,
+	SNIPPET,
+	PENDING,
 }
 export function CreateHtmlNode(type: string, attributes: { key: string; value: string | Function | boolean }[] | null, innerHTML: string): Node {
 	const el = document.createElement(type);
@@ -37,4 +37,8 @@ export function CreateHtmlNode(type: string, attributes: { key: string; value: s
 		}
 	}
 	return el;
+}
+
+export function loadingSpinner() {
+	return CreateHtmlNode("div", [{ key: "class", value: "lds-dual-ring" }], "");
 }

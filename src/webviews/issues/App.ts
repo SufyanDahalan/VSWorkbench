@@ -1,12 +1,12 @@
 import { Api } from "../../api";
-import { ViewEvents, CreateHtmlNode } from "../../globals/constants";
+import { ViewEvents, CreateHtmlNode, loadingSpinner } from "../../globals/constants";
 // import { CreateHtmlNode, } from "../../globals/functions";
 import { issueQuery } from "../../api/Queries";
 
 import "./App.css";
 
 let api = Api.Instance;
-let app = document.getElementById("app");
+let app = document.getElementById("app")!;
 let selection = { value: 0, id: 0 };
 
 enum Routes {
@@ -20,9 +20,8 @@ window.addEventListener("message", (event) => {
 	switch (event.data.type) {
 		case ViewEvents.API_TOKEN: {
 			selection.value = Routes.PENDING;
-			// Api.updateAuthToken(event.data.Token);
-            Api.updateAuthToken(event.data.Token);
-            Api.updateBaseURL(event.data.baseURL);
+			Api.updateAuthToken(event.data.Token);
+			Api.updateBaseURL(event.data.baseURL);
 			Route(Routes.PENDING);
 			break;
 		}
@@ -38,17 +37,31 @@ window.addEventListener("message", (event) => {
 			Route(Routes.PROJECT_ISSUES_ROUTE);
 			break;
 		}
-        case ViewEvents.PENDING: {
-            Route(Routes.PENDING)
-            break;
-        }
+		case ViewEvents.PENDING: {
+			Route(Routes.PENDING);
+			break;
+		}
+		default: {
+			Route(Routes.PENDING);
+			break;
+		}
 	}
 });
 
-async function Route(route: Routes, args?: /* object | */ RouteArguments): Promise<void> {
-	app!.innerHTML = "";
+async function Route(route: Routes, args?: RouteArguments): Promise<void> {
+	app.innerHTML = "";
+	app.append(loadingSpinner());
 	switch (route) {
 		case Routes.PENDING: {
+			app.innerHTML = "";
+			app.appendChild(
+				CreateHtmlNode(
+					"p",
+					[{ key: "class", value: "pending" }],
+					"Please choose a group or project from the groups view in order to load the chosen entity's issues"
+				)
+			);
+
 			break;
 		}
 		case Routes.GROUP_ISSUES_ROUTE: {
@@ -57,7 +70,8 @@ async function Route(route: Routes, args?: /* object | */ RouteArguments): Promi
 					issue.reference = issue.references.full;
 				}
 				let issues: IIssue[] = res.data;
-				app!.appendChild(CreateIssuesUL(issues));
+				app.innerHTML = "";
+				app.appendChild(CreateIssuesUL(issues));
 			});
 			break;
 		}
@@ -67,7 +81,8 @@ async function Route(route: Routes, args?: /* object | */ RouteArguments): Promi
 					issue.reference = issue.references.full;
 				}
 				let issues: IIssue[] = res.data;
-				app!.appendChild(CreateIssuesUL(issues));
+				app.innerHTML = "";
+				app.appendChild(CreateIssuesUL(issues));
 			});
 			break;
 		}
@@ -94,7 +109,8 @@ async function Route(route: Routes, args?: /* object | */ RouteArguments): Promi
 					comment.issue_iid = res.iid;
 				}
 				let comments: IComment[] = res.notes.nodes;
-				app!.appendChild(
+				app.innerHTML = "";
+				app.appendChild(
 					CreateHtmlNode(
 						"button",
 						[
@@ -108,13 +124,13 @@ async function Route(route: Routes, args?: /* object | */ RouteArguments): Promi
 						"&#x21A9;"
 					)
 				);
-				app!.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
-				app!.appendChild(CreateHtmlNode("p", null, issue.description));
+				app.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
+				app.appendChild(CreateHtmlNode("p", null, issue.description));
 
 				for (const comment of comments) {
-					app!.appendChild(CreateCommentNode(comment));
+					app.appendChild(CreateCommentNode(comment));
 				}
-				app!.appendChild(CreateNewCommentInput(issue));
+				app.appendChild(CreateNewCommentInput(issue));
 			});
 			break;
 		}
