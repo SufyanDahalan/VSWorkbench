@@ -100,6 +100,7 @@ export const pipelinesQuery = (fullpath: string): string =>
 		query: `
     {
         project(fullPath: "${fullpath}") {
+            id
             pipelines {
                 nodes {
                   id
@@ -131,14 +132,23 @@ export const pipelinesQuery = (fullpath: string): string =>
                     avatarUrl
                     webUrl
                   }
-                  stages {
+                  jobs {
                     nodes {
                       id
                       status
+                      name
+                      tags
+                      artifacts {
+                        nodes {
+                          
+                          downloadPath
+                          fileType
+                          name
+                        }
+                      }
                       detailedStatus {
                         text
                       }
-                      name
                     }
                   }
                 }

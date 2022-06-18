@@ -121,7 +121,7 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 								},
 							},
 						],
-						"&#x21A9;"
+						Icons.RETURN
 					)
 				);
 				app.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
@@ -151,7 +151,7 @@ function CreateCommentNode(comment: IComment): Node {
 					},
 				},
 			],
-			"&#x1f5d1;"
+			Icons.TRASH
 		)
 	);
 	return commentNode;

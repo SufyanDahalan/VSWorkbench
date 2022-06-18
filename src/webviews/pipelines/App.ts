@@ -1,8 +1,11 @@
 import { pipelinesQuery } from "../../api/Queries";
 import { Api } from "../../api";
 import { ViewEvents, CreateHtmlNode, loadingSpinner } from "../../globals/constants";
-// import { CreateHtmlNode } from "../../globals/functions";
 import "./App.css";
+
+import Convert from "ansi-to-html";
+
+const convert = new Convert({ newline: true, escapeXML: true });
 
 let api = Api.Instance;
 let app = document.getElementById("app")!;
@@ -13,6 +16,11 @@ enum Routes {
 	PENDING = 0,
 	PIPELINES,
 	PIPELINE,
+	JOB,
+}
+interface RouteArguments {
+	project_id: number;
+	item_id: number;
 }
 
 window.addEventListener("message", (event) => {
@@ -34,6 +42,10 @@ window.addEventListener("message", (event) => {
 			Route(Routes.PENDING);
 			break;
 		}
+		case ViewEvents.JOB_SELECTED: {
+			Route(Routes.JOB);
+			break;
+		}
 		default: {
 			Route(Routes.PENDING);
 			break;
@@ -41,7 +53,7 @@ window.addEventListener("message", (event) => {
 	}
 });
 
-function Route(route: Routes) {
+function Route(route: Routes, args?: RouteArguments) {
 	app.innerHTML = "";
 	app.append(loadingSpinner());
 	switch (route) {
@@ -61,37 +73,67 @@ function Route(route: Routes) {
 			api.graphql(pipelinesQuery(fullpath)).then((res) => {
 				let pipelines: IPipelineListItem[] = res.data.data.project.pipelines.nodes as IPipelineListItem[];
 
-				console.log("pipelines: ", pipelines);
+				if (pipelines.length > 0) {
+					let table = CreateHtmlNode("table", null, "");
+					let tableHeader = CreateHtmlNode("tr", null, "");
+					tableHeader.appendChild(CreateHtmlNode("th", null, "Status"));
+					tableHeader.appendChild(CreateHtmlNode("th", null, "Pipeline"));
+					tableHeader.appendChild(CreateHtmlNode("th", null, "Triggerer"));
+					tableHeader.appendChild(CreateHtmlNode("th", null, "Stages"));
+					tableHeader.appendChild(CreateHtmlNode("th", null, "")); // for options
 
-				// begin creating table
-				let table = CreateHtmlNode("table", null, "");
-				let rows: Node[] = [];
-				rows.push(CreateHtmlNode("tr", null, ""));
-				rows[0].appendChild(CreateHtmlNode("th", null, "Status"));
-				rows[0].appendChild(CreateHtmlNode("th", null, "Pipeline"));
-				rows[0].appendChild(CreateHtmlNode("th", null, "Triggerer"));
-				rows[0].appendChild(CreateHtmlNode("th", null, "Stages"));
-				rows[0].appendChild(CreateHtmlNode("th", null, "")); // for options
-				// end creating table
-
-				for (const pipeline of pipelines) {
-					rows.push(CreatePipelineNode(pipeline));
+					table.appendChild(tableHeader);
+					pipelines.forEach((pipeline) => table.appendChild(CreatePipelineNode(pipeline)));
+					app.innerHTML = "";
+					app.appendChild(table);
+				} else {
+					app.innerHTML = "";
+					app.appendChild(CreateHtmlNode("p", null, "no pipelines to view :(")); // TODO
 				}
-				rows.forEach((row: Node) => {
-					table.appendChild(row);
-				});
-				app.innerHTML = "";
-				app.appendChild(table);
 			});
-			// api.getProjectPipelines(selection).then((res) => {
-			// 	let pipelines: IPipelineListItem[] = res.data as IPipelineListItem[];
-			// 	for (const pipeline of pipelines) {
-			// 		app.appendChild(CreatePipelineNode(pipeline));
-			// 	}
-			// });
 			break;
 		}
-		case Routes.PIPELINE: {
+		case Routes.JOB: {
+			api.getJobLogs(selection, args!.item_id).then((res) => {
+				let logs = convert.toHtml(res.data).split("<br/>");
+				let logLines: Node[] = [];
+				let child = false;
+				for (let i = 0; i < logs.length; i++) {
+					if (logs[i].startsWith("section_start")) {
+						child = true, i++;
+						logLines.push(CreateHtmlNode("div", [{ key: "class", value: "hidden" }], ""));
+						logLines[logLines.length - 1].appendChild(
+							CreateHtmlNode(
+								"p",
+								[
+									{ key: "class", value: "header" },
+									{
+										key: "onclick",
+										value: () => {
+											let parent = document.getElementById(logs[i].split(":")[1])!.parentElement!;
+											parent.classList.contains("hidden") ? parent.classList.remove("hidden") : parent.classList.add("hidden");
+										},
+									},
+									{ key: "id", value: logs[i].split(":")[1] },
+								],
+								logs[i]
+							)
+						);
+					} else if (logs[i].startsWith("section_end")) {
+                        child = false, i++;
+					} else if (!child) {
+						logLines.push(CreateHtmlNode("p", null, logs[i]));
+					} else if (child) {
+						logLines[logLines.length - 1].appendChild(CreateHtmlNode("p", [{ key: "class", value: "hidable" }], logs[i]));
+					}
+				}
+
+				app.innerHTML = "";
+                let logsDiv = CreateHtmlNode("div", [{ key: "style", value: "white-space: pre-wrap;" }, { key: "class", value: "logs" }], '')
+                logLines.forEach((line) => logsDiv.appendChild(line))
+				app.appendChild(logsDiv);
+				console.log(convert.toHtml(res.data));
+			});
 			break;
 		}
 	}
@@ -127,14 +169,22 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 						value: "placeholder",
 					},
 				],
-				"&#9201; " + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24)
+				Icons.STOPWATCH + " " + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24)
 			)
 		);
 	}
 
 	let pipelineRow = CreateHtmlNode("td", null, "");
-	pipelineRow.appendChild(CreateHtmlNode("a", [{ key: "href", value: pipeline.commit.webUrl }], pipeline.commit.title));
-	pipelineRow.appendChild(
+	// begin row 1
+	let div = CreateHtmlNode("div", null, "");
+	div.appendChild(CreateHtmlNode("a", [{ key: "href", value: pipeline.commit.webUrl }], pipeline.commit.title));
+	pipelineRow.appendChild(div);
+	// end row 1
+	// begin row 2
+	div = CreateHtmlNode("div", null, "");
+
+	// pipelineRow.appendChild(
+	div.appendChild(
 		CreateHtmlNode(
 			"a",
 			[
@@ -143,10 +193,11 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 					value: checkUrl(pipeline.path, pipeline.commit.webUrl),
 				},
 			],
-			pipeline.id.split("/").pop() ?? "Error. please report an issue in VSWorkbench GitHub Repository. Thank you"
+			gidToId(pipeline.id)
 		)
 	);
-	pipelineRow.appendChild(
+	// pipelineRow.appendChild(
+	div.appendChild(
 		CreateHtmlNode(
 			"a",
 			[
@@ -158,18 +209,7 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 			pipeline.ref
 		)
 	);
-	pipelineRow.appendChild(
-		CreateHtmlNode(
-			"a",
-			[
-				{
-					key: "href",
-					value: pipeline.commit.webUrl,
-				},
-			],
-			pipeline.commit.shortId
-		)
-	);
+
 	let a = CreateHtmlNode(
 		"a",
 		[
@@ -211,7 +251,22 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 		)
 	);
 
-	pipelineRow.appendChild(a);
+	// pipelineRow.appendChild(a);
+	div.appendChild(
+		CreateHtmlNode(
+			"a",
+			[
+				{
+					key: "href",
+					value: pipeline.commit.webUrl,
+				},
+			],
+			pipeline.commit.shortId
+		)
+	);
+	div.appendChild(a);
+	pipelineRow.appendChild(div);
+	// end row 2
 
 	let triggererRow = CreateHtmlNode("td", [{ key: "class", value: "triggererRow" }], "");
 	a = CreateHtmlNode(
@@ -263,13 +318,13 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 		],
 		""
 	);
-	pipeline.stages.nodes.forEach((stage) => {
+	pipeline.jobs.nodes.forEach((job) => {
 		stagesRow.appendChild(
 			CreateHtmlNode(
 				"div",
 				[
 					{
-						key: stage.status,
+						key: job.status,
 						value: "",
 					},
 					{
@@ -278,10 +333,14 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 					},
 					{
 						key: "title",
-						value: stage.name + ": " + stage.detailedStatus.text,
+						value: job.name + ": " + job.detailedStatus.text,
+					},
+					{
+						key: "onclick",
+						value: () => Route(Routes.JOB, { project_id: +gidToId(pipeline.id), item_id: +gidToId(job.id) }),
 					},
 				],
-				stage.status === "success" ? "&#10003;" : "&#10005;"
+				job.status === "SUCCESS" ? Icons.CHECK : Icons.X
 			)
 		);
 	});
@@ -293,10 +352,9 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 	row.appendChild(triggererRow); // Triggerer
 	row.appendChild(stagesRow); // Stages
 	row.appendChild(optionsRow); // options, i.e. download artifacts
-	// let el = CreateHtmlNode("div", null, pipeline.id + pipeline.status);
-	// return el;
 	return row;
 }
+
 function checkUrl(url: string, someFullUrl: string): string {
 	let domain = someFullUrl.split("/").slice(0, 3).toString().replaceAll(",", "/");
 	if (url.startsWith("https://")) {
@@ -304,4 +362,8 @@ function checkUrl(url: string, someFullUrl: string): string {
 	} else {
 		return domain + url;
 	}
+}
+
+function gidToId(id: string): string {
+	return id.split("/").pop() ?? "Error. please report an issue in VSWorkbench GitHub Repository. Thank you";
 }

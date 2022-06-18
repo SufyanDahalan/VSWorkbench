@@ -14,17 +14,6 @@ let parent_id: number;
 // }
 
 export class IssueNode extends Node {
-	// node_id: number;
-	// parent_id: number;
-	// url: URL;
-    // contextValue: string;
-	// visibility: string; //can prob be made into an enum, TODO
-	/**
-	 * vscode.TreeItem.contextValue
-	 * possible values: "group", "user"
-	 * value depends on kind of gitlab namespace
-	 * TODO: maybe turn into enum to keep em clear? idk
-	 */
 	constructor(
 		node_id: number,
 		project_id: number,

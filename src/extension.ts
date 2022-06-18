@@ -7,23 +7,24 @@ import { createIssueCommand } from "./commands";
 import { GroupTreeDataProvider, GroupNode, Node } from "./views";
 import { IssuesViewProvidor } from "./webviews/issues";
 import { PipelineViewProvidor } from "./webviews/pipelines";
-// import { EditorView } from "./webviews/editor/editor";
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 	context.globalState.setKeysForSync([GITLAB_INSTANCE_KEY]);
 }
 
-// let s = Object.keys(object as IPipelineListItem);
 export function activate(context: vscode.ExtensionContext) {
 	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);
 	Api.updateBaseURL(context.globalState.get(GITLAB_INSTANCE_KEY) as string); // needed
 	initStorage(context);
-	GlobalFunctions.checkGitlabInstanceAndAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string, context.globalState.get(GITLAB_INSTANCE_KEY) as string, true);
+	GlobalFunctions.checkGitlabInstanceAndAuthToken(
+		context.globalState.get(AUTH_TOKEN_KEY) as string,
+		context.globalState.get(GITLAB_INSTANCE_KEY) as string,
+		true
+	);
 
 	let groupView = new GroupTreeDataProvider(context);
-	let issuesWebView = new IssuesViewProvidor(context/*,  context.globalState.get(AUTH_TOKEN_KEY) as string */);
-	let pipelineWebView = new PipelineViewProvidor(context/*,  context.globalState.get(AUTH_TOKEN_KEY) as string */);
-    // let editorView = new EditorView(context, context.globalState.get(AUTH_TOKEN_KEY) as string) 
+	let issuesWebView = new IssuesViewProvidor(context);
+	let pipelineWebView = new PipelineViewProvidor(context);
 	context.subscriptions.push(
 		vscode.commands.registerCommand("VSWorkbench.addPersonalAccessToken", async () => {
 			await GlobalFunctions.settings(context.globalState);
@@ -41,18 +42,17 @@ export function activate(context: vscode.ExtensionContext) {
 			node.createSubGroup();
 		}),
 		vscode.commands.registerCommand("VSWorkbench.createMergeRequest", Commands.createMergeRequestCommand),
-		vscode.commands.registerCommand("VSWorkbench.viewIssue", Commands.viewIssue), // TODO: deVSWorkbench.createGroupProjectlete
+		vscode.commands.registerCommand("VSWorkbench.viewIssue", Commands.viewIssue),
 		vscode.commands.registerCommand("VSWorkbench.deleteNamespaceNode", (node: GroupNode) => {
 			node.delete();
 		}),
 		vscode.commands.registerCommand("VSWorkbench.createPersonalSnippet", Commands.createPersonalSnippet),
 		vscode.commands.registerCommand("VSWorkbench.wiki", (node: GroupNode) => {
-            node.openWiki()
-        }/* Commands.createProjectSnippet */),
-        vscode.commands.registerCommand("VSWorkbench.snippets", (node: GroupNode) => {
-            node.openSnippets()
-        }/* Commands.createProjectSnippet */),
-        
+			node.openWiki();
+		}),
+		vscode.commands.registerCommand("VSWorkbench.snippets", (node: GroupNode) => {
+			node.openSnippets();
+		}),
 
 		vscode.commands.registerCommand("VSWorkbench.viewIssueList", Commands.viewIssueList),
 		vscode.commands.registerCommand("VSWorkbench.viewIssueBoard", Commands.viewIssueBoard),
@@ -77,13 +77,13 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("VSWorkbench.viewJob", Commands.viewJob),
 
 		vscode.commands.registerCommand("VSWorkbench.createNewProjectIssueCommand", Commands.createNewProjectIssueCommand),
-        vscode.commands.registerCommand("VSWorkbench.clone", async (node: GroupNode) => {node.contextValue === 'project' ?  await node.cloneProject() : await node.cloneNameSpace()})
-
+		vscode.commands.registerCommand("VSWorkbench.clone", async (node: GroupNode) => {
+			node.contextValue === "project" ? await node.cloneProject() : await node.cloneNameSpace();
+		})
 	);
 }
 
 export function deactivate() {}
-
 
 /**
  *

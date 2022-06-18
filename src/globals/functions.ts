@@ -27,7 +27,6 @@ export async function settings(globalState: vscode.ExtensionContext["globalState
 		if (res) {
 			globalState.update(GITLAB_INSTANCE_KEY, gitlabInstance);
 			globalState.update(AUTH_TOKEN_KEY, gitlabAuthToken);
-			// TODO update all views and apps via an eventbus event/notification
 			newAuthentication.fire();
 		} else if (!res) {
 			Api.updateAuthToken(globalState.get(AUTH_TOKEN_KEY) as string);

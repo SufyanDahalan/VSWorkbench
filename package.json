@@ -2,7 +2,7 @@
 	"name": "vsworkbench",
 	"displayName": "VSWorkbench",
 	"description": "",
-	"version": "1.0.0", 
+	"version": "1.0.0",
 	"types": "./types",
 	"publisher": "SufyanDahalan",
 	"engines": {
@@ -20,9 +20,9 @@
 		"type": "git",
 		"url": "https://github.com/SufyanDahalan/VSWorkbench.git"
 	},
-    "sponsor": {
-        "url": "https://github.com/sponsors/SufyanDahalan"
-    },
+	"sponsor": {
+		"url": "https://github.com/sponsors/SufyanDahalan"
+	},
 	"main": "./dist/extension.js",
 	"extensionKind": [
 		"ui"
@@ -42,9 +42,9 @@
 		"onStartupFinished"
 	],
 	"contributes": {
-        "configuration": {
-            "title": "VSWorkbench"
-        },
+		"configuration": {
+			"title": "VSWorkbench"
+		},
 		"viewsWelcome": [
 			{
 				"view": "authentication",
@@ -144,7 +144,7 @@
 				"category": "VSWorkbench",
 				"icon": "$(zap)"
 			},
-            {
+			{
 				"command": "VSWorkbench.wiki",
 				"title": "Open Wiki",
 				"category": "VSWorkbench",
@@ -214,18 +214,18 @@
 				"category": "VSWorkbench",
 				"icon": "$(globe)"
 			},
-            {
-                "command": "VSWorkbench.clone",
+			{
+				"command": "VSWorkbench.clone",
 				"title": "Clone",
 				"category": "VSWorkbench",
-                "icon": "$(clone)"
-            },
-            {
-                "command": "VSWorkbench.archiveProject",
-                "title": "Archive Project",
-                "category": "VSWorkbench",
-                "icon": "$(archive)"
-            }
+				"icon": "$(clone)"
+			},
+			{
+				"command": "VSWorkbench.archiveProject",
+				"title": "Archive Project",
+				"category": "VSWorkbench",
+				"icon": "$(archive)"
+			}
 		],
 		"viewsContainers": {
 			"activitybar": [
@@ -303,9 +303,7 @@
 			]
 		},
 		"menus": {
-            "commandPalette": [
-                
-            ],
+			"commandPalette": [],
 			"VSWorkbench.GroupView": [],
 			"VSWorkbench.PipelineView": [
 				{
@@ -426,27 +424,27 @@
 					"group": "inline@1",
 					"when": "view == groupView"
 				},
-                {
-                    "command": "VSWorkbench.clone",
-                    "when": "view == groupView",
+				{
+					"command": "VSWorkbench.clone",
+					"when": "view == groupView",
 					"group": "inline@1"
-                },
-                {
-                    "command": "VSWorkbench.archiveProject",
+				},
+				{
+					"command": "VSWorkbench.archiveProject",
 					"group": "inline@1",
-                    "when": "view == groupView && viewItem == project"
-                },
+					"when": "view == groupView && viewItem == project"
+				},
 				{
 					"command": "VSWorkbench.openSettingsInGitLab",
 					"group": "inline@2",
 					"when": "view == groupView"
 				},
-                {
+				{
 					"command": "VSWorkbench.snippets",
 					"group": "inline@2",
 					"when": "view == groupView && viewItem == project || view == groupView && viewItem == user"
 				},
-                {
+				{
 					"command": "VSWorkbench.wiki",
 					"group": "inline@2",
 					"when": "view == groupView && (viewItem == project || (viewItem == group && gitlabpremium))"
@@ -481,9 +479,9 @@
 			}
 		]
 	},
-    "extensionDependencies": [
-        "vscode.git"
-      ],
+	"extensionDependencies": [
+		"vscode.git"
+	],
 	"scripts": {
 		"vscode:prepublish": "npm run package",
 		"ts": "npm run esbuild-base -- --minify",
@@ -535,6 +533,7 @@
 		"webpack-cli": "^4.9.2"
 	},
 	"dependencies": {
+		"ansi-to-html": "^0.7.2",
 		"axios": "^0.26.1",
 		"iconv-lite": "^0.6.3"
 	}

@@ -87,15 +87,21 @@ export class Api {
 	getPipelineJobs(project_id: number, pipeline_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/projects/${project_id}/pipelines/${pipeline_id}/jobs`);
 	}
-	getPipeline(project_id: string, pipelineID: string): Promise<AxiosResponse> {
-		return Api.instance.api.get(`v4/projects/${project_id}/pipelines/${pipelineID}`);
+	getPipeline(project_id: string, pipeline_id: string): Promise<AxiosResponse> {
+        return Api.instance.api.get(`v4/projects/${project_id}/pipelines/${pipeline_id}`);
 	}
+    getJob(project_id: string, job_id: string): Promise<AxiosResponse>{
+		return Api.instance.api.get(`v4/projects/${project_id}/jobs/${job_id}`);
+    }
+    getJobLogs(project_id: number, job_id: number): Promise<AxiosResponse>{
+		return Api.instance.api.get(`v4/projects/${project_id}/jobs/${job_id}/trace`);
+    }
 	createNewProjectIssue(project_id: string): Promise<AxiosResponse> {
 		return Api.instance.api.post(`v4/projects/${project_id}/issues`);
 	}
-	reorderProjectIssue(project_id: string, issueIID: string): Promise<AxiosResponse> {
+	reorderProjectIssue(project_id: string, issue_iid: string): Promise<AxiosResponse> {
 		// https://docs.gitlab.com/ee/#api/issues.html#reorder-an-issue
-		return Api.instance.api.post(`v4/projects/${project_id}/issues/${issueIID}/reorder`);
+		return Api.instance.api.post(`v4/projects/${project_id}/issues/${issue_iid}/reorder`);
 	}
 	// #endregion
 	// #region user
