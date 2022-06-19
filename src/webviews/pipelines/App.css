@@ -122,3 +122,8 @@ tr > *:nth-child(5) {
 	max-width: 10%;
 	min-width: 10%;
 }
+
+
+.logs{
+    background-color: black;
+}

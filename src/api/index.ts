@@ -1,6 +1,6 @@
 import axios, { Axios, AxiosRequestConfig, AxiosResponse } from "axios";
-import {GitLab_SaaS_Base_URL } from '../globals/constants'
-
+import project from "commands/project";
+import { GitLab_SaaS_Base_URL } from "../globals/constants";
 
 export class Api {
 	api: Axios;
@@ -16,24 +16,24 @@ export class Api {
 			baseURL: Api.baseURL,
 			timeout: this.timeout,
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 			},
 		});
-        // this.api.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
-        //     console.log('Api Request Config: ', config)
-        //     return config
-        // })
-        // this.api.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
-        //     console.log('Api Response: ', response)
-        //     return response
-        // })
+		// this.api.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
+		//     console.log('Api Request Config: ', config)
+		//     return config
+		// })
+		// this.api.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
+		//     console.log('Api Response: ', response)
+		//     return response
+		// })
 	}
 	public static get Instance() {
 		if (!this.instance) {
 			this.instance = new Api();
 		}
 		return Api.instance;
-	} 
+	}
 	public static updateBaseURL(newBaseURL: string) {
 		Api.baseURL = newBaseURL;
 		Api.instance.api.defaults.baseURL = newBaseURL;
@@ -43,17 +43,17 @@ export class Api {
 		Api.instance.api.defaults.headers.common["PRIVATE-TOKEN"] = newAuthToken;
 		Api.instance.api.defaults.headers.common["Authorization"] = `Bearer ${newAuthToken}`;
 	}
-    graphql(query: string): Promise<AxiosResponse>{
-        return Api.Instance.api.post('graphql', query)
-    }
+	graphql(query: string): Promise<AxiosResponse> {
+		return Api.Instance.api.post("graphql", query);
+	}
 
-    //#region projects
-    archiveProject(project_id: number): Promise<AxiosResponse>{
-        return Api.Instance.api.post(`v4/projects/${project_id}/archive`)
-    }
-    unArchiveProject(project_id: number): Promise<AxiosResponse>{
-        return Api.Instance.api.post(`v4/projects/${project_id}/unarchive`)
-    }
+	//#region projects
+	archiveProject(project_id: number): Promise<AxiosResponse> {
+		return Api.Instance.api.post(`v4/projects/${project_id}/archive`);
+	}
+	unArchiveProject(project_id: number): Promise<AxiosResponse> {
+		return Api.Instance.api.post(`v4/projects/${project_id}/unarchive`);
+	}
 	getProjectIssueBoards(project_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/projects/${project_id}/boards`);
 	}
@@ -69,9 +69,20 @@ export class Api {
 	createProjectSnippet(project_id: number, snippet: SnippetObject): Promise<AxiosResponse> {
 		return Api.instance.api.post(`v4/projects/${project_id}/snippets`, { snippet });
 	}
-    getProjectSnippets(project_id: number): Promise<AxiosResponse> {
-		return Api.instance.api.get(`v4/projects/${project_id}/snippets`);
+	getSnippet(project_id: number | undefined, snippet_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}` : "") + `/snippets/${snippet_id}`);
+	}
+    getSnippetContent(project_id: number | undefined, snippet_id: number): Promise<AxiosResponse>{
+        return Api.instance.api.get('v4/' + (project_id ? `projects/${project_id}/` : '') + `snippets/${snippet_id}/raw`)
     }
+	/**
+	 * Get Snippets of a project or the user
+	 * @param project_id Id of project. If not specified, user snippets will be fetched
+	 * @returns Snippets of a project or of the user
+	 */
+	getSnippets(project_id?: number): Promise<AxiosResponse> {
+		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}/snippets` : "snippets"));
+	}
 	getProjectIssueComments(project_id: number, issue_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/projects/${project_id}/issues/${issue_id}/notes`);
 	}
@@ -88,14 +99,22 @@ export class Api {
 		return Api.instance.api.get(`v4/projects/${project_id}/pipelines/${pipeline_id}/jobs`);
 	}
 	getPipeline(project_id: string, pipeline_id: string): Promise<AxiosResponse> {
-        return Api.instance.api.get(`v4/projects/${project_id}/pipelines/${pipeline_id}`);
+		return Api.instance.api.get(`v4/projects/${project_id}/pipelines/${pipeline_id}`);
 	}
-    getJob(project_id: string, job_id: string): Promise<AxiosResponse>{
+	getJob(project_id: number, job_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/projects/${project_id}/jobs/${job_id}`);
-    }
-    getJobLogs(project_id: number, job_id: number): Promise<AxiosResponse>{
+	}
+	getJobLogs(project_id: number, job_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/projects/${project_id}/jobs/${job_id}/trace`);
-    }
+	}
+
+	deleteJobArtifacts(project_id: number, job_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.post(`v4/projects/${project_id}/jobs/${job_id}/erase`);
+	}
+	retryJob(project_id: number, job_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.post(`v4/projects/${project_id}/jobs/${job_id}/retry`);
+	}
+
 	createNewProjectIssue(project_id: string): Promise<AxiosResponse> {
 		return Api.instance.api.post(`v4/projects/${project_id}/issues`);
 	}
@@ -145,7 +164,7 @@ export class Api {
 		return Api.instance.api.put(`v4/projects/${project_id}/transfer?namespace=${group_id}`);
 	}
 	transferGroup(id: number, group_id?: number): Promise<AxiosResponse> {
-        return Api.instance.api.post(`v4/groups/${id}/transfer`, group_id ? {group_id} :  null)
+		return Api.instance.api.post(`v4/groups/${id}/transfer`, group_id ? { group_id } : null);
 	}
 	deleteProject(project_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.delete(`v4/projects/${project_id}`);
@@ -210,4 +229,4 @@ export class Api {
 	}
 }
 export default Api;
-export const api = Api.Instance
+export const api = Api.Instance;

@@ -1,10 +1,10 @@
-import { ViewEvents } from "../../globals/constants";
+import { CreateHtmlNode, ViewEvents, html } from "../../globals/constants";
 // import { CreateHtmlNode } from "../../globals/functions";
 import { Api } from "../../api";
 import "./App.css";
 
 let api = Api.Instance;
-let app = document.getElementById("app");
+let app = document.getElementById("app")!;
 
 window.addEventListener("message", (event) => {
 	switch (event.data.type) {
@@ -17,25 +17,78 @@ window.addEventListener("message", (event) => {
 			break;
 		}
 		case ViewEvents.SNIPPET: {
-			Snippet(event.data.isGroup, event.data.id);
+			Snippet(event.data.id);
 
 			break;
 		}
 	}
 });
-async function Snippet(isGroup: boolean, id: number) {
-	switch (isGroup) {
-		case true: {
-			break;
-		}
+async function Snippet(id?: number, snippet_id?: number) {
+	if (snippet_id) {
+		api.getSnippet(id, snippet_id).then((res) => {
+			api.getSnippetContent(id, snippet_id).then((contentRes) => {
+				app.innerHTML = "";
+                app.append(html(`
+                    <div>
+                        <h1>${res.data.title}</h1>
 
-		case false: {
-			api.getProjectSnippets(id).then((res) => {
-				let author: string = res.data[0].title;
-				app!.innerHTML = `<div>${author}<div>`;
+                        ${res.data.files.map((file: any) => { return `<div><h1>${file.raw_url}</h1>
+                        ${contentRes.data.split('\n').map((line:any) => `<div> ${line} </div>`).join('')}
+                        </div>`}).join('')}
+
+                    </div>
+                    `))
 			});
-			break;
-		}
+		});
+	} else if (!snippet_id) {
+		api.getSnippets(id).then((res) => {
+			let author: string = res.data[0].title;
+			res.data.forEach((snippet: any) => {
+				app.innerHTML = "";
+				app.append(
+					CreateHtmlNode({
+						type: "div",
+						attributes: [
+							{
+								key: "child",
+								value: {
+									type: "a",
+									attributes: [
+										{ key: "href", value: snippet.author.web_url },
+										{
+											key: "child",
+											value: {
+												type: "img",
+												attributes: [
+													{ key: "src", value: snippet.author.avatar_url },
+													{ key: "alt", value: "Avatar" },
+												],
+											},
+										},
+									],
+								},
+							},
+							{
+								key: "child",
+								value: {
+									type: "a",
+									innerHTML: snippet.title,
+									attributes: [{ key: "onclick", value: () => Snippet(id, snippet.id) }],
+								},
+							},
+							{
+								key: "child",
+								value: { type: "a", innerHTML: snippet.id, attributes: [{ key: "href", value: snippet.web_url }] },
+							},
+							{
+								key: "child",
+								value: { type: "a", innerHTML: snippet.author.name, attributes: [{ key: "href", value: snippet.author.web_url }] },
+							},
+						],
+					})
+				);
+			});
+		});
 	}
 }
 async function Wiki(isGroup: boolean, id: number) {
@@ -45,9 +98,10 @@ async function Wiki(isGroup: boolean, id: number) {
 		}
 
 		case false: {
-			api.getProjectSnippets(id).then((res) => {
+			api.getSnippets(id).then((res) => {
 				let author: string = res.data[0].title;
-				app!.innerHTML = `<div>${author}<div>`;
+
+				app.innerHTML = `<div>${author}<div>`;
 			});
 			break;
 		}

@@ -1,5 +1,5 @@
 import { Api } from "../../api";
-import { ViewEvents, CreateHtmlNode, loadingSpinner } from "../../globals/constants";
+import { Icons, ViewEvents, CreateHtmlNode, loadingSpinner } from "../../globals/constants";
 // import { CreateHtmlNode, } from "../../globals/functions";
 import { issueQuery } from "../../api/Queries";
 
@@ -55,11 +55,11 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 		case Routes.PENDING: {
 			app.innerHTML = "";
 			app.appendChild(
-				CreateHtmlNode(
-					"p",
-					[{ key: "class", value: "pending" }],
-					"Please choose a group or project from the groups view in order to load the chosen entity's issues"
-				)
+				CreateHtmlNode({
+					type: "p",
+					attributes: [{ key: "class", value: "pending" }],
+					innerHTML: "Please choose a group or project from the groups view in order to load the chosen entity's issues",
+				})
 			);
 
 			break;
@@ -111,9 +111,9 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 				let comments: IComment[] = res.notes.nodes;
 				app.innerHTML = "";
 				app.appendChild(
-					CreateHtmlNode(
-						"button",
-						[
+					CreateHtmlNode({
+						type: "button",
+						attributes: [
 							{
 								key: "onclick",
 								value: () => {
@@ -121,11 +121,11 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 								},
 							},
 						],
-						Icons.RETURN
-					)
+						innerHTML: Icons.RETURN,
+					})
 				);
-				app.appendChild(CreateHtmlNode("h1", [{ key: "class", value: "title" }], issue.title));
-				app.appendChild(CreateHtmlNode("p", null, issue.description));
+				app.appendChild(CreateHtmlNode({ type: "h1", attributes: [{ key: "class", value: "title" }], innerHTML: issue.title }));
+				app.appendChild(CreateHtmlNode({ type: "p", innerHTML: issue.description }));
 
 				for (const comment of comments) {
 					app.appendChild(CreateCommentNode(comment));
@@ -138,12 +138,12 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 }
 
 function CreateCommentNode(comment: IComment): Node {
-	let commentNode = CreateHtmlNode("div", null, "");
-	commentNode.appendChild(CreateHtmlNode("div", null, comment.body));
+	let commentNode = CreateHtmlNode({ type: "div" });
+	commentNode.appendChild(CreateHtmlNode({ type: "div", innerHTML: comment.body }));
 	commentNode.appendChild(
-		CreateHtmlNode(
-			"div",
-			[
+		CreateHtmlNode({
+			type: "div",
+			attributes: [
 				{
 					key: "onclick",
 					value: () => {
@@ -151,18 +151,18 @@ function CreateCommentNode(comment: IComment): Node {
 					},
 				},
 			],
-			Icons.TRASH
-		)
+			innerHTML: Icons.TRASH,
+		})
 	);
 	return commentNode;
 }
 function CreateNewCommentInput(issue: IIssue): Node {
-	let div = CreateHtmlNode("div", null, "");
-	div.appendChild(CreateHtmlNode("input", [{ key: "id", value: "NewCommentInputBox" }], ""));
+	let div = CreateHtmlNode({ type: "div" });
+	div.appendChild(CreateHtmlNode({ type: "input", attributes: [{ key: "id", value: "NewCommentInputBox" }] }));
 	div.appendChild(
-		CreateHtmlNode(
-			"button",
-			[
+		CreateHtmlNode({
+			type: "button",
+			attributes: [
 				{
 					key: "onclick",
 					value: () => {
@@ -174,13 +174,13 @@ function CreateNewCommentInput(issue: IIssue): Node {
 					},
 				},
 			],
-			"post new comment"
-		)
+			innerHTML: "post new comment",
+		})
 	);
 	return div;
 }
 function CreateIssuesUL(issues: IIssue[]): Node {
-	let list = CreateHtmlNode("ul", [{ key: "class", value: "issues-list" }], "");
+	let list = CreateHtmlNode({ type: "ul", attributes: [{ key: "class", value: "issues-list" }] });
 	issues.forEach((issue: IIssue) => {
 		list.appendChild(CreateIssueNode(issue));
 	});
@@ -188,11 +188,11 @@ function CreateIssuesUL(issues: IIssue[]): Node {
 	return list;
 }
 function CreateIssueNode(issue: IIssue): Node {
-	let issueNode = CreateHtmlNode("li", null, "");
+	let issueNode = CreateHtmlNode({ type: "li" });
 	issueNode.appendChild(
-		CreateHtmlNode(
-			"a",
-			[
+		CreateHtmlNode({
+			type: "a",
+			attributes: [
 				{ key: "class", value: "issue-title" },
 				{
 					key: "onclick",
@@ -201,32 +201,38 @@ function CreateIssueNode(issue: IIssue): Node {
 					},
 				},
 			],
-			issue.title
-		)
+			innerHTML: issue.title,
+		})
 	);
 	let date = new Date(issue.created_at);
-	let meta = CreateHtmlNode("div", [{ key: "class", value: "meta" }], "");
-	let metaBottom = CreateHtmlNode("div", [{ key: "class", value: "meta-bottom" }], "");
+	let meta = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "meta" }] });
+	let metaBottom = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "meta-bottom" }] });
 	metaBottom.appendChild(
-		CreateHtmlNode("span", [{ key: "class", value: "authored" }], issue.references.short + " · created on " + date.toLocaleDateString() + " by ")
+		CreateHtmlNode({
+			type: "span",
+			attributes: [{ key: "class", value: "authored" }],
+			innerHTML: issue.references.short + " · created on " + date.toLocaleDateString() + " by ",
+		})
 	);
-	metaBottom.appendChild(CreateHtmlNode("span", [{ key: "class", value: "author" }], issue.author.name));
-	let labels = CreateHtmlNode("div", [{ key: "class", value: "labels" }], "");
+	metaBottom.appendChild(CreateHtmlNode({ type: "span", attributes: [{ key: "class", value: "author" }], innerHTML: issue.author.name }));
+	let labels = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "labels" }] });
 	issue.labels!.forEach((label) => {
 		labels.appendChild(
-			CreateHtmlNode(
-				"div",
-				[
+			CreateHtmlNode({
+				type: "div",
+				attributes: [
 					{ key: "class", value: "label" },
 					{ key: "style", value: `background-color: ${label.color}` },
 				],
-				label.title
-			)
+				innerHTML: label.title,
+			})
 		);
 	});
 	metaBottom.appendChild(labels);
 	meta.appendChild(metaBottom);
-	meta.appendChild(CreateHtmlNode("div", [{ key: "class", value: "meta-right" }], String(issue.user_notes_count) + " &#x1f5ea;"));
+	meta.appendChild(
+		CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "meta-right" }], innerHTML: String(issue.user_notes_count) + " &#x1f5ea;" })
+	);
 	issueNode.appendChild(meta);
 	return issueNode;
 }

@@ -1,9 +1,8 @@
 import { pipelinesQuery } from "../../api/Queries";
 import { Api } from "../../api";
-import { ViewEvents, CreateHtmlNode, loadingSpinner } from "../../globals/constants";
-import "./App.css";
-
+import { Icons, ViewEvents, CreateHtmlNode, loadingSpinner, html } from "../../globals/constants";
 import Convert from "ansi-to-html";
+import "./App.css";
 
 const convert = new Convert({ newline: true, escapeXML: true });
 
@@ -53,17 +52,23 @@ window.addEventListener("message", (event) => {
 	}
 });
 
+function someFunc(i: number) {
+	console.log(1);
+	console.log(i);
+}
 function Route(route: Routes, args?: RouteArguments) {
 	app.innerHTML = "";
 	app.append(loadingSpinner());
 	switch (route) {
 		case Routes.PENDING: {
 			app.innerHTML = "";
-			app.appendChild(
-				CreateHtmlNode(
-					"p",
-					[{ key: "class", value: "pending" }],
-					"Please choose a project from the groups view in order to load the chosen project's pipelines"
+			app.append(
+				html(
+					`
+                <p onclick="(${someFunc})(5)" class="pending">  
+                Please choose a project from the groups view in order to load the chosen project's pipelines
+                </p>
+                `
 				)
 			);
 
@@ -74,13 +79,13 @@ function Route(route: Routes, args?: RouteArguments) {
 				let pipelines: IPipelineListItem[] = res.data.data.project.pipelines.nodes as IPipelineListItem[];
 
 				if (pipelines.length > 0) {
-					let table = CreateHtmlNode("table", null, "");
-					let tableHeader = CreateHtmlNode("tr", null, "");
-					tableHeader.appendChild(CreateHtmlNode("th", null, "Status"));
-					tableHeader.appendChild(CreateHtmlNode("th", null, "Pipeline"));
-					tableHeader.appendChild(CreateHtmlNode("th", null, "Triggerer"));
-					tableHeader.appendChild(CreateHtmlNode("th", null, "Stages"));
-					tableHeader.appendChild(CreateHtmlNode("th", null, "")); // for options
+					let table = CreateHtmlNode({ type: "table" });
+					let tableHeader = CreateHtmlNode({ type: "tr" });
+					tableHeader.appendChild(CreateHtmlNode({ type: "th", innerHTML: "Status" }));
+					tableHeader.appendChild(CreateHtmlNode({ type: "th", innerHTML: "Pipeline" }));
+					tableHeader.appendChild(CreateHtmlNode({ type: "th", innerHTML: "Triggerer" }));
+					tableHeader.appendChild(CreateHtmlNode({ type: "th", innerHTML: "Stages" }));
+					tableHeader.appendChild(CreateHtmlNode({ type: "th" })); // for options
 
 					table.appendChild(tableHeader);
 					pipelines.forEach((pipeline) => table.appendChild(CreatePipelineNode(pipeline)));
@@ -88,65 +93,140 @@ function Route(route: Routes, args?: RouteArguments) {
 					app.appendChild(table);
 				} else {
 					app.innerHTML = "";
-					app.appendChild(CreateHtmlNode("p", null, "no pipelines to view :(")); // TODO
+					app.appendChild(CreateHtmlNode({ type: "p", innerHTML: "no pipelines to view :(" })); // TODO
 				}
 			});
 			break;
 		}
 		case Routes.JOB: {
-			api.getJobLogs(selection, args!.item_id).then((res) => {
-				let logs = convert.toHtml(res.data).split("<br/>");
-				let logLines: Node[] = [];
-				let child = false;
-				for (let i = 0; i < logs.length; i++) {
-					if (logs[i].startsWith("section_start")) {
-						child = true, i++;
-						logLines.push(CreateHtmlNode("div", [{ key: "class", value: "hidden" }], ""));
-						logLines[logLines.length - 1].appendChild(
-							CreateHtmlNode(
-								"p",
-								[
-									{ key: "class", value: "header" },
-									{
-										key: "onclick",
-										value: () => {
-											let parent = document.getElementById(logs[i].split(":")[1])!.parentElement!;
-											parent.classList.contains("hidden") ? parent.classList.remove("hidden") : parent.classList.add("hidden");
+			api.getJob(selection, args!.item_id).then((job) => {
+				api.getJobLogs(selection, args!.item_id).then((res) => {
+					let logs = convert.toHtml(res.data).split("<br/>");
+					let logLines: Node[] = [];
+					let child = false;
+					for (let i = 0; i < logs.length; i++) {
+						if (logs[i].startsWith("section_start")) {
+							(child = true), i++;
+							logLines.push(CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "hidden" }] }));
+							logLines[logLines.length - 1].appendChild(
+								CreateHtmlNode({
+									type: "p",
+									attributes: [
+										{ key: "class", value: "header" },
+										{
+											key: "onclick",
+											value: () => {
+												let parent = document.getElementById(logs[i].split(":")[1])!.parentElement!;
+												parent.classList.contains("hidden")
+													? parent.classList.remove("hidden")
+													: parent.classList.add("hidden");
+											},
 										},
-									},
-									{ key: "id", value: logs[i].split(":")[1] },
-								],
-								logs[i]
-							)
-						);
-					} else if (logs[i].startsWith("section_end")) {
-                        child = false, i++;
-					} else if (!child) {
-						logLines.push(CreateHtmlNode("p", null, logs[i]));
-					} else if (child) {
-						logLines[logLines.length - 1].appendChild(CreateHtmlNode("p", [{ key: "class", value: "hidable" }], logs[i]));
+										{ key: "id", value: logs[i].split(":")[1] },
+									],
+									innerHTML: logs[i],
+								})
+							);
+						} else if (logs[i].startsWith("section_end")) {
+							(child = false), i++;
+						} else if (!child) {
+							logLines.push(CreateHtmlNode({ type: "p", innerHTML: logs[i] }));
+						} else if (child) {
+							logLines[logLines.length - 1].appendChild(
+								CreateHtmlNode({ type: "p", attributes: [{ key: "class", value: "hidable" }], innerHTML: logs[i] })
+							);
+						}
 					}
-				}
 
-				app.innerHTML = "";
-                let logsDiv = CreateHtmlNode("div", [{ key: "style", value: "white-space: pre-wrap;" }, { key: "class", value: "logs" }], '')
-                logLines.forEach((line) => logsDiv.appendChild(line))
-				app.appendChild(logsDiv);
-				console.log(convert.toHtml(res.data));
+					app.innerHTML = "";
+					let logsDiv = CreateHtmlNode({
+						type: "div",
+						attributes: [
+							{ key: "style", value: "white-space: pre-wrap;" },
+							{ key: "class", value: "logs" },
+						],
+					});
+					logLines.forEach((line) => logsDiv.appendChild(line));
+					let jobDiv = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "jobDiv" }] });
+					jobDiv.appendChild(logsDiv);
+
+					// begin left sidebar
+					let sideBarDiv = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "jobSideBar" }] });
+					let div = CreateHtmlNode({ type: "div" });
+					div.appendChild(CreateHtmlNode({ type: "p", innerHTML: job.data.name }));
+					div.appendChild(
+						CreateHtmlNode({
+							type: "button",
+							attributes: [
+								{
+									key: "onclick",
+									value: () => {
+										api.deleteJobArtifacts(selection, args!.item_id);
+									},
+								},
+							],
+							innerHTML: Icons.TRASH,
+						})
+					);
+					div.appendChild(
+						CreateHtmlNode({
+							type: "button",
+							attributes: [
+								{
+									key: "onclick",
+									value: () => {
+										api.retryJob(selection, args!.item_id);
+									},
+								},
+							],
+							innerHTML: Icons.REFRESH,
+						})
+					);
+					div.appendChild(
+						CreateHtmlNode({
+							type: "p",
+							innerHTML: "Duration: " + new Date(0, 0, 0, 0, 0, job.data.duration).toString().substring(16, 24),
+						})
+					);
+					div.appendChild(CreateHtmlNode({ type: "p", innerHTML: "Runner: #" + job.data.runner.id + " " + job.data.runner.description }));
+					div.appendChild(CreateHtmlNode({ type: "p", innerHTML: "Tags: " + job.data.runner.tag.join(" ") }));
+					// ----
+					let temp = CreateHtmlNode({ type: "div" });
+					temp.appendChild(CreateHtmlNode({ type: "p", innerHTML: "Commit" }));
+					temp.appendChild(
+						CreateHtmlNode({
+							type: "a",
+							attributes: [{ key: "href", value: job.data.commit.web_url }],
+							innerHTML: job.data.commit.short_id,
+						})
+					);
+					temp.appendChild(CreateHtmlNode({ type: "span", innerHTML: job.data.commit.message }));
+					div.appendChild(temp);
+					sideBarDiv.appendChild(div);
+					sideBarDiv.appendChild(CreateHtmlNode({ type: "span", innerHTML: "Pipeline" }));
+					sideBarDiv.appendChild(
+						CreateHtmlNode({ type: "span", innerHTML: " #" + job.data.pipeline.id + " for " + job.data.pipeline.ref })
+					);
+
+					// end left sidebar
+					app.appendChild(jobDiv);
+					console.log(convert.toHtml(res.data));
+				});
 			});
+
 			break;
 		}
 	}
 }
 // https://graphemica.com/%E2%9F%B3
 function CreatePipelineNode(pipeline: IPipelineListItem): Node {
-	let row = CreateHtmlNode("tr", null, "");
+	let row = CreateHtmlNode({ type: "tr" });
 
-	let statusRow = CreateHtmlNode("td", null, "");
+	let statusRow = CreateHtmlNode({ type: "td" });
 	statusRow.appendChild(
-		CreateHtmlNode(
-			"button",
-			[
+		CreateHtmlNode({
+			type: "button",
+			attributes: [
 				{
 					key: "class",
 					value: "status-button",
@@ -156,74 +236,74 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 					value: true,
 				},
 			],
-			pipeline.detailedStatus.text
-		)
+			innerHTML: pipeline.detailedStatus.text,
+		})
 	);
 	if (pipeline.duration) {
 		statusRow.appendChild(
-			CreateHtmlNode(
-				"div",
-				[
+			CreateHtmlNode({
+				type: "div",
+				attributes: [
 					{
 						key: "class",
 						value: "placeholder",
 					},
 				],
-				Icons.STOPWATCH + " " + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24)
-			)
+				innerHTML: Icons.STOPWATCH + " " + new Date(0, 0, 0, 0, 0, pipeline.duration).toString().substring(16, 24),
+			})
 		);
 	}
 
-	let pipelineRow = CreateHtmlNode("td", null, "");
+	let pipelineRow = CreateHtmlNode({ type: "td" });
 	// begin row 1
-	let div = CreateHtmlNode("div", null, "");
-	div.appendChild(CreateHtmlNode("a", [{ key: "href", value: pipeline.commit.webUrl }], pipeline.commit.title));
+	let div = CreateHtmlNode({ type: "div" });
+	div.appendChild(CreateHtmlNode({ type: "a", attributes: [{ key: "href", value: pipeline.commit.webUrl }], innerHTML: pipeline.commit.title }));
 	pipelineRow.appendChild(div);
 	// end row 1
 	// begin row 2
-	div = CreateHtmlNode("div", null, "");
+	div = CreateHtmlNode({ type: "div" });
 
 	// pipelineRow.appendChild(
 	div.appendChild(
-		CreateHtmlNode(
-			"a",
-			[
+		CreateHtmlNode({
+			type: "a",
+			attributes: [
 				{
 					key: "href",
 					value: checkUrl(pipeline.path, pipeline.commit.webUrl),
 				},
 			],
-			gidToId(pipeline.id)
-		)
+			innerHTML: gidToId(pipeline.id),
+		})
 	);
 	// pipelineRow.appendChild(
 	div.appendChild(
-		CreateHtmlNode(
-			"a",
-			[
+		CreateHtmlNode({
+			type: "a",
+			attributes: [
 				{
 					key: "href",
 					value: checkUrl(pipeline.ref, pipeline.commit.webUrl),
 				},
 			],
-			pipeline.ref
-		)
+			innerHTML: pipeline.ref,
+		})
 	);
 
-	let a = CreateHtmlNode(
-		"a",
-		[
+	let a = CreateHtmlNode({
+		type: "a",
+		attributes: [
 			{
 				key: "href",
 				value: `${pipeline.commit.author ? pipeline.commit.author.webUrl : "mailto:" + pipeline.commit.authorEmail}`,
 			},
 		],
-		""
-	);
+		innerHTML: "",
+	});
 	a.appendChild(
-		CreateHtmlNode(
-			"img",
-			[
+		CreateHtmlNode({
+			type: "img",
+			attributes: [
 				{
 					key: "title",
 					value: pipeline.commit.authorName,
@@ -247,42 +327,41 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 					value: "avatar",
 				},
 			],
-			""
-		)
+			innerHTML: "",
+		})
 	);
 
 	// pipelineRow.appendChild(a);
 	div.appendChild(
-		CreateHtmlNode(
-			"a",
-			[
+		CreateHtmlNode({
+			type: "a",
+			attributes: [
 				{
 					key: "href",
 					value: pipeline.commit.webUrl,
 				},
 			],
-			pipeline.commit.shortId
-		)
+			innerHTML: pipeline.commit.shortId,
+		})
 	);
 	div.appendChild(a);
 	pipelineRow.appendChild(div);
 	// end row 2
 
-	let triggererRow = CreateHtmlNode("td", [{ key: "class", value: "triggererRow" }], "");
-	a = CreateHtmlNode(
-		"a",
-		[
+	let triggererRow = CreateHtmlNode({ type: "td", attributes: [{ key: "class", value: "triggererRow" }] });
+	a = CreateHtmlNode({
+		type: "a",
+		attributes: [
 			{
 				key: "href",
 				value: `${pipeline.user.webUrl}`,
 			},
 		],
-		""
-	);
+	});
 	a.appendChild(
-		CreateHtmlNode(
-			"img",
-			[
+		CreateHtmlNode({
+			type: "img",
+			attributes: [
 				{
 					key: "title",
 					value: pipeline.user.name,
@@ -304,25 +383,23 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 					value: "avatar",
 				},
 			],
-			""
-		)
+		})
 	);
 	triggererRow.appendChild(a);
-	let stagesRow = CreateHtmlNode(
-		"td",
-		[
+	let stagesRow = CreateHtmlNode({
+		type: "td",
+		attributes: [
 			{
 				key: "class",
 				value: "stages",
 			},
 		],
-		""
-	);
+	});
 	pipeline.jobs.nodes.forEach((job) => {
 		stagesRow.appendChild(
-			CreateHtmlNode(
-				"div",
-				[
+			CreateHtmlNode({
+				type: "div",
+				attributes: [
 					{
 						key: job.status,
 						value: "",
@@ -340,12 +417,12 @@ function CreatePipelineNode(pipeline: IPipelineListItem): Node {
 						value: () => Route(Routes.JOB, { project_id: +gidToId(pipeline.id), item_id: +gidToId(job.id) }),
 					},
 				],
-				job.status === "SUCCESS" ? Icons.CHECK : Icons.X
-			)
+				innerHTML: job.status === "SUCCESS" ? Icons.CHECK : Icons.X,
+			})
 		);
 	});
 
-	let optionsRow = CreateHtmlNode("td", null, "");
+	let optionsRow = CreateHtmlNode({ type: "td" });
 
 	row.appendChild(statusRow); // Status
 	row.appendChild(pipelineRow); // Pipeline
