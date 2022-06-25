@@ -5,7 +5,7 @@ import { IssueView } from "./issues";
 import { PipelineView } from "./pipelines";
 import { Node } from "./node";
 import { cloneFromGitLab } from "../commands";
-import { EditorView } from "../webviews/editor/editor";
+import { EditorView } from "../webviews/editor";
 import { changeValidEmitter, newAuthentication } from "../globals/event";
 
 const editorView = new EditorView();
@@ -42,9 +42,17 @@ export class GroupNode extends Node {
 	}
 	delete() {
 		if (this.contextValue === "project") {
-			api.deleteProject(this.node_id);
+			api.deleteProject(this.node_id).then((res) => {
+				if (res.status.toString().startsWith("2")) {
+					vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
+				}
+			});
 		} else if (this.contextValue === "group") {
-			api.deleteGroup(this.node_id);
+			api.deleteGroup(this.node_id).then((res) => {
+				if (res.status.toString().startsWith("2")) {
+					vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
+				}
+			});
 		} else if (this.contextValue === "user") {
 			vscode.window.showErrorMessage("Can't delete personal namespace!");
 		}
@@ -55,9 +63,6 @@ export class GroupNode extends Node {
 		} else if (this.contextValue === "project" && this.archived) {
 			return api.unArchiveProject(this.node_id);
 		}
-		return null;
-	}
-	unArchiveProject() {
 		return null;
 	}
 	openSettingsInGitlab() {
@@ -210,7 +215,6 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 	onDidChange?: vscode.Event<vscode.Uri>;
 	private _onDidChangeTreeData: vscode.EventEmitter<GroupNode | undefined | void> = new vscode.EventEmitter<GroupNode | undefined | void>();
 	readonly onDidChangeTreeData: vscode.Event<GroupNode | undefined | void> = this._onDidChangeTreeData.event;
-	// editorView: EditorView
 	constructor(context: vscode.ExtensionContext) {
 		newAuthentication.event(this.refresh, this);
 		const groupModel = new GroupModel();
@@ -246,7 +250,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 						break;
 					default:
 						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PENDING], id: null });
-						// log some information
+						// TODO log some information
 						break;
 				}
 			} else {

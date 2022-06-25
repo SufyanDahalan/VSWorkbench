@@ -65,9 +65,10 @@ function Route(route: Routes, args?: RouteArguments) {
 			app.append(
 				html(
 					`
-                <p onclick="(${someFunc})(5)" class="pending">  
+                <p onclick="(s)(5)" class="pending">  
                 Please choose a project from the groups view in order to load the chosen project's pipelines
                 </p>
+                <script>let s = ${someFunc}</script>
                 `
 				)
 			);

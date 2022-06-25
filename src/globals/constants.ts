@@ -100,6 +100,14 @@ export enum Icons {
 	 * https://www.fileformat.info/info/unicode/char/02c5/index.htm
 	 */
 	ARROW_DOWN = "&#709;",
+	/**
+	 * Resembles two speech bubbles.
+	 *
+	 * Official name: 'TWO SPEECH BUBBLES'
+	 *
+	 * https://www.fileformat.info/info/unicode/char/1f5ea/index.htm
+	 */
+	SPEECH_BUBBLE = "&#x1f5ea;",
 }
 interface HtmlNodeArgs {
 	type: string;
@@ -108,15 +116,15 @@ interface HtmlNodeArgs {
 }
 export function CreateHtmlNode(args: HtmlNodeArgs): Node {
 	const el = document.createElement(args.type);
-    if(args.innerHTML){
-        el.innerHTML = args.innerHTML;
-    }
+	if (args.innerHTML) {
+		el.innerHTML = args.innerHTML;
+	}
 	if (args.attributes) {
 		for (const attribute of args.attributes) {
 			const key = attribute.key as string;
 			const value = attribute.value;
 			if (key === "child") {
-                el.appendChild(CreateHtmlNode(value as HtmlNodeArgs))
+				el.appendChild(CreateHtmlNode(value as HtmlNodeArgs));
 			} else if (key.startsWith("on") && typeof value === "function") {
 				el.addEventListener(key.substring(2) as keyof HTMLElementEventMap, value as EventListenerOrEventListenerObject);
 			} else if (typeof value === "boolean") {
@@ -132,34 +140,33 @@ export function CreateHtmlNode(args: HtmlNodeArgs): Node {
 }
 
 export function loadingSpinner() {
-	return CreateHtmlNode({type: "div",attributes: [{ key: "class", value: "lds-dual-ring" }], innerHTML: ""});
+	return CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "lds-dual-ring" }], innerHTML: "" });
 }
 
-export function html(str: string): HTMLElement{
-    let parser = new DOMParser()
-    let body = parser.parseFromString(str, 'text/html').body;
-    addAttributes(body)
-    return body
+export function html(str: string): HTMLElement {
+	let parser = new DOMParser();
+	let body = parser.parseFromString(str, "text/html").body;
+	// addAttributes(body)
+	return body;
 }
 
 function addAttributes(body: HTMLElement): HTMLElement {
-    let children = body.children;
-    // children.forEach((child) => {
-    //     child.ATTRIBUTE_NODE
-    // })
-    // children
-    for(var i = 0; i <  children.length; i++){
-        if(children.item(i)!.hasAttribute('onclick')){
-            let attribute = children.item(i)!.attributes.getNamedItem('onclick')
-            // // console.log(children.item(i)!.attributes)
-            // console.log(attribute?.name)
-            // console.log(attribute?.value)
-            console.log(attribute)
-            console.log(Function(attribute!.value))
-            // children.item(i)!.removeAttribute('onclick')
-            // children.item(i)!.addEventListener('click' as keyof HTMLElementEventMap, Function(attribute!.value) as  EventListenerOrEventListenerObject)
-            
-        }
-    }
-    return body
+	let children = body.children;
+	// children.forEach((child) => {
+	//     child.ATTRIBUTE_NODE
+	// })
+	// children
+	for (var i = 0; i < children.length; i++) {
+		if (children.item(i)!.hasAttribute("onclick")) {
+			let attribute = children.item(i)!.attributes.getNamedItem("onclick");
+			// // console.log(children.item(i)!.attributes)
+			// console.log(attribute?.name)
+			// console.log(attribute?.value)
+			console.log(attribute);
+			console.log(Function(attribute!.value));
+			// children.item(i)!.removeAttribute('onclick')
+			// children.item(i)!.addEventListener('click' as keyof HTMLElementEventMap, Function(attribute!.value) as  EventListenerOrEventListenerObject)
+		}
+	}
+	return body;
 }

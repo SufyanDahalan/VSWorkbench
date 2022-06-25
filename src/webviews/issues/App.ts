@@ -231,7 +231,7 @@ function CreateIssueNode(issue: IIssue): Node {
 	metaBottom.appendChild(labels);
 	meta.appendChild(metaBottom);
 	meta.appendChild(
-		CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "meta-right" }], innerHTML: String(issue.user_notes_count) + " &#x1f5ea;" })
+		CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "meta-right" }], innerHTML: String(issue.user_notes_count) + ' ' + Icons.SPEECH_BUBBLE })
 	);
 	issueNode.appendChild(meta);
 	return issueNode;

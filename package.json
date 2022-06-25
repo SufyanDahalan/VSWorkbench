@@ -5,6 +5,7 @@
 	"version": "1.0.0",
 	"types": "./types",
 	"publisher": "SufyanDahalan",
+	"icon": "$(symbol-type-parameter)",
 	"engines": {
 		"vscode": "^1.66.0"
 	},
@@ -23,6 +24,11 @@
 	"sponsor": {
 		"url": "https://github.com/sponsors/SufyanDahalan"
 	},
+	"funding": {
+		"type": "github",
+		"url": "https://github.com/sponsors/SufyanDahalan/"
+	},
+	"license": "GPL-3.0",
 	"main": "./dist/extension.js",
 	"extensionKind": [
 		"ui"
@@ -56,11 +62,6 @@
 			}
 		],
 		"commands": [
-			{
-				"command": "VSWorkbench.clone",
-				"title": "Clone",
-				"category": "VSWorkbench"
-			},
 			{
 				"command": "VSWorkbench.updatePersonalAccessToken",
 				"title": "Update Personal Token",
@@ -142,13 +143,13 @@
 				"command": "VSWorkbench.snippets",
 				"title": "Open Snippets",
 				"category": "VSWorkbench",
-				"icon": "$(zap)"
+				"icon": "$(symbol-snippet)"
 			},
 			{
 				"command": "VSWorkbench.wiki",
 				"title": "Open Wiki",
 				"category": "VSWorkbench",
-				"icon": "$(zap)"
+				"icon": "$(book)"
 			},
 			{
 				"command": "VSWorkbench.viewIssueList",
@@ -222,7 +223,7 @@
 			},
 			{
 				"command": "VSWorkbench.archiveProject",
-				"title": "Archive Project",
+				"title": "Toggle Archive",
 				"category": "VSWorkbench",
 				"icon": "$(archive)"
 			}
@@ -421,13 +422,13 @@
 				},
 				{
 					"command": "VSWorkbench.openInGitLab",
-					"group": "inline@1",
+					"group": "inline@9",
 					"when": "view == groupView"
 				},
 				{
 					"command": "VSWorkbench.clone",
 					"when": "view == groupView",
-					"group": "inline@1"
+					"group": "inline@3"
 				},
 				{
 					"command": "VSWorkbench.archiveProject",
@@ -436,7 +437,7 @@
 				},
 				{
 					"command": "VSWorkbench.openSettingsInGitLab",
-					"group": "inline@2",
+					"group": "inline@8",
 					"when": "view == groupView"
 				},
 				{
@@ -447,7 +448,7 @@
 				{
 					"command": "VSWorkbench.wiki",
 					"group": "inline@2",
-					"when": "view == groupView && (viewItem == project || (viewItem == group && gitlabpremium))"
+					"when": "view == groupView && viewItem == project || view == groupView && viewItem == group && gitlabpremium))"
 				}
 			]
 		},

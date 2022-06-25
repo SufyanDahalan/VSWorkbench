@@ -17,11 +17,11 @@ export async function settings(globalState: vscode.ExtensionContext["globalState
 	});
 	inputPersonalAuthToken.onDidAccept(async () => {
 		inputPersonalAuthToken.hide();
-		if (gitlabInstance.endsWith('/') && !gitlabInstance.endsWith('/api/') && gitlabInstance !== GitLab_SaaS_Base_URL) {
-            gitlabInstance += "api/";
-		} else if(gitlabInstance !== GitLab_SaaS_Base_URL){
-            gitlabInstance += "/api/";
-        }
+		if (gitlabInstance.endsWith("/") && !gitlabInstance.endsWith("/api/") && gitlabInstance !== GitLab_SaaS_Base_URL) {
+			gitlabInstance += "api/";
+		} else if (gitlabInstance !== GitLab_SaaS_Base_URL) {
+			gitlabInstance += "/api/";
+		}
 		let res = await checkGitlabInstanceAndAuthToken(gitlabAuthToken, gitlabInstance);
 
 		if (res) {

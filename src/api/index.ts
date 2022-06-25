@@ -72,16 +72,22 @@ export class Api {
 	getSnippet(project_id: number | undefined, snippet_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}` : "") + `/snippets/${snippet_id}`);
 	}
-    getSnippetContent(project_id: number | undefined, snippet_id: number): Promise<AxiosResponse>{
-        return Api.instance.api.get('v4/' + (project_id ? `projects/${project_id}/` : '') + `snippets/${snippet_id}/raw`)
-    }
+	getSnippetContent(project_id: number | undefined, snippet_id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}/` : "") + `snippets/${snippet_id}/raw`);
+	}
 	/**
 	 * Get Snippets of a project or the user
-	 * @param project_id Id of project. If not specified, user snippets will be fetched
+	 * @param id Id of project. If not specified, user snippets will be fetched
 	 * @returns Snippets of a project or of the user
 	 */
 	getSnippets(project_id?: number): Promise<AxiosResponse> {
 		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}/snippets` : "snippets"));
+	}
+	getWikis(isGroup: boolean, id: number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`v4/${isGroup ? "groups" : "projects"}/${id}/wikis`);
+	}
+	getWikiPage(isGroup: boolean, id: number, slug: string): Promise<AxiosResponse> {
+		return Api.instance.api.get(`v4/${isGroup ? "groups" : "projects"}/${id}/wikis/${slug}`);
 	}
 	getProjectIssueComments(project_id: number, issue_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/projects/${project_id}/issues/${issue_id}/notes`);
@@ -190,12 +196,6 @@ export class Api {
 			});
 		}
 	}
-	// getUserProjects(userID: string): AxiosResponse {
-	// 	return Api.instance.api.get(`users/${userID}/projects`);
-	// }
-	// getGroupProjects(group_id: string): AxiosResponse {
-	// 	return Api.instance.api.get(`groups/${group_id}/projects`);
-	// }
 	getUserGroups(): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc`);
 	}
