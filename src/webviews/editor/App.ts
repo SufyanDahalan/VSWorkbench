@@ -98,7 +98,7 @@ async function Snippet(id?: number, snippet_id?: number) {
 }
 async function Wiki(isGroup: boolean, id: number, slug?: string) {
 	api.getWikis(isGroup, id).then((res) => {
-		api.getWikiPage(isGroup, id, slug ?? `home`).then(function (homeRes) {
+		api.getWikiPage(isGroup, id, slug || `home`).then(function (homeRes) {
 			let pages = res.data;
 			let homePage = homeRes.data;
 			let pageDiv = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "page" }] });

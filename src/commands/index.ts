@@ -45,8 +45,8 @@ export async function createGroupCommand() {
 	const inputSubGroupName = vscode.window.createInputBox();
 	const inputSubGroupPath = vscode.window.createInputBox();
 
-	inputSubGroupName.placeholder = "Please Enter Subgroup Name";
-	inputSubGroupPath.placeholder = "Please Enter Subgroup Path";
+	inputSubGroupName.placeholder = "Please Enter Group Name";
+	inputSubGroupPath.placeholder = "Please Enter Group Path";
 
 	inputSubGroupPath.onDidChangeValue((input) => {
 		groupPath = input;
@@ -85,9 +85,6 @@ export function createMergeRequestCommand() {
 // export function viewPipelinesCommand() {
 // 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 // } 
-export function viewIssue() {
-	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
-} 
 
 // #region project
 export function createProjectSnippet(projectID: number, snippet: SnippetObject) {
@@ -129,21 +126,21 @@ export function openPersonalSettingsInGitLab() {
 	 */
 }
 
-export function addMemberToProject() {
-	/**
-	 * @implement
-	 * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
-	 *
-	 */
-}
+// export function addMemberToProject() {
+// 	/**
+// 	 * @implement
+// 	 * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
+// 	 *
+// 	 */
+// }
 
-export function addMemberToGroup() {
-	/**
-	 * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
-	 * @implement
-	 *
-	 */
-}
+// export function addMemberToGroup() {
+// 	/**
+// 	 * https://docs.gitlab.com/ee/api/members.html#add-a-member-to-a-group-or-project
+// 	 * @implement
+// 	 *
+// 	 */
+// }
 export function openGroupSettingsInGitLab() {
 	// https://docs.gitlab.com/ee/api/notes.html#delete-a-snippet-note
 }
@@ -217,12 +214,9 @@ export default {
 	createGroupCommand,
 	createIssueCommand,
 	createMergeRequestCommand,
-	viewIssue,
 	createPersonalSnippet,
 	createProjectSnippet,
     getWikis,
 	modifySnippetComment,
 	deleteSnippetComment,
-	addMemberToProject,
-	addMemberToGroup,
 };

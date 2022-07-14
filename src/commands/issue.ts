@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import api from "../api";
 
 export function createTodoItem() {
 	// https://docs.gitlab.com/ee/api/issues.html#create-a-to-do-item
@@ -13,9 +12,7 @@ export function createProjectIssue() {
 	// https://docs.gitlab.com/ee/api/issues.html#new-issue
 	vscode.window.showInformationMessage("Hello World from VSWorkbench!");
 }
-export function openIssueInGitLab(){
-    
-}
+export function openIssueInGitLab() {}
 
 export function editPojectIssue() {
 	// https://docs.gitlab.com/ee/api/issues.html#edit-issue
@@ -69,7 +66,6 @@ export function createIssueSnippet() {
 	// https://docs.gitlab.com/ee/api/notes.html#create-new-snippet-note
 }
 
-
 export function viewIssueList() {
 	// https://docs.gitlab.com/ee/api/notes.html#modify-existing-snippet-note
 }
@@ -77,45 +73,40 @@ export function viewIssueList() {
 /**
  * opens an issue board as a webview in vscode
  */
-export function viewIssueBoard() {
-}
+export function viewIssueBoard() {}
 
 /**
  * opens gitlab issue board in gitlab in the default browser
  */
-export function openIssueBoardInGitLab() {
-}
+export function openIssueBoardInGitLab() {}
 /**
  * opens gitlab issue list in gitlab in the default browser
  */
-export function openIssueListInGitLab() {
-}
+export function openIssueListInGitLab() {}
 
-
-
-
-export default {viewIssueList,
-viewIssueBoard,
-getProjectIssue,
-createProjectIssue,
-editPojectIssue,
-deleteProjectIssue,
-reorderProjectIssue,
-moveProjectIssueToOtherProject,
-cloneProjectIssue,
-subscribeToIssue,
-unsubscribeToIssue,
-addSpentTimeToIssue,
-resetSpentTimeFromIssue,
-getTimeTrackingStats,
-getIssueParticipants,
-getIssueComments,
-createIssueComment,
-modifyIssueComment,
-deleteIssueComment,
-createIssueSnippet,
-openIssueBoardInGitLab,
-openIssueListInGitLab,
-createTodoItem,
-openIssueInGitLab
-}
+export default {
+	viewIssueList,
+	viewIssueBoard,
+	getProjectIssue,
+	createProjectIssue,
+	editPojectIssue,
+	deleteProjectIssue,
+	reorderProjectIssue,
+	moveProjectIssueToOtherProject,
+	cloneProjectIssue,
+	subscribeToIssue,
+	unsubscribeToIssue,
+	addSpentTimeToIssue,
+	resetSpentTimeFromIssue,
+	getTimeTrackingStats,
+	getIssueParticipants,
+	getIssueComments,
+	createIssueComment,
+	modifyIssueComment,
+	deleteIssueComment,
+	createIssueSnippet,
+	openIssueBoardInGitLab,
+	openIssueListInGitLab,
+	createTodoItem,
+	openIssueInGitLab,
+};

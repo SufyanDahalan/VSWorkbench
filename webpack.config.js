@@ -39,6 +39,9 @@ const extensionConfig = {
 		level: "log",
 	},
 	optimization: { minimize: true },
+      watchOptions: {
+    ignored: /node_modules/,
+  },
 };
 const viewConfig = {
 	entry: "./src/webviews/issues/App.ts",
@@ -67,6 +70,9 @@ const viewConfig = {
 		extensions: [".ts", ".tsx", ".js", ".css"],
 	},
 	optimization: { minimize: true },
+      watchOptions: {
+    ignored: /node_modules/,
+  },
 };
 const editorConfig = {
 	entry: "./src/webviews/editor/App.ts",
@@ -95,6 +101,9 @@ const editorConfig = {
 		extensions: [".ts", ".tsx", ".js", ".css"],
 	},
 	optimization: { minimize: true },
+      watchOptions: {
+    ignored: /node_modules/,
+  },
 };
 
 const pipelineConfig = {
@@ -124,6 +133,9 @@ const pipelineConfig = {
 		extensions: [".ts", ".tsx", ".js", ".css"],
 	},
 	optimization: { minimize: true },
+      watchOptions: {
+    ignored: /node_modules/,
+  },
 };
 
 module.exports = [extensionConfig, viewConfig, pipelineConfig, editorConfig];

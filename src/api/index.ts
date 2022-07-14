@@ -141,12 +141,8 @@ export class Api {
 		// should be done in the tree view instead of a simple input
 		return Api.instance.api.post(`v4/projects?name=${projectName}`);
 	}
-	createSubGroup(parentID: number, name: string, path: string = name) {
-		// if (path) : Promise<AxiosResponse>{
-		return Api.instance.api.post(`v4/groups?parent_id=${parentID}`, { name, path });
-		// } else {
-		// 	return Api.instance.api.post(`groups?parent_id=${parentID}`, { name, path: name });
-		// }
+	createSubGroup(parentID: number, name: string, path: string): Promise<AxiosResponse> {
+		return Api.instance.api.post(`v4/groups?parent_id=${parentID}`, { name, path: path || name });
 	}
 	// #endregion
 
@@ -162,7 +158,7 @@ export class Api {
 			// vscode.window.showErrorMessage("Cannot create top level group for GitLab SaaS users!. see [GitLab API docs](https://docs.gitlab.com/ee/api/groups.html#new-group). Additionally view our [workaround](https://add.link.to.dragndrop.workaround).");
 			return null;
 		}
-		return Api.instance.api.post(`v4/groups`, { name, path: path ? path : name });
+		return Api.instance.api.post(`v4/groups`, { name, path:  path || name });
 	}
 
 	transferProjectToGroup(group_id: number, project_id: number): Promise<AxiosResponse> {

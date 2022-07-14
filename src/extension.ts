@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 			node.createSubGroup();
 		}),
 		vscode.commands.registerCommand("VSWorkbench.createMergeRequest", Commands.createMergeRequestCommand),
-		vscode.commands.registerCommand("VSWorkbench.viewIssue", Commands.viewIssue),
+		// vscode.commands.registerCommand("VSWorkbench.viewIssue", Commands.viewIssue),
 		vscode.commands.registerCommand("VSWorkbench.deleteNamespaceNode", (node: GroupNode) => {
 			node.delete();
 		}),
@@ -69,8 +69,6 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("VSWorkbench.archiveProject", (node: GroupNode) => {
 			node.archiveProject();
 		}),
-		vscode.commands.registerCommand("VSWorkbench.addMemberToProject", Commands.addMemberToProject),
-		vscode.commands.registerCommand("VSWorkbench.addMemberToGroup", Commands.addMemberToGroup),
 		vscode.commands.registerCommand("VSWorkbench.openPipelinesInGitLab", Commands.openPipelinesInGitLab),
 		vscode.commands.registerCommand("VSWorkbench.viewPipelines", Commands.viewPipelines),
 		vscode.commands.registerCommand("VSWorkbench.viewPipeline", Commands.viewPipeline),
@@ -88,15 +86,12 @@ export function deactivate() {}
 /**
  *
  * 2. @TODO getting starred projects
- * 2. @TODO add `create Group` view/item/context action for group nodes with a + c
  * 3. @FEATURE view/titel level action for GroupView to create a group. It will ask for name, then get all custom options for groups throw QuickPicks or
  * InputBoxes (e.g. add user to group or smth). It will then create it, refresh groupView, show some kind of a success message.
  * 4. @FEATURE view/titel level action for namespace nodes in GroupView to create a group. It will ask for name, then get
  * all custom options for groups throw QuickPicks or InputBoxes (e.g. add user to group or smth). It will then create it,
  * refresh groupView, show some kind of a success message.
  * 5. @FEATURE ask for confirmation before deleting anything, e.g. project or group
- * 6. @FEATURE archive w $(archive) icon in the view/item/context for projects
- * 7. @FEATURE clone a repo, or a whole group w an $(arrow-small-down) icon in the view/item/context
  * ================================================================================================================================
  * ================================================================================================================================
  * @IMPLEMENT :-

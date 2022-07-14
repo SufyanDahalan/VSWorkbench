@@ -7,6 +7,7 @@ import { Node } from "./node";
 import { cloneFromGitLab } from "../commands";
 import { EditorView } from "../webviews/editor";
 import { changeValidEmitter, newAuthentication } from "../globals/event";
+import { AxiosResponse } from "axios";
 
 const editorView = new EditorView();
 
@@ -17,7 +18,14 @@ export class GroupNode extends Node {
 	archived?: string;
 	path_with_namespace?: string;
 	constructor(options: GroupNodeOptions) {
-		super(options.node_id, options.parent_id, options.url, options.contextValue, options.collapsible, options.label);
+		super(
+			options.node_id,
+			options.parent_id,
+			options.url,
+			options.contextValue,
+			options.collapsible,
+			options.archived ? options.label + " (archived)" : options.label
+		);
 		this.visibility = options.visibility;
 		if (options.archived) {
 			this.archived = options.archived;
@@ -41,26 +49,33 @@ export class GroupNode extends Node {
 		inputProjectName.show();
 	}
 	delete() {
-		if (this.contextValue === "project") {
-			api.deleteProject(this.node_id).then((res) => {
-				if (res.status.toString().startsWith("2")) {
-					vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
+		vscode.window.showInformationMessage("Are you sure you want to delete this node?", "Yes", "No").then((answer) => {
+			if (answer === "Yes") {
+				// Run function
+				if (this.contextValue === "project") {
+					api.deleteProject(this.node_id).then((res) => {
+						if (res.status.toString().startsWith("2")) {
+							vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
+						}
+					});
+				} else if (this.contextValue === "group") {
+					api.deleteGroup(this.node_id).then((res) => {
+						if (res.status.toString().startsWith("2")) {
+							vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
+						}
+					});
+				} else if (this.contextValue === "user") {
+					vscode.window.showErrorMessage("Can't delete personal namespace!");
 				}
-			});
-		} else if (this.contextValue === "group") {
-			api.deleteGroup(this.node_id).then((res) => {
-				if (res.status.toString().startsWith("2")) {
-					vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
-				}
-			});
-		} else if (this.contextValue === "user") {
-			vscode.window.showErrorMessage("Can't delete personal namespace!");
-		}
+			}
+		});
 	}
 	archiveProject() {
 		if (this.contextValue === "project" && !this.archived) {
+			vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
 			return api.archiveProject(this.node_id);
 		} else if (this.contextValue === "project" && this.archived) {
+			vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
 			return api.unArchiveProject(this.node_id);
 		}
 		return null;
@@ -97,7 +112,12 @@ export class GroupNode extends Node {
 		});
 		inputSubGroupPath.onDidAccept(() => {
 			inputSubGroupPath.hide();
-			api.createSubGroup(this.node_id, groupName, groupPath);
+			console.log(this.node_id, groupName, groupPath);
+			api.createSubGroup(this.node_id, groupName, groupPath).then((res: AxiosResponse) => {
+				if (JSON.stringify(res.status)[0] == "2") {
+					vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
+				}
+			});
 		});
 
 		inputSubGroupName.onDidChangeValue((input) => {
@@ -124,7 +144,11 @@ export class GroupNode extends Node {
 		});
 		inputGroupPath.onDidAccept(() => {
 			inputGroupPath.hide();
-			api.createGroup(groupName, groupPath);
+			api.createGroup(groupName, groupPath)?.then((res) => {
+				if (JSON.stringify(res.status)[0] == "2") {
+					vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
+				}
+			});
 		});
 
 		inputSubGroupName.onDidChangeValue((input) => {

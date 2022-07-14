@@ -52,10 +52,6 @@ window.addEventListener("message", (event) => {
 	}
 });
 
-function someFunc(i: number) {
-	console.log(1);
-	console.log(i);
-}
 function Route(route: Routes, args?: RouteArguments) {
 	app.innerHTML = "";
 	app.append(loadingSpinner());
@@ -63,14 +59,11 @@ function Route(route: Routes, args?: RouteArguments) {
 		case Routes.PENDING: {
 			app.innerHTML = "";
 			app.append(
-				html(
-					`
-                <p onclick="(s)(5)" class="pending">  
+				html(`
+                <p class="pending">  
                 Please choose a project from the groups view in order to load the chosen project's pipelines
                 </p>
-                <script>let s = ${someFunc}</script>
-                `
-				)
+                `)
 			);
 
 			break;
@@ -94,7 +87,9 @@ function Route(route: Routes, args?: RouteArguments) {
 					app.appendChild(table);
 				} else {
 					app.innerHTML = "";
-					app.appendChild(CreateHtmlNode({ type: "p", innerHTML: "no pipelines to view :(" })); // TODO
+                    app.append(html(`
+                    <p class="pending">No Pipelines have run before for this project</p>
+                    `))
 				}
 			});
 			break;
@@ -148,6 +143,16 @@ function Route(route: Routes, args?: RouteArguments) {
 						],
 					});
 					logLines.forEach((line) => logsDiv.appendChild(line));
+					let headerDiv = html(`
+                    <div>
+                    <button>${Icons.RETURN}</button> <span>${job.data.status}</span> ${job.data.name} triggered by 
+                    <img class="avatar" src=${job.data.user.avatar_url} alt="Avatar"></img> ${job.data.user.name}
+                    </div>
+                    `);
+					headerDiv.getElementsByTagName("button")[0].addEventListener("click", () => {
+						Route(Routes.PIPELINES);
+					});
+
 					let jobDiv = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "jobDiv" }] });
 					jobDiv.appendChild(logsDiv);
 
@@ -190,8 +195,9 @@ function Route(route: Routes, args?: RouteArguments) {
 						})
 					);
 					div.appendChild(CreateHtmlNode({ type: "p", innerHTML: "Runner: #" + job.data.runner.id + " " + job.data.runner.description }));
-					div.appendChild(CreateHtmlNode({ type: "p", innerHTML: "Tags: " + job.data.runner.tag.join(" ") }));
+					div.appendChild(CreateHtmlNode({ type: "p", innerHTML: "Tags: " + job.data.tag_list.join(" ") }));
 					// ----
+					div.appendChild(CreateHtmlNode({ type: "br" }));
 					let temp = CreateHtmlNode({ type: "div" });
 					temp.appendChild(CreateHtmlNode({ type: "p", innerHTML: "Commit" }));
 					temp.appendChild(
@@ -202,6 +208,8 @@ function Route(route: Routes, args?: RouteArguments) {
 						})
 					);
 					temp.appendChild(CreateHtmlNode({ type: "span", innerHTML: job.data.commit.message }));
+					div.appendChild(CreateHtmlNode({ type: "br" }));
+
 					div.appendChild(temp);
 					sideBarDiv.appendChild(div);
 					sideBarDiv.appendChild(CreateHtmlNode({ type: "span", innerHTML: "Pipeline" }));
@@ -210,8 +218,10 @@ function Route(route: Routes, args?: RouteArguments) {
 					);
 
 					// end left sidebar
+
+					app.appendChild(headerDiv);
 					app.appendChild(jobDiv);
-					console.log(convert.toHtml(res.data));
+					app.appendChild(sideBarDiv);
 				});
 			});
 
@@ -443,5 +453,5 @@ function checkUrl(url: string, someFullUrl: string): string {
 }
 
 function gidToId(id: string): string {
-	return id.split("/").pop() ?? "Error. please report an issue in VSWorkbench GitHub Repository. Thank you";
+	return id.split("/").pop() || "Error. please report an issue in VSWorkbench GitHub Repository. Thank you";
 }
