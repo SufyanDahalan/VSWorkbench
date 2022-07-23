@@ -8,13 +8,14 @@
  * @returns GraphQL query for an issue, including adequate  information about their labels
  * and notes and authors of notes
  */
-export const issueQuery = (issue_gid: string): string =>
+export const issueQuery = (issue_gid: string | number): string =>
 	JSON.stringify({
 		query: `
  {
     issue(id: "gid://gitlab/Issue/${issue_gid}") {
       projectId
       userNotesCount
+      id
       iid
       title
       description

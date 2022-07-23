@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"types": "./types",
 	"publisher": "SufyanDahalan",
-	"icon": "$(symbol-type-parameter)",
+	"icon": "src/assets/icon.png",
 	"engines": {
 		"vscode": "^1.66.0"
 	},
@@ -217,14 +217,14 @@
 				{
 					"id": "gitLabCode-activityBar",
 					"title": "VSWorkbench",
-					"icon": "$(symbol-type-parameter)"
+					"icon": "src/assets/icon.png"
 				}
 			],
 			"panel": [
 				{
 					"id": "gitlabcode-panel",
 					"title": "VSWorkbench",
-					"icon": "$(symbol-type-parameter)"
+					"icon": "src/assets/icon.png"
 				}
 			]
 		},
@@ -240,7 +240,6 @@
 				{
 					"id": "groupView",
 					"name": "Groups",
-					"icon": "$(accounts-view-bar-icon)",
 					"contextualTitle": "VSWorkbench",
 					"visibility": "visible",
 					"when": "VSWorkbench.authenticated"

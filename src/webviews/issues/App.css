@@ -94,8 +94,14 @@ a {
 a[href] {
 	display: contents;
 }
+#NewCommentInputBox{
+    display: block;   
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+   
+}
 /*
-
 .meta-right {
     float: right;
 }    

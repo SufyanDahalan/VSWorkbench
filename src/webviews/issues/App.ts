@@ -1,5 +1,5 @@
 import { Api } from "../../api";
-import { Icons, ViewEvents, CreateHtmlNode, loadingSpinner } from "../../globals/constants";
+import { Icons, ViewEvents, CreateHtmlNode, loadingSpinner, html } from "../../globals/constants";
 // import { CreateHtmlNode, } from "../../globals/functions";
 import { issueQuery } from "../../api/Queries";
 
@@ -87,16 +87,18 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 			break;
 		}
 		case Routes.ISSUE_ROUTE: {
-			api.graphql(issueQuery(args!.issue_iid.toString())).then((result) => {
+            console.log('args', args)
+			api.graphql(issueQuery(args!.issue_iid)).then((result) => {
 				let res = result.data.data.issue;
+                console.log('result: ', result)
 				if (res.assignees.nodes.length) {
 					res.assignee = res.assignees.nodes[0];
 				}
 				res.project_id = res.projectId;
 				res.user_notes_count = res.userNotesCount;
+                console.log(1)
 
 				let issue: IIssue = res;
-
 				for (const comment of res.notes.nodes) {
 					comment.author = {
 						username: comment.author.username,
@@ -128,56 +130,67 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 				app.appendChild(CreateHtmlNode({ type: "p", innerHTML: issue.description }));
 
 				for (const comment of comments) {
-					app.appendChild(CreateCommentNode(comment));
+					app.appendChild(CreateCommentNode(comment, args));
 				}
-				app.appendChild(CreateNewCommentInput(issue));
+                let div = CreateHtmlNode({ type: "div" });
+                div.appendChild(CreateHtmlNode({ type: "textarea", attributes: [{ key: "id", value: "NewCommentInputBox" }] }));
+                div.appendChild(
+                    CreateHtmlNode({
+                        type: "button",
+                        attributes: [
+                            {
+                                key: "onclick",
+                                value: async () => {
+                                    await api.createNewProjectIssueComment(
+                                        issue.project_id,
+                                        issue.iid,
+                                        (document.getElementById("NewCommentInputBox") as HTMLInputElement)!.value
+                                    );
+                                    Route(Routes.ISSUE_ROUTE, args)
+                                },
+                            },
+                        ],
+                        innerHTML: "post new comment",
+                    })
+                );
+				app.appendChild(div);
 			});
 			break;
 		}
 	}
 }
 
-function CreateCommentNode(comment: IComment): Node {
-	let commentNode = CreateHtmlNode({ type: "div" });
-	commentNode.appendChild(CreateHtmlNode({ type: "div", innerHTML: comment.body }));
-	commentNode.appendChild(
-		CreateHtmlNode({
-			type: "div",
-			attributes: [
-				{
-					key: "onclick",
-					value: () => {
-						api.deleteIssueNote(comment.project_id, comment.issue_iid, comment.id);
-					},
-				},
-			],
-			innerHTML: Icons.TRASH,
-		})
-	);
+function CreateCommentNode(comment: IComment, args: RouteArguments | undefined): Node {
+    let commentNode = html(`
+    <div class="comment"> <div>${comment.body}</div>
+    <button delete>${Icons.TRASH}</button>
+    </div>
+    `)
+    commentNode.querySelectorAll('[delete]').forEach((el) => {
+        el.addEventListener('click', async () => {
+            					await api.deleteIssueNote(comment.project_id, comment.issue_iid, comment.id); 
+                                Route(Routes.ISSUE_ROUTE, args)
+            				})
+    })
+
+	// let commentNode = CreateHtmlNode({ type: "div" });
+	// commentNode.appendChild(CreateHtmlNode({ type: "div", innerHTML: comment.body }));
+	// commentNode.appendChild(
+	// 	CreateHtmlNode({
+	// 		type: "div",
+	// 		attributes: [
+	// 			{
+	// 				key: "onclick",
+	// 				value: async () => {
+	// 					await api.deleteIssueNote(comment.project_id, comment.issue_iid, comment.id); 
+    //                     Route(Routes.ISSUE_ROUTE, args)
+	// 				},
+	// 			},
+	// 		],
+	// 		innerHTML: Icons.TRASH,
+	// 	})
+	// );
 	return commentNode;
-}
-function CreateNewCommentInput(issue: IIssue): Node {
-	let div = CreateHtmlNode({ type: "div" });
-	div.appendChild(CreateHtmlNode({ type: "input", attributes: [{ key: "id", value: "NewCommentInputBox" }] }));
-	div.appendChild(
-		CreateHtmlNode({
-			type: "button",
-			attributes: [
-				{
-					key: "onclick",
-					value: () => {
-						api.createNewProjectIssueComment(
-							issue.project_id,
-							issue.iid,
-							(document.getElementById("NewCommentInputBox") as HTMLInputElement)!.value
-						);
-					},
-				},
-			],
-			innerHTML: "post new comment",
-		})
-	);
-	return div;
 }
 function CreateIssuesUL(issues: IIssue[]): Node {
 	let list = CreateHtmlNode({ type: "ul", attributes: [{ key: "class", value: "issues-list" }] });

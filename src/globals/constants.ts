@@ -145,28 +145,7 @@ export function loadingSpinner() {
 
 export function html(str: string): HTMLElement {
 	let parser = new DOMParser();
-	let body = parser.parseFromString(str, "text/html").body;
+	let body = parser.parseFromString(str, "text/html").body.firstChild as HTMLElement;
 	// addAttributes(body)
-	return body;
-}
-
-function addAttributes(body: HTMLElement): HTMLElement {
-	let children = body.children;
-	// children.forEach((child) => {
-	//     child.ATTRIBUTE_NODE
-	// })
-	// children
-	for (var i = 0; i < children.length; i++) {
-		if (children.item(i)!.hasAttribute("onclick")) {
-			let attribute = children.item(i)!.attributes.getNamedItem("onclick");
-			// // console.log(children.item(i)!.attributes)
-			// console.log(attribute?.name)
-			// console.log(attribute?.value)
-			console.log(attribute);
-			console.log(Function(attribute!.value));
-			// children.item(i)!.removeAttribute('onclick')
-			// children.item(i)!.addEventListener('click' as keyof HTMLElementEventMap, Function(attribute!.value) as  EventListenerOrEventListenerObject)
-		}
-	}
 	return body;
 }
