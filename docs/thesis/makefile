@@ -22,11 +22,11 @@ all: $(TARGET)
 
 ## Produce final target from all input files
 $(TARGET): $(TEX_SRC) $(RASTERIMG) $(patsubst %.svg,%.pdf,$(VECTORIMG)) $(BIB)
-
+# $(TARGET): $(TEX_SRC) $(RASTERIMG) $(patsubst %.svg,%.pdf,$(VECTORIMG)) $(BIB)
 
 ## Convert markdown source to LaTeX
 %.tex: %.md
-	pandoc --top-level-division=chapter --highlight-style pygments  -f gfm -t latex -o $@ $<
+	pandoc --top-level-division=chapter --highlight-style pygments  -f markdown -t latex -o $@ $<
 
 ## Convert SVG vector graphics to PDF
 %.pdf: %.svg
