@@ -70,10 +70,10 @@ export class Api {
 		return Api.instance.api.post(`v4/projects/${project_id}/snippets`, { snippet });
 	}
 	getSnippet(project_id: number | undefined, snippet_id: number): Promise<AxiosResponse> {
-		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}` : "") + `/snippets/${snippet_id}`);
+		return Api.instance.api.get(`v4/${(project_id ? `projects/${project_id}` : "")}/snippets/${snippet_id}`);
 	}
 	getSnippetContent(project_id: number | undefined, snippet_id: number): Promise<AxiosResponse> {
-		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}/` : "") + `snippets/${snippet_id}/raw`);
+		return Api.instance.api.get(`v4/${(project_id ? `projects/${project_id}/` : "")}snippets/${snippet_id}/raw`);
 	}
 	/**
 	 * Get Snippets of a project or the user
@@ -81,7 +81,7 @@ export class Api {
 	 * @returns Snippets of a project or of the user
 	 */
 	getSnippets(project_id?: number): Promise<AxiosResponse> {
-		return Api.instance.api.get("v4/" + (project_id ? `projects/${project_id}/snippets` : "snippets"));
+		return Api.instance.api.get(`v4/${(project_id ? `projects/${project_id}/snippets` : "snippets")}`);
 	}
 	getWikis(isGroup: boolean, id: number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/${isGroup ? "groups" : "projects"}/${id}/wikis`);
@@ -131,7 +131,7 @@ export class Api {
 	// #endregion
 	// #region user
 	getUserInfo(): Promise<AxiosResponse> {
-		return Api.instance.api.get(`v4/user/`);
+		return Api.instance.api.get("v4/user/");
 	}
 	getStarredProjects(userID: string): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/users/${userID}/starred_projects`);
@@ -154,11 +154,11 @@ export class Api {
 	 * @returns nothing
 	 */
 	createGroup(name: string, path: string = name) {
-		if (Api.baseURL == GitLab_SaaS_Base_URL) {
+		if (Api.baseURL === GitLab_SaaS_Base_URL) {
 			// vscode.window.showErrorMessage("Cannot create top level group for GitLab SaaS users!. see [GitLab API docs](https://docs.gitlab.com/ee/api/groups.html#new-group). Additionally view our [workaround](https://add.link.to.dragndrop.workaround).");
 			return null;
 		}
-		return Api.instance.api.post(`v4/groups`, { name, path:  path || name });
+		return Api.instance.api.post('v4/groups', { name, path:  path || name });
 	}
 
 	transferProjectToGroup(group_id: number, project_id: number): Promise<AxiosResponse> {
@@ -193,10 +193,10 @@ export class Api {
 		}
 	}
 	getUserGroups(): Promise<AxiosResponse> {
-		return Api.instance.api.get(`v4/groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc`);
+		return Api.instance.api.get("v4/groups?all_available&pagination=keyset&per_page=50&order_by=name&sort=asc");
 	}
 	getUserNamespaces(): Promise<AxiosResponse> {
-		return Api.instance.api.get(`v4/namespaces`);
+		return Api.instance.api.get("v4/namespaces");
 	}
 	createGroupProject(projectName: string, group_id: number): Promise<AxiosResponse> {
 		return Api.instance.api.post(`v4/projects?name=${projectName}&namespace_id=${group_id}`);
@@ -209,7 +209,10 @@ export class Api {
 	getUserID(): Promise<AxiosResponse> {
 		return Api.instance.api.get("v4/user");
 	}
-	getGroupById(id: string): Promise<AxiosResponse> {
+	getProjectById(id: string | number): Promise<AxiosResponse> {
+		return Api.instance.api.get(`v4/projects/${id}`);
+	}
+	getGroupById(id: string | number): Promise<AxiosResponse> {
 		return Api.instance.api.get(`v4/groups/${id}`);
 	}
 	getSubGroups(parentID: number): Promise<AxiosResponse> {

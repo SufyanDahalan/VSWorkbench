@@ -14,8 +14,8 @@ export enum ViewEvents {
 	PIPELINE_SELECTED,
 	JOB_SELECTED,
 	API_TOKEN,
-	WIKI,
-	SNIPPET,
+	Wiki,
+	Snippets,
 	PENDING,
 }
 /**

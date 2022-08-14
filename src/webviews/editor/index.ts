@@ -12,14 +12,14 @@ export class EditorView {
 		this._extensionUri = context.extensionUri;
 		this.token = Token;
 	}
-	public open(type: ViewEvents, isGroup: boolean, id: number) {
-		const panelKey = `${type}.${isGroup}.${id}`;
+	public open(type: ViewEvents, isGroup: boolean, id: number, name: string) {
+		const panelKey = `${type}.${isGroup}.${id}.${name}`;
 		const openedPanel = this._views[panelKey];
 		if (openedPanel) {
 			openedPanel.reveal();
 			return openedPanel;
 		} else {
-			const newPanel = this.create(type, isGroup, id);
+			const newPanel = this.create(type, isGroup, id, name);
 			this._views[panelKey] = newPanel;
 			newPanel.onDidDispose(() => {
 				this._views[panelKey] = undefined;
@@ -35,8 +35,8 @@ export class EditorView {
 	 * @param isGroup Specifies if Group or Project
 	 * @param id Group or Project id
 	 */
-	private create(type: ViewEvents, isGroup: boolean, id: number) {
-		let panel = vscode.window.createWebviewPanel(this.viewType, "$titleParam. TODO", vscode.ViewColumn.One, {
+	private create(type: ViewEvents, isGroup: boolean, id: number, name: string) {
+		let panel = vscode.window.createWebviewPanel(this.viewType, `${name} | ${ViewEvents[type]}`/* "$titleParam. TODO" */, vscode.ViewColumn.One, {
 			enableScripts: true,
 			localResourceRoots: [this._extensionUri!],
 			retainContextWhenHidden: true,

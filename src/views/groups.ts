@@ -196,10 +196,10 @@ export class GroupNode extends Node {
 		return await cloneFromGitLab(this.url.toString(), path[0].path);
 	}
 	openWiki() {
-		editorView.open(ViewEvents.WIKI, this.contextValue === "group", this.node_id);
+		editorView.open(ViewEvents.Wiki, this.contextValue === "group", this.node_id, this.label);
 	}
 	openSnippets() {
-		editorView.open(ViewEvents.SNIPPET, this.contextValue === "group", this.node_id);
+		editorView.open(ViewEvents.Snippets, this.contextValue === "group", this.node_id, this.label);
 	}
 }
 
@@ -256,7 +256,7 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 			if (selection["selection"].length != 0) {
 				let newSelection: any = selection["selection"][0];
 				switch (newSelection.contextValue) {
-					case "project":
+					case "project": {
 						new PipelineView(context, newSelection.node_id);
 						changeValidEmitter.fire({
 							event: ViewEvents[ViewEvents.PROJECT_SELECTED],
@@ -265,13 +265,16 @@ export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>
 						});
 						new IssueView(context, newSelection.contextValue === "group", newSelection.node_id);
 						break;
-					case "group":
+					}
+					case "group": {
 						new IssueView(context, newSelection.contextValue === "group", newSelection.node_id);
 						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.GROUP_SELECTED], id: selection["selection"][0].node_id });
 						break;
-					case "user":
+					}
+					case "user": {
 						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PENDING], id: null });
 						break;
+					}
 					default:
 						changeValidEmitter.fire({ event: ViewEvents[ViewEvents.PENDING], id: null });
 						// TODO log some information
