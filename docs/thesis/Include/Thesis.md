@@ -249,10 +249,182 @@ as new features, refactoring or pull requests.
 
 ## npm, npm scripts
 
+NPM (short for Node Package Manager) is one of the most popular pacakge managers for javascript (along with yarn and others) created by Isaac Z. Schlueter 
+and maintaned by npm, Inc. Due to its popularity, it is the default package manager for the JavaScript runtime environment Node.js. 
+NPM the CLI program is used to install packages, run tests available in a specific project and run scripts.
+
+When using NPM, it will create a file in the project by the name of `package.json`. In the `package.json` file, packages along iwth their versions are defined, 
+scripts that can be run using `npm run XXX` and meta data that can be used by platforms hosting projects to display information.
+
+An example of this is defining the repository link in the `package.json` file, where it will be linked by visual studio marketplace to give the extension viewer
+quick access to the repository, if it is opensourced. A package/extension publisher can also define different tags that will help users in visual 
+studio marketplace to search and find his or her package.
+
+The `package.json` file furthermore allows it's user to define custom reusable scripts in the sections block. 
+
+<!-- ![The VSWorkbench package.json file](./Medien/packageJson.png){#id .class width=532px height=171px} -->
+
+```json
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"ts": "npm run esbuild-base -- --minify",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "npm run compile-tests && npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"deploy": "vsce publish --no-yarn",
+		"postinstall": "cd docs && npm install && cd ..",
+	},
+```
+
+The above code block showcases an excerpt from the `package.json` file used in developing VSWorkbench. It defines commands to test, compile and package,
+continiously build and test the extension. Furthermore, it also defines steps that are run before testing (pretest script) and after installing packages 
+(postinstall script). 
+
+The `package.json` file is a tool that facilitates contribution and collaboration between developers by enabling them to declaratively define the dependencies
+needed to develop and deploy the project.
+
+Futhermore, the `package-lock.json` file will be automatically created and updated after each package installation. It describes the exact dependency tree 
+that represents the node_modules file in order to build the exact dependency tree again on different machines, ensuring the all developers will always have 
+the same dependencies with the same versions installed. To build the dependency tree using the `package-lock.json` file, a developer has to run 
+```bash
+npm ci;
+```  
+in his or her command line interface.
+
+
 
 # Implementation
 
-## vscode api,
+## VSCode API
+
+To facilitate the process of extending the functionality of VSCode, an API is exposed that can be used by the extension developer.
+The API provided by VSCode provides visual and functional components.
+
+### Tree View
+
+
+The Tree View API is a visual component exposed by VSCode that can be utilized by creating a class that inherits from the `vscode.TreeDataProvider` class and implementing it's functions.
+The developer also has to define an entry for the implemented class in the `package.json` file.
+```json
+{
+...
+"contributes": {
+    ...
+    "viewsContainers": {
+        "activitybar": [
+            {
+                "id": "gitLabCode-activityBar",
+                "title": "VSWorkbench",
+                "icon": "src/assets/icon.png"
+            }
+        ],
+        "panel": [
+            {
+                "id": "gitlabcode-panel",
+                "title": "VSWorkbench",
+                "icon": "src/assets/icon.png"
+            }
+        ]
+    },
+    "views": {
+        "gitLabCode-activityBar": [
+            {
+                "id": "groupView",
+                "name": "Groups",
+                "contextualTitle": "VSWorkbench",
+                "visibility": "visible",
+                "when": "VSWorkbench.authenticated"
+            },
+            ...
+            ]
+        ...
+        }
+}
+}
+```
+The `contributes` entry in the `package.json` file declaratively defines the visual and functional exntesions that the extension provides.
+The `views` entry refers to containers of visual componets, such as the container `gitLabCode-activityBar`. The `gitLabCode-activityBar` container then accepts 
+an array of components, in the above example the `groupView` tree view.
+The `gitLabCode-activityBar` component container will then be embedded, also declaratively, into the VSCode activity bar. 
+
+The following picture explains the anatomy and components of VSCode visually.
+
+![VSCode Extension Anatiomy | Contribution ](./Medien/Extension Anatomy.png){}
+todo{add source. URL: https://code.visualstudio.com/assets/api/ux-guidelines/examples/architecture-sections.png}
+The Drap and Drop API can is used by implementing two functions for the drag and drop functionality respectively in the `GroupTreeDataProvider` that are 
+inhereted from the `vscode.TreeDragAndDropController` class. 
+
+```javascript
+	public async handleDrag(source: GroupNode[], treeDataTransfer: vscode.DataTransfer,
+
+     _token: vscode.CancellationToken): Promise<void> {
+		if (source[0].contextValue !== "user") {
+			treeDataTransfer.set("application/vnd.code.tree.groupView",
+             new vscode.DataTransferItem(source));
+		}
+	}
+	public async handleDrop(target: GroupNode | undefined, sources: vscode.DataTransfer,
+
+     _token: vscode.CancellationToken): Promise<void> {
+		const transferItem = sources.get("application/vnd.code.tree.groupView");
+		...
+```
+
+The `handleDrag` function takes two GroupNode as a parameter in addition to a cancellation token paramter todo{explain more}. The source, the GroupNode that is currently being dragged and a `vscode.DataTransfer` object.
+The function checks if the source object is the user namespace todo{exaplin more about namepsaces n stuff}, which is not a group and cannot be moved or deleted. 
+If the node is not a user namepsace, i.e. if it is a group or a project node, it's status will be set to be dragged.
+
+This prevents user namespaces from entering the `handleDrop` function, which would potentially result in illegal actions that will be later rejected by the 
+GitLab API.
+
+The `handleDrop` function accepts three parameters, the source node, or the node being dragged, and a target node, where the source node was dropped. 
+The target node is allowed to be `null`, which means that the source node was dropped into an empty area where no node exists. If the target node is not `null`,
+it is of type `GroupNode`. A GroupNode can be a user namespace, a Group or a subgroup, or a project.
+The function will check if the action is legal, and then call the correct function to conclude the operation.
+The user can move a project between groups, subgroups and personal namespaces. However; the user cannot move a project into another project or otherwise move a 
+group, subgroup or user namepsaces into projects.
+Furthermore the user can convert groups into subgroups by moving them into other groups or subgroups, but cannot move them into user namespaces. 
+
+The functions that will be called are defined in the `api.ts` file and have the following declarations:
+
+
+```typescript
+
+	transferGroup(id: number, group_id?: number): Promise<AxiosResponse> {
+		return Api.instance.api.post(`v4/groups/${id}/transfer`,
+
+        group_id ? { group_id } : null);
+	}
+	transferProjectToGroup(group_id: number, project_id: number): 
+    
+    Promise<AxiosResponse> {
+		return Api.instance.api.put
+        
+        (`v4/projects/${project_id}/transfer?namespace=${group_id}`);
+	}
+```
+
+The `transferGroup` function accepts two arguments, the id of the group (id), and the id of the namespace (group_id) where it should be moved.
+The reason behind making the 'group_id' parameter optional is to enable to make groups top level groups, i.e. not nested in other groups, depending on this 
+parameter.
+
+![The `groupView` Tree View in VSWorkbench](./Medien/groupView.png){}
+
+
+### Webview 
+
+The Webview component is a visual component that is used to utilize the editor space by adding an editor tab. It is used by VSWorkbench to display snippets and wiki pages of a specific project. 
+
+### Webview View API
+
+### Commands
+
+
 
 tree classes , tree models, drag n drop, webview and webviewview
 
@@ -264,7 +436,7 @@ GitLab exposes APIs for users
 ## publishing on marketplace.visualstudio.com , current progress
 
 
-vsce publush, how i t compiles and packages and link the three apps ot the one parent app
+vsce publish, how to compiles and packages and link the three apps ot the one parent app
 ## Documentation, jsdoc, api file
 
 
