@@ -36,7 +36,7 @@ export class EditorView {
 	 * @param id Group or Project id
 	 */
 	private create(type: ViewEvents, isGroup: boolean, id: number, name: string) {
-		let panel = vscode.window.createWebviewPanel(this.viewType, `${name} | ${ViewEvents[type]}`/* "$titleParam. TODO" */, vscode.ViewColumn.One, {
+		let panel = vscode.window.createWebviewPanel(this.viewType, `${name} | ${ViewEvents[type]}`, vscode.ViewColumn.One, {
 			enableScripts: true,
 			localResourceRoots: [this._extensionUri!],
 			retainContextWhenHidden: true,

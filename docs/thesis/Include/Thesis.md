@@ -35,7 +35,7 @@ VSWorkbench should cut the time needed to look up a project, search for an issue
 bringing the most used functionalities of GitLab closer to where the developer is usually to be found when he is in his state of flow:
 the code editor.
 
-The goal of VSWorkbench within the framework of this bachelor's thesis is to bring the 20% of functionality of GitLab as a start thats used 20% of the time
+The goal of VSWorkbench within the framework of this bachelor's thesis is to bring the 20% of functionality of GitLab as a start that is used 80% of the time
 and present them in a familiar manner that is not much distinguishable from the native webapp gitlab experience, with the end goal being minimizing 
 interruptions and hightening developer's productivity. 
 
@@ -346,6 +346,7 @@ The developer also has to define an entry for the implemented class in the `pack
         }
 }
 }
+
 ```
 The `contributes` entry in the `package.json` file declaratively defines the visual and functional exntesions that the extension provides.
 The `views` entry refers to containers of visual componets, such as the container `gitLabCode-activityBar`. The `gitLabCode-activityBar` container then accepts 
@@ -409,16 +410,79 @@ The functions that will be called are defined in the `api.ts` file and have the 
 	}
 ```
 
-The `transferGroup` function accepts two arguments, the id of the group (id), and the id of the namespace (group_id) where it should be moved.
+The transferGroup function accepts two arguments, the id of the group (id), and the id of the namespace (group_id) where it should be moved.
 The reason behind making the 'group_id' parameter optional is to enable to make groups top level groups, i.e. not nested in other groups, depending on this 
 parameter.
 
-![The `groupView` Tree View in VSWorkbench](./Medien/groupView.png){}
+![The groupView Tree View in VSWorkbench](./Medien/groupView.png){#xid .xclass width=612px height=118px}
 
 
 ### Webview 
 
-The Webview component is a visual component that is used to utilize the editor space by adding an editor tab. It is used by VSWorkbench to display snippets and wiki pages of a specific project. 
+The Webview component is a visual component that is used to utilize the editor space todo{reference the reader to the VSCode anatomy} by adding an editor tab. 
+It is used by VSWorkbench to display snippets and wiki pages of a specific project. 
+
+The webviews, or editor tabs, are in their essence dynamic html wrapped in a container. When the user changes the selected tab, javascript is used to 
+instantly delete the previous content of the container, evaluate the new content and append it to the container again.
+
+To utilize the Webview API exposed by VSCode, an instance of the class vscode.WebviewPanel by utilizing the {vscode.window.createWebviewPanel} function.
+
+```typescript
+let panel = vscode.window.createWebviewPanel(this.viewType, `${name} | ${ViewEvents[type]}`, vscode.ViewColumn.One, {
+			enableScripts: true,
+			retainContextWhenHidden: true,
+		});
+```
+
+The function is called with three parameters, namely the view type of the webview, it's title, the show options for the webview, which specify the location of 
+the webview, and finally a set of optional parameters. 
+The optional parameters are used to enable the use of javascript in the webview context and to prevent the discardment of the webview context in case it is 
+hidden, or when the user switches to another tab.
+
+Moreover, the webview panel is instantiated without any html assigned. Therefore, the developer has to assign it html. 
+
+The HTML is assigned to the webview using the follow function.
+
+
+```typescript
+private getHtml(webview: vscode.Webview): string {
+    const scriptUri = webview.asWebviewUri(
+        vscode.Uri.joinPath(this._extensionUri!, "dist", "editor", "main.js"));
+    return `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Security-Policy">
+            <title>GitLab CI | Editor</title>
+        </head>
+        <body>
+        <div id="app"></div>
+            <script src="${scriptUri}"></script>
+        </body>
+        <script >window.vscode = acquireVsCodeApi();</script>
+        </html>`;
+}
+```
+
+The function `getHtml` first locates the extension in order to locate the Javascript file used for dynamic html and css content and assigns the value to the 
+variable `scriptUri`. Secondly, the function embeds the `scriptUri` variable in an html script tag so that the html document embedded in the can access the 
+Javascript file. Lastly, the function assigns the VSCode API to a variable named `window.vscode` that will later be used for communication between the 
+Webview embedded app/html document and the extension context. 
+To prevent any confusion, the VSCode API refered to in the above snippets refers to an API that can merely send messages back and forth between the extension
+context and the contexts of the apps/html documents embedded and managed by the extension, not the API exposed by vscode to enable the extension to communicate 
+with VSCode and make use of it's components. 
+
+
+The embedded app will first import the API class used to communicate with gitlab and instantiate an object. It will stand by until it receives a message from 
+the parent context informing it of the API token for authentication with gitlab and additional information, such as whether the context to be loaded belongs to 
+a wiki or a snippet, and the ID of the object to be loaded. 
+After receiving the aforementioned information, the embedded app will start querying gitlab for the information needed to model the HTML document around. 
+After the HTML document is ready, the result will be injected via Javascript into the uppermost parent container, the `div` element with the id `app`.   
+
+
+
+
 
 ### Webview View API
 
@@ -440,11 +504,45 @@ vsce publish, how to compiles and packages and link the three apps ot the one pa
 ## Documentation, jsdoc, api file
 
 
-the NPM package `jsdoc-to-markdown` is a package that enables the developer to extract jsdoc comments into markdown files. It takes a minimum of one paramater,
+JSDOC is an API documentation generator for JavaScript, that utilizes comments to generate websites, output to JSON format, and add hover support on code 
+editors and IDEs like VSCODE.
+JSDOC's syntax allows the developer to quickly add documentation in the form of comments, with specific keywords that will highlight important aspects of code, 
+such as return value, parameters and their qualities, or references to other documented snippets of code that help other developers understand the function 
+of the referencing code snippet.
+
+JSDOC facilitates the steps of maintaining, refactoring and extending software.
+
+
+```typescript
+/**
+ * Issues Query
+ * @param isGroup describes whether the query targets a group or a project
+ * @param fullpath full path of group or project, i.e. 
+   
+ * 'gitlab-org' or  'gitlab-org/gitlab-foss'
+ * @returns Issues of the specified project with adequate information about them
+ */
+export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
+	...
+```
+
+The above code snippet showcases a function along with its JSDOC comments. 
+
+![JSDOC Output](./Medien/JSDOC.png){#sid .sclass width=612px height=118px}
+
+
+It will be visualized in VSCode to developers at hover will be represented in a similiar fashion on the documentation website that is wrapped with Docusaurus.
+
+
+
+The NPM package `jsdoc-to-markdown` is a package that enables the developer to extract jsdoc comments into markdown files. It takes a minimum of one paramater,
 specifying the files from which the documentation is to be extracted.  
 To automate documentation and build of the documentation website, I utilized the npm package `jsdoc-to-markdown` wrapped in an npm script that extracts jsdoc documentation from the specified files into 
 a markdown file. This markdown file will then be fed into the docusaurus build pipeline, where it will be rendered in it's own tab. 
-Docusaurus, built on react, will build html files out of the markdown documents available and create a client side rendered web app. It will automatically 
+Docusaurus, built on react, will build html files out of the markdown documents available and create a client side rendered web app. 
+
+The architecture of Docusaurus, primarely relying on client side rendering enabled by react and CI infrastructure enabled by GitLab CI lowers overhead that 
+accompanies the task of documenting software while simultaneously building it.
 
 
 ## telemetry? 
@@ -456,19 +554,91 @@ analyze how much specific functions/services/features are used and say smth abou
 write something about having 4 contexts running at the same time. (3 vanilla apps, and the extension, therefore requiring 4 api singletons)
 
 
-## design patterns used 
+## Design Patterns Used 
+
+Due VSCode is built with web technologies, and JS being a slower language, VSCode has notoriously slower start up times compared to other code editors. 
+Additionally, VSCode has trouble rendering big files, as opposed to c/c++ based code editors like sublime text. 
+
+Therefore, it is vital to make smart decisions when possible in order to not slow down the user's VSCode instance, or worse the user's operating system.
 
 
-To facilitate blablabla
+To lower memory expense, the API was implemented using the singleton design pattern. 
+
+```typescript
+public static get Instance() {
+		if (!this.instance) {
+			this.instance = new Api();
+		}
+		return Api.instance;
+	}
+```
+
+The singleton will be instantiated once for each running context, namely the extension (parent) context, and the three child contexts representing the webviews
+and the webview views.
+
+This contributes to minimizing resources consumed in total by an already resource heavy application that is VSCode.
+
+```typescript
+import { Api } from "../../api";
+let api = Api.Instance;
+```
+
+
 <!-- e.g. singleton for the api class -->
 
 
-## write about making it look native, aka resemble gitlab very well
+## write about making it look native, aka resemble gitlab very well (goal)
+
+## write about extensibility, PR requests, Opensource, a bit about why github 
+
+VSWorkbench is not intended to target only GitLab. Lots of other software tools used by developers make great candidates for further development.  Therefore it 
+was essential to make VSWorkbench extensible inorder to support more platforms and tools in the future. 
+
+todo{write about PR template.md or something and contributing.md and so on blz. trunk based development and so on}
 
 
-## write about making it small, improving performance and time needed to start up, and how it holds up comapred to gitlab workflow
 
+
+
+
+
+## write about making it small, improving performance and time needed to start up, and how it holds up comapred to gitlab workflow (goal, plus comparison and results section)
+
+OS: linux(5.15.0-46-generic)
+CPUs: Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz(12 x 3500)
+Memory(System): 31.02 GB(13.82GB free)
+
+\tiny
+| Extension                           | Eager | Load Code | Call Activate | Finish Activate | Event                             | By                                  |
+| :---------------------------------: | :---: | :-------: | :-----------: | :-------------: | :-------------------------------: | :---------------------------------: |
+| vscode.debug-auto-launch            | true  | 2         | 0             | 2               | *                                 | vscode.debug-auto-launch            |
+| vscode.git                          | true  | 22        | 13            | 27              | *                                 | vscode.git                          |
+| vscode.git-base                     | true  | 2         | 0             | 2               | *                                 | vscode.git                          |
+| vscode.github                       | true  | 3         | 0             | 0               | *                                 | vscode.github                       |
+| vscode.ipynb                        | true  | 2         | 1             | 1               | *                                 | vscode.ipynb                        |
+| ecmel.vscode-html-css               | true  | 17        | 0             | 1               | *                                 | ecmel.vscode-html-css               |
+| zh9528.file-size                    | true  | 1         | 1             | 0               | *                                 | zh9528.file-size                    |
+| vscode.configuration-editing        | false | 2         | 0             | 7               | onLanguage:json                   | vscode.configuration-editing        |
+| vscode.debug-server-ready           | false | 10        | 0             | 12              | onDebugResolve                    | vscode.debug-server-ready           |
+| vscode.emmet                        | false | 5         | 2             | 18              | onStartupFinished                 | vscode.emmet                        |
+| vscode.extension-editing            | false | 11        | 1             | 6               | onLanguage:json                   | vscode.extension-editing            |
+| vscode.github-authentication        | false | 9         | 2             | 11              | onAuthenticationRequest:github    | vscode.github-authentication        |
+| vscode.json-language-features       | false | 13        | 0             | 221             | onLanguage:json                   | vscode.json-language-features       |
+| vscode.markdown-language-features   | false | 49        | 5             | 176             | onLanguage:markdown               | vscode.markdown-language-features   |
+| vscode.markdown-math                | false | 5         | 0             | 0               | api                               | vscode.markdown-language-features   |
+| vscode.merge-conflict               | false | 1         | 0             | 18              | onStartupFinished                 | vscode.merge-conflict               |
+| vscode.microsoft-authentication     | false | 12        | 4             | 156             | onAuthenticationRequest:microsoft | vscode.microsoft-authentication     |
+| ms-vscode.js-debug                  | false | 90        | 8             | 4               | onDebugResolve:pwa-extensionHost  | ms-vscode.js-debug                  |
+| vscode.npm                          | false | 7         | 0             | 372             | onLanguage:json                   | vscode.npm                          |
+| vscode.typescript-language-features | false | 9         | 6             | 0               | onLanguage:jsonc                  | vscode.typescript-language-features |
+| dsznajder.es7-react-js-snippets     | false | 184       | 1             | 17              | onStartupFinished                 | dsznajder.es7-react-js-snippets     |
+| eamodio.gitlens                     | false | 36        | 6             | 41              | onStartupFinished                 | eamodio.gitlens                     |
+| esbenp.prettier-vscode              | false | 25        | 7             | 7               | onStartupFinished                 | esbenp.prettier-vscode              |
+| GrapeCity.gc-excelviewer            | false | 2         | 1             | 8               | onLanguage:plaintext              | GrapeCity.gc-excelviewer            |
+| mechatroner.rainbow-csv             | false | 2         | 1             | 1012            | onLanguage:plaintext              | mechatroner.rainbow-csv             |
+| rangav.vscode-thunder-client        | false | 39        | 1             | 200             | onStartupFinished                 | rangav.vscode-thunder-client        |
+| SufyanDahalan.vsworkbench           | false | 2         | 3             | 3               | onStartupFinished                 | SufyanDahalan.vsworkbench           |
+| Vue.volar                           | false | 51        | 3             | 0               | onLanguage:markdown               | Vue.volar                           |
+: Demo or smth
 
 ## goals moving forward
-
-
