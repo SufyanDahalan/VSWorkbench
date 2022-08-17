@@ -621,6 +621,6 @@ Memory(System): 31.02 GB(13.82GB free)
 
 ## goals moving forward
 
-
+the issue templates were mianly influenced by vscode-gitlens
 
 todo{write about using html/utf8 icons and so on.}
