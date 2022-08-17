@@ -11,7 +11,7 @@ This great demand and meager supply of programmers made it a highly vital task t
 
 Developer tools try to achieve a big subset of things, enabling developers to cooperate on a higher scale (communication software [teams, zoom, email], 
 collaboration tools for technical and nontechnical staff [jira, trello, atlassian wiki], collaboration tools for technicals that touch on many different 
-subjects [git, gitlab, github], tools made to save time [CICD, gitlab ci, github action], tools made to increase precision and correctness of work output   
+subjects [git, GitLab, github], tools made to save time [CICD, GitLab ci, github action], tools made to increase precision and correctness of work output   
 made by programmers [automated testing frameworks => cypress, playwright], and debugging).
 
 These developer tools are essential in the work life of a programmer. Use them fluently and efficiently, and your output will easily multiply.
@@ -36,7 +36,7 @@ bringing the most used functionalities of GitLab closer to where the developer i
 the code editor.
 
 The goal of VSWorkbench within the framework of this bachelor's thesis is to bring the 20% of functionality of GitLab as a start that is used 80% of the time
-and present them in a familiar manner that is not much distinguishable from the native webapp gitlab experience, with the end goal being minimizing 
+and present them in a familiar manner that is not much distinguishable from the native webapp GitLab experience, with the end goal being minimizing 
 interruptions and hightening developer's productivity. 
 
 <!--
@@ -169,7 +169,7 @@ Personal Access Tokens (short: PATs) are user specific unique strings that can b
 On the other hand, a user can create multiple PATs with varying privilige levels. PATs are usually issued with an expiration date, in the case of microsoft and 
 visualstudio.marketplace.com, it can reach a max of 120 days?. However, in some cases, such as GitLab, PATs can be issued by the user to never expire. 
 
-PATs are used to gain access to APIs and services ^[see [https://docs.gitlab.com/ee/api/index.html](https://docs.gitlab.com/ee/api/index.html)]. The GitLab service, whether self-hosted or the SAAS version,
+PATs are used to gain access to APIs and services ^[see [https://docs.GitLab.com/ee/api/index.html](https://docs.GitLab.com/ee/api/index.html)]. The GitLab service, whether self-hosted or the SAAS version,
 The GitLab API checks if the user has enough priviliges before executing the action, and provides an HTTP response based on the result.
 If authentication information is not valid or is missing, GitLab returns an error message with a status code of 401:
 ```javascript
@@ -197,18 +197,18 @@ Kernel. It was developed with the intent to keep it open source, in contrary to 
 Git was designed to be fast and efficient. As it follows the unix philosophy of programming \cite{UNIXPHILOSOPHY}, it's functionality can also be extended 
 ^[see [Git Flow](https://github.com/nvie/gitflow)].
 
-### Gitlab
+### GitLab
 
 As git started to gain traction, multiple trials to introduce a graphical user interface where made. The most successful were webapp based user interfaces, which
 implies the existence of a central repository (or a central source of truth). Most notable examples are GitHub, GitLab, and BitBucket. 
 These services also began to extend their functionlality beyond being a simple git graphical interface, integrating state of the art tools like
 CICD and  tools that adhere to new methodologies that make developing and deploying software to users easier, more frictionless and more efficient.
 GitLab therefore started integrating more and more CICD tooling and support, starting in 2012. Over the course of the years, GitLab developed and integrated
-more DevOps tools, enabling developers to publish their software packages through gitlab ^[e.g. nuget packages for dotnet, npm packages for node]. 
-As a result, Gitlab was able to build a platform/system that is effectively a fully featured toolbox:
+more DevOps tools, enabling developers to publish their software packages through GitLab ^[e.g. nuget packages for dotnet, npm packages for node]. 
+As a result, GitLab was able to build a platform/system that is effectively a fully featured toolbox:
 1. Developers can develop, collaborate, communicate, build and release their libraries, packages and software incrementally and efficiently. Furthermore, 
-Developers can incorporate user support and communication into gitlab using features like Service Desk 
-^[See [Service Desk Documentation](https://docs.gitlab.com/ee/user/project/service_desk.html)]. 
+Developers can incorporate user support and communication into GitLab using features like Service Desk 
+^[See [Service Desk Documentation](https://docs.GitLab.com/ee/user/project/service_desk.html)]. 
 
 GitLab is working towards an all encompassing platform that eliminates that need for multiple scattered services, each with it's own maintenance 
 and administration overhead. This is essentially the philisophy that inspired the development of VSWorkbench. 
@@ -230,21 +230,21 @@ frictionless as possible, documentation has to be tackled.
 
 Docusaurus is a tool developed by facebook that enables developers to write documentation in markdown and deploy it without needing to dive into the 
 details of building and deploying a documentation website. It outputs a static website and does not create the need for server side services that will need
-maintenance and will incur costs. The static build can also be deployed on gitlab using gitlab pages with the help of cicd and gitlab ci. 
+maintenance and will incur costs. The static build can also be deployed on GitLab using GitLab pages with the help of cicd and GitLab ci. 
 
 The process is as follows:
 
-1. The developer defines a gitlab ci job, named pages, in the repository's gitlab-ci.yml file.
-2. When a commit is pushed into remote (aka gitlab server), the `pages` job runs on the repository where it is defined. It builds the website according to 
-the steps predefined in the gitlab ci job, and saves the build in an artifact
-3. The gitlab ci artifact, which contains the website build, will then be accessible by the end users through a domain made availabe by gitlab. It usually 
-follows the following syntax? : [gitlab username].gitlab.ioa/[repository name].
+1. The developer defines a GitLab ci job, named pages, in the repository's GitLab-ci.yml file.
+2. When a commit is pushed into remote (aka GitLab server), the `pages` job runs on the repository where it is defined. It builds the website according to 
+the steps predefined in the GitLab ci job, and saves the build in an artifact
+3. The GitLab ci artifact, which contains the website build, will then be accessible by the end users through a domain made availabe by GitLab. It usually 
+follows the following syntax? : [GitLab username].GitLab.ioa/[repository name].
 Alternatively, the developer can bind the artifact to a domain name of his own choosing, e.g. VSWorkbench.Dahalan.De
 
-4. When an enduser navigates to the url to which the artifact is mapped, the gitlab servers/CDN? send a reply with the artifact. The artifact will contain
+4. When an enduser navigates to the url to which the artifact is mapped, the GitLab servers/CDN? send a reply with the artifact. The artifact will contain
 HTML, CSS, JS, and possibly assets (images, pdfs, etc.) that the end user's browser can parse and build the website from. 
 
-Gitlab CI and docusaurus dramatically decrease the overhead of generating and hosting documentation, enabling the developer to focus on major tasks such 
+GitLab CI and docusaurus dramatically decrease the overhead of generating and hosting documentation, enabling the developer to focus on major tasks such 
 as new features, refactoring or pull requests.
 
 ## npm, npm scripts
@@ -318,21 +318,21 @@ The developer also has to define an entry for the implemented class in the `pack
     "viewsContainers": {
         "activitybar": [
             {
-                "id": "gitLabCode-activityBar",
+                "id": "GitLabCode-activityBar",
                 "title": "VSWorkbench",
                 "icon": "src/assets/icon.png"
             }
         ],
         "panel": [
             {
-                "id": "gitlabcode-panel",
+                "id": "GitLabcode-panel",
                 "title": "VSWorkbench",
                 "icon": "src/assets/icon.png"
             }
         ]
     },
     "views": {
-        "gitLabCode-activityBar": [
+        "GitLabCode-activityBar": [
             {
                 "id": "groupView",
                 "name": "Groups",
@@ -349,9 +349,9 @@ The developer also has to define an entry for the implemented class in the `pack
 
 ```
 The `contributes` entry in the `package.json` file declaratively defines the visual and functional exntesions that the extension provides.
-The `views` entry refers to containers of visual componets, such as the container `gitLabCode-activityBar`. The `gitLabCode-activityBar` container then accepts 
+The `views` entry refers to containers of visual componets, such as the container `GitLabCode-activityBar`. The `GitLabCode-activityBar` container then accepts 
 an array of components, in the above example the `groupView` tree view.
-The `gitLabCode-activityBar` component container will then be embedded, also declaratively, into the VSCode activity bar. 
+The `GitLabCode-activityBar` component container will then be embedded, also declaratively, into the VSCode activity bar. 
 
 The following picture explains the anatomy and components of VSCode visually.
 
@@ -474,10 +474,10 @@ context and the contexts of the apps/html documents embedded and managed by the 
 with VSCode and make use of it's components. 
 
 
-The embedded app will first import the API class used to communicate with gitlab and instantiate an object. It will stand by until it receives a message from 
-the parent context informing it of the API token for authentication with gitlab and additional information, such as whether the context to be loaded belongs to 
+The embedded app will first import the API class used to communicate with GitLab and instantiate an object. It will stand by until it receives a message from 
+the parent context informing it of the API token for authentication with GitLab and additional information, such as whether the context to be loaded belongs to 
 a wiki or a snippet, and the ID of the object to be loaded. 
-After receiving the aforementioned information, the embedded app will start querying gitlab for the information needed to model the HTML document around. 
+After receiving the aforementioned information, the embedded app will start querying GitLab for the information needed to model the HTML document around. 
 After the HTML document is ready, the result will be injected via Javascript into the uppermost parent container, the `div` element with the id `app`.   
 
 
@@ -486,13 +486,46 @@ After the HTML document is ready, the result will be injected via Javascript int
 
 ### Webview View API
 
+The Webview view API provided by vscode enables the developer to create a context in the panel area of VSCode, where the iconic terminal usually resides. 
+
+The webview view API is used by VSWorkbench to render two child contexts that are responsible for integration and poritng of GitLab CI and GitLab Issues into VSCode.
+
+
+To create a webview view, a class inhereting `vscode.WebviewViewProvider` must be implemented. The class's constructor takes the extension context as a paramater in 
+order to register the new child context. Registering the webview view requires a unique id for the webview view, which also has to be configured in the `package.json`
+file under the contributions entry. Additionally, the constructor will register the new wbeview view context as a subscriber/listener to the event emitter that is 
+configured by the tree view, in order to recieve updates about the currently selected/focused group node. Moreover, a function inherited from 
+`vscode.WebviewViewProvider` will be called when the webview view is brought into focus, which ensures the creation of the document to be shown and appends it in it's 
+rightful location, the VSCode panel. 
+
+```typescript
+constructor(context: vscode.ExtensionContext) {
+    changeValidEmitter.event(this.eventCallback, this);
+
+    vscode.window.registerWebviewViewProvider(this.viewType, this, 
+    { webviewOptions: { retainContextWhenHidden: true } });
+    this._extensionUri = context.extensionUri;
+}
+```
+
+Similiar to the case of the WebView used in VSWorkbench, this function returns an empty HTML document that includes a link to the script file responsible for the 
+communication with GitLab and the insertion of html nodes as needed. 
+
+The script file included is written in Typescript. It features it's stand alone instance of the api, due to it possessing it's own context. 
+
+The first steps undertaken by the linked script is to receive the user's API token. Secondly, it will wait for an update regarding the currently selected group node. 
+Once a group node is chosen, the script will fetch the information regarding the group node, which can be either comments related to a group or a project, or pipeline
+and jobs data regarding a project. Next, the execution of the script will depend on the action of the user.
+
+todo{add some swt diagramm/ablauf smth}
+
 ### Commands
 
 
 
 tree classes , tree models, drag n drop, webview and webviewview
 
-## Gitlab REST and GraphQL apis
+## GitLab REST and GraphQL apis
 
 GitLab exposes APIs for users
 
@@ -519,7 +552,7 @@ JSDOC facilitates the steps of maintaining, refactoring and extending software.
  * @param isGroup describes whether the query targets a group or a project
  * @param fullpath full path of group or project, i.e. 
    
- * 'gitlab-org' or  'gitlab-org/gitlab-foss'
+ * 'GitLab-org' or  'GitLab-org/GitLab-foss'
  * @returns Issues of the specified project with adequate information about them
  */
 export const issuesQuery = (isGroup: boolean, fullpath: string): string =>
@@ -545,19 +578,13 @@ The architecture of Docusaurus, primarely relying on client side rendering enabl
 accompanies the task of documenting software while simultaneously building it.
 
 
-## telemetry? 
-
-analyze how much specific functions/services/features are used and say smth about it.
-
-## contexts
-
-write something about having 4 contexts running at the same time. (3 vanilla apps, and the extension, therefore requiring 4 api singletons)
 
 
-## Design Patterns Used 
 
-Due VSCode is built with web technologies, and JS being a slower language, VSCode has notoriously slower start up times compared to other code editors. 
-Additionally, VSCode has trouble rendering big files, as opposed to c/c++ based code editors like sublime text. 
+## Design Patterns Used todo{rething title}
+
+As VSCode is built with web technologies, and JS being a slower language, VSCode has notoriously slower start up times compared to other code editors. 
+Additionally, VSCode has trouble rendering big files, as opposed to C/C++ based code editors like sublime text. 
 
 Therefore, it is vital to make smart decisions when possible in order to not slow down the user's VSCode instance, or worse the user's operating system.
 
@@ -583,11 +610,22 @@ import { Api } from "../../api";
 let api = Api.Instance;
 ```
 
+Using vanilla Typescript has also contributed to a smaller bundle size for the extension, reducing the lines of code that will be regularly run.
 
+A good contrast is the GitLab Workflow extension by GitLab. 
+GitLab Workflow uses Vue, a frontend framwork, to render it's webviews and webview views. This result in more, sometimes unneccesary code to be packaged. 
+
+The NPM package for Vue, version 2.6.14, is 2.97 MB unpackaged, which is probably the biggest suspect for the relatively big extension size.
+
+VSWorkbench on the other hand is around ~90 kB, which is substantially more compact, resulting in a smoother experience for the end user.
+
+Ultimately, the latest optimization done was opting for web native, unicode emoji instead of images in either png, svg or jpeg formats. The main benefit that 
+unicode emoji bring is that they are universally available, provided by the operating system, thus they do not have to be packaged, as what's included is merely
+a reference, while the responsibility falls on th operating system to bring them forward.
 <!-- e.g. singleton for the api class -->
 
 
-## write about making it look native, aka resemble gitlab very well (goal)
+## write about making it look native, aka resemble GitLab very well (goal)
 
 ## write about extensibility, PR requests, Opensource, a bit about why github 
 
@@ -602,7 +640,7 @@ todo{write about PR template.md or something and contributing.md and so on blz. 
 
 
 
-## write about making it small, improving performance and time needed to start up, and how it holds up comapred to gitlab workflow (goal, plus comparison and results section)
+## write about making it small, improving performance and time needed to start up, and how it holds up comapred to GitLab workflow (goal, plus comparison and results section)
 
 OS: linux(5.15.0-46-generic)
 CPUs: Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz(12 x 3500)
@@ -620,7 +658,8 @@ Memory(System): 31.02 GB(13.82GB free)
 : Demo or smth
 
 ## goals moving forward
-
+telemetry
 the issue templates were mianly influenced by vscode-gitlens
 
-todo{write about using html/utf8 icons and so on.}
+currenlty the extensions servers as a POC, terefore thje #1 goal moving forward is smoothung the edges.
+todo{write about using html/utf8 icons and so on., polishing...}

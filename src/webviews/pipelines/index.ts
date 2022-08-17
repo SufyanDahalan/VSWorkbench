@@ -7,7 +7,6 @@ let pendingData: any = null;
 
 export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 	public viewType = "VSWorkbench.gitlabPipelines";
-	// token: string;
 	private _view?: vscode.WebviewView;
 	_extensionUri: vscode.Uri;
 	constructor(context: vscode.ExtensionContext) {
@@ -15,7 +14,6 @@ export class PipelineViewProvidor implements vscode.WebviewViewProvider {
 
 		vscode.window.registerWebviewViewProvider(this.viewType, this, { webviewOptions: { retainContextWhenHidden: true } });
 		this._extensionUri = context.extensionUri;
-		// this.token = Token;
 	}
 	eventCallback(data: any) {
 		if (this._view) {
