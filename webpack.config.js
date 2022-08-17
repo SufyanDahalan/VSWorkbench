@@ -3,7 +3,6 @@
 //@ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
 
 /** @type WebpackConfig */
 const extensionConfig = {
@@ -35,7 +34,6 @@ const extensionConfig = {
             {
 
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        
                 type: 'asset/resource',
         
             },

@@ -5,7 +5,6 @@
 	"version": "1.0.1",
 	"types": "./types",
 	"publisher": "SufyanDahalan",
-	"icon": "src/assets/icon.png",
 	"engines": {
 		"vscode": "^1.66.0"
 	},
