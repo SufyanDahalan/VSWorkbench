@@ -355,7 +355,7 @@ The `gitLabCode-activityBar` component container will then be embedded, also dec
 
 The following picture explains the anatomy and components of VSCode visually.
 
-![VSCode Extension Anatiomy | Contribution ](./Medien/Extension Anatomy.png){}
+![VSCode Extension Anatomy | Contribution ](./Medien/Extension Anatomy.png){}
 todo{add source. URL: https://code.visualstudio.com/assets/api/ux-guidelines/examples/architecture-sections.png}
 The Drap and Drop API can is used by implementing two functions for the drag and drop functionality respectively in the `GroupTreeDataProvider` that are 
 inhereted from the `vscode.TreeDragAndDropController` class. 
@@ -608,37 +608,19 @@ OS: linux(5.15.0-46-generic)
 CPUs: Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz(12 x 3500)
 Memory(System): 31.02 GB(13.82GB free)
 
-\tiny
+<!-- \tiny -->
 | Extension                           | Eager | Load Code | Call Activate | Finish Activate | Event                             | By                                  |
 | :---------------------------------: | :---: | :-------: | :-----------: | :-------------: | :-------------------------------: | :---------------------------------: |
 | vscode.debug-auto-launch            | true  | 2         | 0             | 2               | *                                 | vscode.debug-auto-launch            |
 | vscode.git                          | true  | 22        | 13            | 27              | *                                 | vscode.git                          |
 | vscode.git-base                     | true  | 2         | 0             | 2               | *                                 | vscode.git                          |
 | vscode.github                       | true  | 3         | 0             | 0               | *                                 | vscode.github                       |
-| vscode.ipynb                        | true  | 2         | 1             | 1               | *                                 | vscode.ipynb                        |
-| ecmel.vscode-html-css               | true  | 17        | 0             | 1               | *                                 | ecmel.vscode-html-css               |
-| zh9528.file-size                    | true  | 1         | 1             | 0               | *                                 | zh9528.file-size                    |
-| vscode.configuration-editing        | false | 2         | 0             | 7               | onLanguage:json                   | vscode.configuration-editing        |
-| vscode.debug-server-ready           | false | 10        | 0             | 12              | onDebugResolve                    | vscode.debug-server-ready           |
-| vscode.emmet                        | false | 5         | 2             | 18              | onStartupFinished                 | vscode.emmet                        |
-| vscode.extension-editing            | false | 11        | 1             | 6               | onLanguage:json                   | vscode.extension-editing            |
-| vscode.github-authentication        | false | 9         | 2             | 11              | onAuthenticationRequest:github    | vscode.github-authentication        |
-| vscode.json-language-features       | false | 13        | 0             | 221             | onLanguage:json                   | vscode.json-language-features       |
-| vscode.markdown-language-features   | false | 49        | 5             | 176             | onLanguage:markdown               | vscode.markdown-language-features   |
-| vscode.markdown-math                | false | 5         | 0             | 0               | api                               | vscode.markdown-language-features   |
-| vscode.merge-conflict               | false | 1         | 0             | 18              | onStartupFinished                 | vscode.merge-conflict               |
-| vscode.microsoft-authentication     | false | 12        | 4             | 156             | onAuthenticationRequest:microsoft | vscode.microsoft-authentication     |
-| ms-vscode.js-debug                  | false | 90        | 8             | 4               | onDebugResolve:pwa-extensionHost  | ms-vscode.js-debug                  |
-| vscode.npm                          | false | 7         | 0             | 372             | onLanguage:json                   | vscode.npm                          |
-| vscode.typescript-language-features | false | 9         | 6             | 0               | onLanguage:jsonc                  | vscode.typescript-language-features |
-| dsznajder.es7-react-js-snippets     | false | 184       | 1             | 17              | onStartupFinished                 | dsznajder.es7-react-js-snippets     |
-| eamodio.gitlens                     | false | 36        | 6             | 41              | onStartupFinished                 | eamodio.gitlens                     |
-| esbenp.prettier-vscode              | false | 25        | 7             | 7               | onStartupFinished                 | esbenp.prettier-vscode              |
-| GrapeCity.gc-excelviewer            | false | 2         | 1             | 8               | onLanguage:plaintext              | GrapeCity.gc-excelviewer            |
-| mechatroner.rainbow-csv             | false | 2         | 1             | 1012            | onLanguage:plaintext              | mechatroner.rainbow-csv             |
-| rangav.vscode-thunder-client        | false | 39        | 1             | 200             | onStartupFinished                 | rangav.vscode-thunder-client        |
 | SufyanDahalan.vsworkbench           | false | 2         | 3             | 3               | onStartupFinished                 | SufyanDahalan.vsworkbench           |
 | Vue.volar                           | false | 51        | 3             | 0               | onLanguage:markdown               | Vue.volar                           |
 : Demo or smth
 
 ## goals moving forward
+
+
+
+todo{write about using html/utf8 icons and so on.}
