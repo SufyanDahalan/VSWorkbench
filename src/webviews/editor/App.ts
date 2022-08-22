@@ -102,7 +102,6 @@ async function Wiki(isGroup: boolean, id: number, slug?: string) {
 			let pages = res.data;
 			let homePage = homeRes.data;
 			let pageDiv = CreateHtmlNode({ type: "div", attributes: [{ key: "class", value: "page" }] });
-			console.log(homePage);
 			homePage.content.split(/\r?\n/).forEach((line: any) => {
 				if (line) {
 					pageDiv.appendChild(CreateHtmlNode({ type: "div", innerHTML: line }));

@@ -112,11 +112,11 @@ export class GroupNode extends Node {
 		});
 		inputSubGroupPath.onDidAccept(() => {
 			inputSubGroupPath.hide();
-			console.log(this.node_id, groupName, groupPath);
 			api.createSubGroup(this.node_id, groupName, groupPath).then((res: AxiosResponse) => {
 				if (JSON.stringify(res.status)[0] == "2") {
 					vscode.commands.executeCommand("VSWorkbench.refreshGroupView");
-				}
+				} else 
+                vscode.window.showErrorMessage("Operation did not succeed. Name is taken.")
 			});
 		});
 

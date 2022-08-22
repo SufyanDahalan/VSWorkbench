@@ -82,12 +82,6 @@
 				"category": "VSWorkbench"
 			},
 			{
-				"command": "VSWorkbench.createGroup",
-				"title": "New Group",
-				"category": "VSWorkbench",
-				"icon": "$(ports-forward-icon)"
-			},
-			{
 				"command": "VSWorkbench.createSubGroup",
 				"title": "New Subgroup",
 				"category": "VSWorkbench",
@@ -342,11 +336,6 @@
 					"group": "navigation"
 				},
 				{
-					"command": "VSWorkbench.createGroup",
-					"when": "view == groupView",
-					"group": "navigation"
-				},
-				{
 					"submenu": "VSWorkbench.GroupView",
 					"when": "view == groupView"
 				},
@@ -492,7 +481,7 @@
 		"postcss": "^8.4.12",
 		"postcss-loader": "^6.2.1",
 		"style-loader": "^3.3.1",
-		"terser-webpack-plugin": "^5.3.1",
+		"terser-webpack-plugin": "^5.3.5",
 		"ts-loader": "^9.2.8",
 		"typedoc": "^0.22.15",
 		"typedoc-plugin-markdown": "^3.12.1",
@@ -504,6 +493,9 @@
 	"dependencies": {
 		"ansi-to-html": "^0.7.2",
 		"axios": "^0.26.1",
-		"iconv-lite": "^0.6.3"
+		"iconv-lite": "^0.6.3",
+		"string-replace-loader": "^3.1.0",
+		"strip-whitespace-loader": "^1.0.4",
+		"strip-whitespace-plugin": "^1.0.3"
 	}
 }

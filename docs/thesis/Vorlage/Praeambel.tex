@@ -71,7 +71,7 @@
 \newlength{\randAussen}
 \setlength{\randAussen}{1.88cm} % 1.88 - 2.5cm (einseitig), 2.5 - 3.4 cm (doppelseitig)
 
-
+\newcommand{\R}{\textcolor{red}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Benutzer-Einstellungen anwenden %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -165,16 +165,16 @@
 }{}
 
 \RequirePackage[backend=bibtex8,  %Daten von Bibtex holen
-			style=alphabetic, %In der Form [Xil13] statt [1] referenzieren
-			sorting=nyt,	      %Name,Year,Title 
-			maxbibnames=\autorenAnzahlImLiteraturverzeichnis, %Anzahl maximal/minimal genannter Autoren im Literaturverzeichnis
-			minbibnames=3, 
-			maxcitenames=3, %Anzahl maximal/minimal genannter Autoren mit \citeauthor{...}
-			mincitenames=3,
-			maxsortnames=99, % Anzahl der Autoren, die in die Sortierung eingehen
-			minsortnames=99,
-			maxalphanames=4, % Maximale Anzahl Autoren, bei der jeder Autor mit einem Buchstaben in [ABCD] genannt wird
-			minalphanames=3, % Anzahl Autoren, ab der [ABC+] verwendet wird
+			% style=alphabetic, %In der Form [Xil13] statt [1] referenzieren
+			% sorting=nyt,	      %Name,Year,Title 
+			% maxbibnames=\autorenAnzahlImLiteraturverzeichnis, %Anzahl maximal/minimal genannter Autoren im Literaturverzeichnis
+			% minbibnames=3, 
+			% maxcitenames=3, %Anzahl maximal/minimal genannter Autoren mit \citeauthor{...}
+			% mincitenames=3,
+			% maxsortnames=99, % Anzahl der Autoren, die in die Sortierung eingehen
+			% minsortnames=99,
+			% maxalphanames=4, % Maximale Anzahl Autoren, bei der jeder Autor mit einem Buchstaben in [ABCD] genannt wird
+			% minalphanames=3, % Anzahl Autoren, ab der [ABC+] verwendet wird
 			]{biblatex}
 
 \DeclareNameAlias{default}{family-given}% Format: Nachname, Vorname

@@ -87,16 +87,13 @@ async function Route(route: Routes, args?: RouteArguments): Promise<void> {
 			break;
 		}
 		case Routes.ISSUE_ROUTE: {
-            console.log('args', args)
 			api.graphql(issueQuery(args!.issue_iid)).then((result) => {
 				let res = result.data.data.issue;
-                console.log('result: ', result)
 				if (res.assignees.nodes.length) {
 					res.assignee = res.assignees.nodes[0];
 				}
 				res.project_id = res.projectId;
 				res.user_notes_count = res.userNotesCount;
-                console.log(1)
 
 				let issue: IIssue = res;
 				for (const comment of res.notes.nodes) {

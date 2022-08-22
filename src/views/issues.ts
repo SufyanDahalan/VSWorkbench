@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import * as vscode from "vscode";
 import {Node} from './node' 
 
@@ -6,27 +5,18 @@ import Api from "../api";
 const api = Api.Instance
 let issueKind: boolean;
 let parent_id: number;
-// export interface IssuesNode {
-// 	resource: URL;
-// 	mainText: string;
-// 	comments: string[];
-// 	node_id: number;
-// }
 
 export class IssueNode extends Node {
 	constructor(
 		node_id: number,
 		project_id: number,
 		url: URL,
-		// contextValue: string,
 		public readonly label: string
 	) {
 		super(node_id, parent_id, url, 'issue', vscode.TreeItemCollapsibleState.None, label);
-		// super(label);
 		this.parent_id = project_id;
 		this.node_id = node_id;
 		this.url = url;
-		// this.contextValue = contextValue;
 	}
 	iconPath: vscode.ThemeIcon | undefined;
 }
@@ -81,27 +71,10 @@ export class IssueView {
 		const treeDataProvider = new IssueTreeDataProvider(groupModel);
 		this.issueTreeViewer = vscode.window.createTreeView("issueView", { treeDataProvider });
 		context.subscriptions.push(this.issueTreeViewer);
-		// vscode.commands.registerCommand("VSWorkbench.refreshIssueView", () => treeDataProvider.refresh()); // FEATURE: hook up to button with refresh icon?
+        vscode.commands.getCommands().then((res: string[]) => {
+            if(res.indexOf('VSWorkbench.refreshIssueView') === -1) 
+                vscode.commands.registerCommand("VSWorkbench.refreshIssueView", () => treeDataProvider.refresh());
+        })
 	}
 }
-/**
- * @TODO implement actions for issues:
- * 1. Comment
- * 2. Delete
- * 3. Close
- * 4. Create
- *
- * @FEATURE Some extra functionality/features:
- * 1. When clicking on an issue, open a webview where the issue can be seen along with all the comments.
- *
- * !FEATURE as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the
- * parent can be viewed in a list.
- * !feature as a view/title action, implement [see issues list] action. This should take the user to a web view where the issues of the
- * parent can be viewed in on a board. User can switch boards and will be able to drag and drop issues from one list to another.
- *
- * @FEATURE add icon to feature. choose the icon to be based off of `labels`, `urgency`, or smth else. maybe just the color to represent the label, implies
- * migrating to a custom webviewview tho
- *
- * @FEATURE add avatar of assignee to the left of the issue. might require a custom webviewview
- *
- */
+

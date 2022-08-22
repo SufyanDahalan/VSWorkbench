@@ -11,7 +11,7 @@ function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
 	context.globalState.setKeysForSync([GITLAB_INSTANCE_KEY]);
 }
-
+let Context: vscode.ExtensionContext;
 export function activate(context: vscode.ExtensionContext) {
 	Api.updateAuthToken(context.globalState.get(AUTH_TOKEN_KEY) as string);
 	Api.updateBaseURL(context.globalState.get(GITLAB_INSTANCE_KEY) as string); // needed
@@ -21,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 		context.globalState.get(GITLAB_INSTANCE_KEY) as string,
 		true
 	);
+    Context = new Proxy<typeof context>(context, {});
 
 	let groupView = new GroupTreeDataProvider(context);
 	let issuesWebView = new IssuesViewProvidor(context);
@@ -37,12 +38,11 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("VSWorkbench.createGroupProject", (node: GroupNode) => {
 			node.createGroupProject();
 		}),
-		vscode.commands.registerCommand("VSWorkbench.createGroup", Commands.createGroupCommand),
+		// vscode.commands.registerCommand("VSWorkbench.createGroup", Commands.createGroupCommand),
 		vscode.commands.registerCommand("VSWorkbench.createSubGroup", (node: GroupNode) => {
 			node.createSubGroup();
 		}),
 		vscode.commands.registerCommand("VSWorkbench.createMergeRequest", Commands.createMergeRequestCommand),
-		// vscode.commands.registerCommand("VSWorkbench.viewIssue", Commands.viewIssue),
 		vscode.commands.registerCommand("VSWorkbench.deleteNamespaceNode", (node: GroupNode) => {
 			node.delete();
 		}),
@@ -81,27 +81,22 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 }
 
+
+
+export function registerPlugin(plugin: {TreeViews: vscode.TreeView<any>[], Commands: {description: string, callback: (...args: any[]) => any, thisArg?: any}[]}){
+    for(const treeView of plugin.TreeViews)
+    Context.subscriptions.push(treeView);
+    for(const command of plugin.Commands)
+    vscode.commands.registerCommand(command.description, command.callback);
+}
+
 export function deactivate() {}
 
 /**
- *
- * 2. @TODO getting starred projects
- * 3. @FEATURE view/titel level action for GroupView to create a group. It will ask for name, then get all custom options for groups throw QuickPicks or
- * InputBoxes (e.g. add user to group or smth). It will then create it, refresh groupView, show some kind of a success message.
- * 4. @FEATURE view/titel level action for namespace nodes in GroupView to create a group. It will ask for name, then get
- * all custom options for groups throw QuickPicks or InputBoxes (e.g. add user to group or smth). It will then create it,
- * refresh groupView, show some kind of a success message.
- * 5. @FEATURE ask for confirmation before deleting anything, e.g. project or group
  * ================================================================================================================================
  * ================================================================================================================================
  * @IMPLEMENT :-
- * 1. {@link Commands.createGroupCommand}: should be shown only when its not Gitlab SaaS
- * 3. {@link Api.getStarredProjects} and in treeViews
- * 4. {@link Commands.archiveProject} and in view/item/context
- * 4. {@link Commands.cloneProjectOrNamespace} and in view/item/context
- * 5. {@link Commands.createIssueCommand}, and in view/item/context. First issue you should make should be about documenting this very project
- * 4. {@link tests}
- * 7. integrate @Telemetry {@link https://code.visualstudio.com/docs/getstarted/telemetry}
+ * 1. integrate @Telemetry {@link https://code.visualstudio.com/docs/getstarted/telemetry}
  * ================================================================================================================================
  * ================================================================================================================================
  */

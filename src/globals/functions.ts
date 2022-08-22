@@ -52,9 +52,8 @@ export async function settings(globalState: vscode.ExtensionContext["globalState
 export async function checkGitlabInstanceAndAuthToken(
 	token: string,
 	baseurl: string,
-	startup?: boolean /* globalState: vscode.ExtensionContext["globalState"] */
+	startup?: boolean
 ) {
-	// console.log(`auth token from chechAuthToken: |${globalState.get(AUTH_TOKEN_KEY)}|`);
 	Api.updateAuthToken(token);
 	Api.updateBaseURL(baseurl);
 	try {

@@ -39,7 +39,7 @@ export function createGroupProjectCommand(groupID: number) {
 } 
 
 
-export async function createGroupCommand() {
+export async function createGroupCommand() {// Works only with selfhosted GitLab...
 	let groupName = "";
 	let groupPath = "";
 	const inputSubGroupName = vscode.window.createInputBox();
