@@ -39,10 +39,12 @@ $(TARGET): $(TEX_SRC) $(RASTERIMG) $(patsubst %.svg,%.pdf,$(VECTORIMG)) $(BIB)
 ## Clean most things
 clean:
 	-latexmk -c
-	rm -f *.aux *.idx *.ind *.out *.toc *.log *.bbl *.blg *.brf *.lof *.lot *.xmpdata *.bib *.lol *.run.xml
+	rm -f *.aux *.idx *.ind *.out *.toc *.log *.bbl *.blg *.brf *.lof *.lot *.xmpdata *.bib *.lol *.run.xml *.snm *.nav
 	rm -f Include/*.aux Include/*.tex
 
 ## Clean everything
 distclean: clean
 	latexmk -C
 	rm -f *.pdf
+
+# seminar: pdflatex anleitung.tex 

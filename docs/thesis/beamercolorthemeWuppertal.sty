@@ -1,0 +1,284 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wuppertal Color Theme
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karsten Kahl, 26.01.2017
+%               09.12.2017
+% kkahl@math.uni-wuppertal.de
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Farbdefinition nach Online-StylguideBUW.pdf Seite 9
+% Bergisch Gruen
+\definecolor{WtalGruen}{RGB}{153,204,51}
+\definecolor{WtalGruenD}{RGB}{68,103,0}
+\definecolor{WtalGruenH}{RGB}{207,227,168}
+\definecolor{WtalGruenHH}{RGB}{230,243,205}
+% Bergisch Orange
+\definecolor{WtalOrange}{RGB}{255,150,0}
+\definecolor{WtalOrangeD}{RGB}{136,45,0}
+\definecolor{WtalOrangeH}{RGB}{255,204,153}
+\definecolor{WtalOrangeHH}{RGB}{255,242,214}
+% Bergisch Blau
+\definecolor{WtalBlau}{RGB}{0,186,219}
+\definecolor{WtalBlauD}{RGB}{0,77,103}
+\definecolor{WtalBlauH}{RGB}{171,227,236}
+\definecolor{WtalBlauHH}{RGB}{214,241,246}
+% Bergisch Pink
+\definecolor{WtalPink}{RGB}{232,0,76}
+\definecolor{WtalPinkD}{RGB}{102,0,34}
+\definecolor{WtalPinkH}{RGB}{255,225,235}
+\definecolor{WtalPinkHH}{RGB}{249,240,244}
+% Bergisch GrauBlau
+\definecolor{WtalGrauBlau}{RGB}{124,151,176}
+\definecolor{WtalGrauBlauD}{RGB}{71,87,102}
+\definecolor{WtalGrauBlauH}{RGB}{201,218,228}
+\definecolor{WtalGrauBlauHH}{RGB}{233,242,247}
+
+% Farbdefinition nach Corporate Design Manual Seite 17 ff.
+% Uni Gruen
+\definecolor{WtalUniGruen}{RGB}{137,186,23}
+% Fakultaet Vier (Blau and BlauD are specified, BlauH is generated)
+%\definecolor{WtalFakVierBlauH}{RGB}{216,216,216} % 201 degrees
+\definecolor{WtalFakVierBlauH}{Hsb}{207,.28,1} % 201 degrees
+\definecolor{WtalFakVierBlau}{Hsb}{205,.64,.74} % 205 degrees
+\definecolor{WtalFakVierBlauD}{Hsb}{209,1,.47} % 209 degrees
+% ca. +150 degrees (complementary minus 30 degrees)
+\definecolor{WtalFakVierRotH}{Hsb}{357,.28,1} % 352 degrees
+\definecolor{WtalFakVierRot}{Hsb}{355,.64,.74} % 352 degrees
+\definecolor{WtalFakVierRotD}{Hsb}{359,1,.47} % 352 degrees
+% ca. +147/+143 degrees
+%\definecolor{WtalFakVierRotH}{Hsb}{352,.28,.95} % 352 degrees
+%\definecolor{WtalFakVierRot}{Hsb}{352,.695,.77} % 352 degrees
+%\definecolor{WtalFakVierRotD}{Hsb}{352,1,.485} % 352 degrees
+% ca. +180 degrees (complementary)
+\definecolor{WtalFakVierOrangeH}{Hsb}{27,.28,1} % 21 degrees, WtalOrangeH
+\definecolor{WtalFakVierOrange}{Hsb}{25,.64,1} % 25 degrees, WtalOrange
+\definecolor{WtalFakVierOrangeD}{Hsb}{29,1,.74} % 29 degrees, WtalOrangeD
+% ca. +180 degrees
+% \definecolor{WtalFakVierOrangeH}{hsb}{.113888889,.16,1} % 41 degrees
+% \definecolor{WtalFakVierOrange}{hsb}{.083333333,.4,1} % 30 degrees, WtalOrangeH
+% \definecolor{WtalFakVierOrangeD}{hsb}{.097222222,1,1} % 35 degrees, WtalOrange
+% \definecolor{WtalFakVierOrangeD}{hsb}{.055555556,1,.53} % 20 degrees, WtalOrangeD
+% ca. -150 degrees (complementary plus 30 degrees)
+\definecolor{WtalFakVierGruenH}{Hsb}{57,.28,1} % 80 degrees, WtalGruenH
+\definecolor{WtalFakVierGruen}{Hsb}{55,.64,.74} % 80 degrees, WtalGruen
+\definecolor{WtalFakVierGruenD}{Hsb}{59,1,.27} % 80 degrees, WtalGruenD
+% ca. +175/+171 degrees
+%\definecolor{WtalFakVierGruenH}{hsb}{.222222222,.26,.89} % 80 degrees, WtalGruenH
+%\definecolor{WtalFakVierGruen}{hsb}{.222222222,.75,.8} % 80 degrees, WtalGruen
+%\definecolor{WtalFakVierGruenD}{hsb}{.222222222,1,.4} % 80 degrees, WtalGruenD
+
+% Bergische Universitaet Fakultaeten
+\definecolor{WtalFakEins}{RGB}{152,30,50}
+\definecolor{WtalFakZwei}{RGB}{0,139,149}
+\definecolor{WtalFakDrei}{RGB}{0,51,89}
+\definecolor{WtalFakVierA}{RGB}{67,137,188}
+\definecolor{WtalFakVierB}{RGB}{0,61,119}
+\definecolorseries{WtalFakVier}{rgb}{last}[named]{WtalFakVierA}[named]{WtalFakVierB}
+\definecolor{WtalFakFuenf}{RGB}{133,134,139}
+\definecolor{WtalFakSechsA}{RGB}{109,0,94}
+\definecolor{WtalFakSechsB}{RGB}{81,0,70}
+\definecolorseries{WtalFakSechs}{rgb}{last}[named]{WtalFakSechsA}[named]{WtalFakSechsB}
+\definecolor{WtalFakSieben}{RGB}{0,109,98}
+\definecolor{WtalFakAcht}{RGB}{255,255,255}
+\definecolor{WtalFakNeun}{RGB}{255,179,39}
+
+\if@doBlue 
+% Blue color scheme
+    \definecolor{LoeweTitel}{named}{WtalGrauBlauH}
+    \definecolor{LoeweBackground}{named}{WtalGrauBlauD}
+    \definecolor{LogoBackground}{named}{WtalGruen}
+    \definecolor{TitleBackground}{RGB}{216,216,216}
+    
+    \setbeamercolor{palette primary}{bg=WtalGrauBlau,fg=black}
+    \setbeamercolor{palette secondary}{bg=WtalGrauBlauH,fg=black}
+    \setbeamercolor{palette tertiary}{bg=WtalGrauBlauD,fg=white}
+    
+    \setbeamercolor{frametitle}{bg=WtalGrauBlauH,fg=black}
+    \setbeamercolor{framesubtitle}{bg=,fg=WtalGrauBlauD}
+    \setbeamercolor{title}{bg=,fg=black}
+    \setbeamercolor{author}{bg=,fg=black}
+    \setbeamercolor{institute}{bg=,fg=black}
+    \setbeamercolor{date}{bg=,fg=black}
+    
+    \setbeamercolor{part name}{bg=,fg=WtalGrauBlauD}
+    \setbeamercolor{part title}{bg=,fg=black}
+    
+    \setbeamercolor{section in head/foot}{bg=WtalGrauBlauD,fg=white}
+    \setbeamercolor{subsection in head/foot}{bg=WtalGrauBlau,fg=white}
+    
+    \setbeamercolor{section in toc}{fg=WtalGrauBlauD,bg=}
+    \setbeamercolor{subsection toc}{fg=WtalGrauBlau,bg=}
+    
+    \setbeamercolor{headline}{bg=WtalGrauBlau,fg=white}
+    \setbeamercolor{footline}{bg=WtalGrauBlauH,fg=WtalGrauBlauD}
+    
+    \setbeamercolor{button}{fg=WtalGruenD,bg=WtalGruenH}
+    \setbeamercolor{item}{fg=WtalGruenD}
+    
+    \setbeamercolor{math text}{fg=WtalGruenD}
+    \setbeamercolor{math text inlined}{parent=math text}
+    \setbeamercolor{math text displayed}{parent=math text}
+    \setbeamercolor{normal text in math text}{fg=black}
+    
+    \setbeamercolor{bibliography entry author}{fg=WtalGrauBlauD,bg=}
+    \setbeamercolor{bibliography entry location}{fg=WtalGrauBlau,bg=}
+    \setbeamercolor{bibliography item}{fg=WtalBlauD,bg=}
+    
+    \setbeamercolor{alerted text}{fg=WtalPink}
+    
+    \setbeamercolor{beamerboxupper}{bg=WtalOrangeH,fg=white}%
+    \setbeamercolor{beamerboxlower}{bg=WtalOrangeHH,fg=WtalBlauD}%
+    
+    \setbeamercolor{block title}{fg=white,bg=WtalOrangeH}
+    \setbeamercolor{block body}{parent=normal text,use=block title,fg=WtalBlauD,bg=WtalOrangeHH}
+    
+    \setbeamercolor{block title example}{fg=WtalBlauD,bg=white}
+    
+%     \if@doHC
+%     % high-contrast settings over-write critical settings    
+%         %\definecolor{LoeweTitel}{gray}{.85}
+%         
+%         \setbeamercolor{beamerboxupper}{bg=WtalOrange,fg=black}%
+%         \setbeamercolor{beamerboxlower}{bg=WtalOrangeH,fg=WtalBlauD}%
+%         
+%         \setbeamercolor{block title}{fg=black,bg=WtalOrange}
+%         \setbeamercolor{block body}{parent=normal text,use=block title,fg=WtalBlauD,bg=WtalOrangeH}
+%         
+%         %\setbeamercolor{bibliography item}{fg=WtalBlauD,bg=}
+%     \fi
+\fi
+
+\if@doVier % (default color scheme)
+    % Faculty 4 color scheme
+    \definecolor{LoeweTitel}{named}{white}
+    \definecolor{LoeweBackground}{named}{WtalFakVierBlauD}
+    \definecolor{LogoBackground}{named}{WtalUniGruen}
+    \definecolor{TitleBackground}{RGB}{216,216,216}
+    
+    \setbeamercolor{palette primary}{bg=WtalGrauBlau,fg=black}
+    \setbeamercolor{palette secondary}{bg=WtalGrauBlauH,fg=black}
+    \setbeamercolor{palette tertiary}{bg=WtalGrauBlauD,fg=white}
+    
+    \setbeamercolor{frametitle}{bg=WtalFakVierBlauH,fg=black}
+    \setbeamercolor{framesubtitle}{bg=,fg=WtalFakVierBlauD}
+    
+    \setbeamercolor{title}{bg=,fg=black}
+    \setbeamercolor{author}{bg=,fg=black}
+    \setbeamercolor{institute}{bg=,fg=black}
+    \setbeamercolor{date}{bg=,fg=black}
+    
+    \setbeamercolor{part name}{bg=,fg=WtalFakVierBlauD}
+    \setbeamercolor{part title}{bg=,fg=black}
+    
+    \setbeamercolor{section in head/foot}{bg=WtalFakVierBlauD,fg=white}
+    \setbeamercolor{subsection in head/foot}{bg=WtalFakVierBlau,fg=white}
+    
+    \setbeamercolor{section in toc}{fg=WtalFakVierBlauD,bg=}
+    \setbeamercolor{subsection toc}{fg=WtalFakVierBlau,bg=}
+    
+    \setbeamercolor{headline}{bg=WtalFakVierBlau,fg=white}
+    \setbeamercolor{footline}{bg=WtalFakVierBlauD,fg=WtalFakVierBlauH}
+    
+    \setbeamercolor{button}{fg=WtalFakVierBlauH,bg=WtalFakVierBlauD}
+    \setbeamercolor{item}{fg=WtalFakVierBlauD}
+    
+    \setbeamercolor{math text}{fg=WtalFakVierBlauD}
+    \setbeamercolor{math text inlined}{parent=math text}
+    \setbeamercolor{math text displayed}{parent=math text}
+    \setbeamercolor{normal text in math text}{fg=black}
+    
+    \setbeamercolor{bibliography entry author}{fg=WtalFakVierBlauD,bg=}
+    \setbeamercolor{bibliography entry location}{fg=WtalFakVierBlau,bg=}
+    \setbeamercolor{bibliography item}{fg=WtalFakVierBlauD,bg=}
+    
+    \setbeamercolor{alerted text}{fg=WtalFakVierRot}
+    
+    \setbeamercolor{beamerboxupper}{bg=WtalFakVierOrange,fg=white}%
+    \setbeamercolor{beamerboxlower}{bg=WtalFakVierOrangeH,fg=black}%
+    
+    \setbeamercolor{block title}{fg=white,bg=WtalFakVierOrange}
+    \setbeamercolor{block body}{parent=normal text,use=block title,fg=black,bg=WtalFakVierOrangeH}
+    
+    \setbeamercolor{block title example}{fg=WtalFakVierBlauD,bg=white}
+    
+    \if@doPresentation
+       % Change frame title to VierBlau in presentations
+       \setbeamercolor{frametitle}{bg=WtalFakVierBlau,fg=white}
+       \setbeamercolor{framesubtitle}{bg=,fg=WtalFakVierBlauD}
+    \fi
+    \if@doTalkExt
+       \if@doIMACM
+          \setbeamercolor{section in head/foot}{bg=WtalFakVierBlau,fg=white}
+       \fi
+    \fi
+\fi
+
+\if@doGreen
+% color scheme (bergisch gruen)
+    \definecolor{LoeweTitel}{named}{WtalGruenH}
+    \definecolor{LoeweBackground}{named}{WtalGruen}
+    \definecolor{LogoBackground}{named}{WtalGruen}
+    \definecolor{TitleBackground}{RGB}{216,216,216}
+    
+    \setbeamercolor{frametitle}{bg=WtalGruenH,fg=black}
+    \setbeamercolor{framesubtitle}{bg=,fg=WtalGrauBlauD}
+    
+    \setbeamercolor{title}{bg=,fg=black}
+    \setbeamercolor{author}{bg=,fg=black}
+    \setbeamercolor{institute}{bg=,fg=black}
+    \setbeamercolor{date}{bg=,fg=black}
+    
+    \setbeamercolor{part name}{bg=,fg=WtalGrauBlauD}
+    \setbeamercolor{part title}{bg=,fg=black}
+    
+    \setbeamercolor{section in head/foot}{bg=WtalGruen,fg=white}
+    \setbeamercolor{subsection in head/foot}{bg=WtalGrauBlau,fg=white}
+    
+    \setbeamercolor{section in toc}{fg=WtalGrauBlauD,bg=}
+    \setbeamercolor{subsection toc}{fg=WtalGrauBlau,bg=}
+    
+    \setbeamercolor{headline}{bg=WtalGruen,fg=white}
+    \setbeamercolor{footline}{bg=WtalGruenH,fg=WtalGrauBlauD}
+    
+    \setbeamercolor{button}{fg=WtalGruenD,bg=WtalGruenH}
+    \setbeamercolor{item}{fg=WtalGruenD}
+    
+    \setbeamercolor{beamerboxupper}{bg=WtalGrauBlauH,fg=white}%
+    \setbeamercolor{beamerboxlower}{bg=WtalGrauBlauHH,fg=WtalGrauBlauD}%
+    
+    \setbeamercolor{math text}{fg=WtalGruenD}
+    \setbeamercolor{math text inlined}{parent=math text}
+    \setbeamercolor{math text displayed}{parent=math text}
+    \setbeamercolor{normal text in math text}{fg=black}
+    
+    \setbeamercolor{bibliography entry author}{fg=WtalGruen,bg=}
+    \setbeamercolor{bibliography entry location}{fg=WtalGrauBlau,bg=}
+    \setbeamercolor{bibliography item}{fg=WtalBlau,bg=}
+    
+    \setbeamercolor{alerted text}{fg=WtalPink}
+    
+    \setbeamercolor{block title}{fg=white,bg=WtalGrauBlauH}
+    \setbeamercolor{block body}{parent=normal text,use=block title,fg=WtalGrauBlauD,bg=WtalGrauBlauHH}
+    
+    \setbeamercolor{block title example}{fg=WtalGrauBlauD,bg=white}
+    
+    \if@doHC
+    % high-contrast settings --- over-write critical color-settings
+        \definecolor{LoeweBackground}{named}{WtalGruenD}
+        
+        \setbeamercolor{section in head/foot}{bg=WtalGruenD,fg=white}
+    
+        \setbeamercolor{headline}{bg=WtalGruenD,fg=white}
+        
+        \setbeamercolor{beamerboxupper}{bg=WtalGrauBlau,fg=white}%
+        \setbeamercolor{beamerboxlower}{bg=WtalGrauBlauH,fg=WtalGrauBlauD}%
+        
+        \setbeamercolor{bibliography entry author}{fg=WtalGruenD,bg=}
+        \setbeamercolor{bibliography entry location}{fg=WtalGrauBlauD,bg=}
+        
+        \setbeamercolor{bibliography item}{fg=WtalBlauD,bg=}
+        
+        \setbeamercolor{block title}{fg=black,bg=WtalGrauBlau}
+        \setbeamercolor{block body}{parent=normal text,use=block title,fg=WtalGrauBlauD,bg=WtalGrauBlauH}
+    \fi
+\fi

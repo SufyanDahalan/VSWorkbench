@@ -1,0 +1,133 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test file for the Wuppertal beamer style
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karsten Kahl, 15.10.2012
+% kkahl@math.uni-wuppertal.de
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt,rgb]{beamer}
+%%% Switch to for top-aligned frames
+%\documentclass[12pt,t]{beamer}
+
+\usetheme[vier,talk,biglion,nototal,german]{Wuppertal}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Options :
+%% Style (see outer themes) :
+%%% presentation (default): no navigation; outline at begin of each section
+%%%           (suppress with section*)
+%%% talk : horizontal section navigation in headline
+%%% talkext : horizontal section navigation in headline with logo in top left corner
+%%% lecture : adds section and subsection navigation in headline
+%%%           if #sections or #subsections greater 3 adds logo in top left corner
+%% ----------------
+%% Color (see color themes) :
+%%% vier (default): built around colours of Fakultaet 4
+%%% blue : built around bergisch grau-blau
+%%%% Additional Color-Options (no longer supported)
+%%% highcontrast : high-contrast version of color style (if available)
+%% ----------------
+%% Logo in lower right corner (see outer themes) :
+%%% lion: half lion in color of style
+%%% logo (default): BUW logo papperl
+%%% nologo: no logo
+%% ----------------
+%% Miscellaneous:
+%%% german: sets main language to german (Part X to Teil X)
+%%% nototal: no display of total page numbers ("page/total number of pages" to "page")
+%%% imacm: places IMACM papperl on title page and 
+%%%        replaces logo in top left corner by IMACM logo (if applicable)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Algorithm package with beamer friendly option-set
+\usepackage[linesnumberedhidden,vlined]{algorithm2e}
+% Use Option linesnumbered if you want to have line numbers
+\DontPrintSemicolon
+\SetKwFor{For}{for}{}{}
+\SetKwFor{While}{while}{}{}
+% Change to increase or decrease font size or appearance in the algorithm
+\SetAlFnt{\footnotesize}
+
+% Used for the TikZ example
+\usetikzlibrary{shapes}
+
+\begin{document}
+\title{VSWorkbench: An Extensible Visual Studio Code Plugin for Bridging the Gap between Key Developer Tools}
+
+    \author[Sufyan Dahalan]{Sufyan Dahalan}
+    \institute{Bergische Universit\"at Wuppertal}
+    \maketitle
+    
+    \begin{frame}[t]{Motivation}
+        \parbox{\textwidth}{
+            \itemize{
+                \item Context switching detrimental to software developer productivity.
+                \item Reducing travel between Visual Studio Code, a universal code editor, and GitLab, a the comprehensive developement operations platform.
+                \item VSWorkbench to the rescue
+            }
+        }
+    \end{frame}
+    
+    \begin{frame}[t]{Einleitung \textrm{II}}
+        \parbox{\textwidth}{
+            Der Style ist ausdr\"ucklich als Vorschlag anzusehen. Kritik und Verbesserungen sind zul\"assig und sollten offen diskutiert werden. Ein IMACM-Style stellt keinen Mehrwert f\"ur das Institut dar, wenn er nicht verwendet wird.\bigskip
+            
+            Der Style bietet bereits zahlreiche Optionen das Aussehen des Vortrages zu modifizieren, die im Folgenden vorgestellt werden. Alle Optionen verwenden jedoch dasselbe Layout f\"ur die Titelseite, da sie meiner Meinung nach eine Schl\"usselrolle f\"ur den Wiedererkennungswert darstellt. Es ist daher besonders wichtig einen Konsens \"uber ihr Erscheinungsbild zu erreichen.
+        }
+    \end{frame}
+    
+    \begin{frame}[t]{Einleitung \textrm{III}}
+        \parbox{\textwidth}{
+            Der Style ist von Grund auf neu konzipiert worden, da vorhandene LaTeX-Beamer Styles oftmals auf einen Wust von TeX-Befehlen aufbauen, die nur schwer zu durchschauen und noch schwerer zu modifizieren sind. Auf die Lesbarkeit des zugrundeliegenden Codes wurde daher besonderen Wert gelegt und die meisten \"Anderungen sind mit ausreichender Kenntnis von LaTeX (insb.~TikZ) m\"oglich.\bigskip
+            
+            \"Anderungsvorschl\"age, Vorschl\"age zu weiteren Optionen oder Bug-Meldungen k\"onnen gerne gesendet werden an:
+            \begin{center}
+                \texttt{kkahl@math.uni-wuppertal.de}\footnote{Gleiches gilt bei Interesse am Quellcode des Styles.}
+            \end{center}
+        }
+    \end{frame}
+    
+    \part{Optionen und Anwendungsbeispiele}
+    \begin{frame}
+        \partpage
+    \end{frame}
+    
+    \section{Optionen}
+    \begin{frame}
+        \parbox{\textwidth}{Der Wuppertal-Beamerstyle stellt diverse Optionen zur Verfügung, um das Erscheinungsbild des
+            Vortrages dem Anlass sowie den W\"unschen und Vorlieben des Vortragenden anzupassen. Die Optionen
+            werden in der Pr\"aambel des Dokumentes als optionales Argument geladen, z.B.}
+        \medskip
+        \begin{quote} \tt
+            $\backslash$usetheme[talk,imacm,lion,nototal]\{Wuppertal\}
+        \end{quote}
+        \medskip
+        \parbox{\textwidth}{Optionen, die als \textit{default} angegeben sind, m\"ussen nicht explizit ausgew\"ahlt werden. Anschauungsmaterial zu den Optionen findet sich im Unterordner}
+        \begin{quote}\tt
+            ./examples/
+        \end{quote}
+    \end{frame}
+    
+    \subsection{Layout}
+    \begin{frame}{Layout}
+        \begin{itemize}
+            \item \textbf{presentation} (default): 
+            \begin{itemize}
+                \item Keine Strukturierung in der Kopfzeile
+                \item Wiederholung des Inhaltsverzeichnisses vor jeder Section
+            \end{itemize}
+            \item \textbf{talk}
+            \begin{itemize}
+                \item Wiedergabe der Sections in Kopfzeile mit Hervorhebung der aktuellen Section
+            \end{itemize}
+            \item \textbf{talkext}
+            \begin{itemize}
+                \item Logo und Wiedergabe der Sections in Kopfzeile mit Hervorhebung der aktuellen Section
+            \end{itemize}
+            \item \textbf{lecture}
+            \begin{itemize}
+                \item Wiedergabe von Sections und Subsections des aktuellen Parts mit Hervorhebung der aktuellen Section
+                \item Einblendung des Uni-Logos ab 4 Sections/Subsections
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+\end{document}

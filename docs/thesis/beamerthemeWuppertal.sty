@@ -1,0 +1,210 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wuppertal Theme 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karsten Kahl, 26.01.2017
+%               09.12.2017
+% kkahl@math.uni-wuppertal.de
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Packages required by Wuppertal style
+
+%\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+
+\usepackage{buw-logos}
+
+\usetikzlibrary{positioning}
+
+% Set path for logos used in the style
+\graphicspath{{./logos/}}
+
+% Use symbols for footnotes
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Options for the Wuppertal Style %
+
+%%%% Layout
+% Lecture Mode --- Includes a navigation section@top when #sections>3
+\newif\if@doLecture
+\@doLecturefalse
+\DeclareOption{lecture}{\@doLecturetrue}
+% Talk Mode --- Includes a horizontal navigation section@top
+\newif\if@doTalk
+\@doTalkfalse
+\DeclareOption{talk}{\@doTalktrue}
+% TalkExt Mode --- Includes a horizontal navigation section@top
+\newif\if@doTalkExt
+\@doTalkExtfalse
+\DeclareOption{talkext}{\@doTalkExttrue}
+% Presentation Mode (default) --- Includes no navigation but toc repitition
+\newif\if@doPresentation
+\@doPresentationtrue
+\DeclareOption{presentation}{\@doPresentationtrue}
+
+%%%% Farbschemata
+% Blue Mode --- Avoid using WtalGruen
+\newif\if@doBlue
+\@doBluefalse
+\DeclareOption{blue}{\@doBluetrue}
+% Green Mode
+\newif\if@doGreen
+\@doGreenfalse
+\DeclareOption{green}{\@doGreentrue}
+% Fak 4 Mode (default)
+\newif\if@doVier
+\@doViertrue
+\DeclareOption{vier}{\@doViertrue}
+
+% High Contrast Mode --- Use higher contrast colortheme
+\newif\if@doHC
+\@doHCfalse
+\DeclareOption{highcontrast}{\@doHCtrue}
+
+%%%% Stilelemente
+% IMACM Logo in upper left hand corner if applicable
+\newif\if@doIMACM
+\@doIMACMfalse
+\DeclareOption{imacm}{\@doIMACMtrue}
+
+% Uni Loewe
+\newif\if@doLion
+\@doLionfalse
+\DeclareOption{lion}{\@doLiontrue}
+
+% Grosser Uni Loewe
+\newif\if@doBigLion
+\@doBigLionfalse
+\DeclareOption{biglion}{\@doBigLiontrue}
+
+% Uni Logo (default) --- instead of half-lion in lower right corner
+\newif\if@doLogo
+\@doLogotrue
+\DeclareOption{logo}{\@doLogotrue}
+
+% No Logo
+\newif\if@doNoLogo
+\@doNoLogofalse
+\DeclareOption{nologo}{\@doNoLogotrue}
+
+% No total page number
+\newif\if@doNoTotal
+\@doNoTotalfalse
+\DeclareOption{nototal}{\@doNoTotaltrue}
+
+%%%% Sprache
+\newif\if@doGerman
+\@doGermanfalse
+\DeclareOption{german}{\@doGermantrue}
+
+\ProcessOptions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% options processing
+%%% Layout
+\if@doTalk
+\@doPresentationfalse
+\fi
+
+\if@doTalkExt
+\@doPresentationfalse
+\fi
+
+\if@doLecture
+\@doPresentationfalse
+\fi
+
+%%% Farben
+\if@doBlue
+\@doVierfalse
+\fi
+
+\if@doGreen
+\@doVierfalse
+\fi
+
+%%% Stilelemente
+\if@doLion
+\@doLogofalse
+\@doBigLionfalse
+\fi
+
+\if@doBigLion
+\@doLionfalse
+\fi
+
+\if@doNoLogo
+\@doLogofalse
+\fi
+
+%%% Sprache
+\if@doGerman
+\usepackage[main=ngerman,english]{babel}
+\else
+\usepackage[ngerman,main=english]{babel}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mode<presentation>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color Theme %
+\usecolortheme{Wuppertal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font Theme %
+\usefonttheme{professionalfonts}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamerfont{footnote}{size=\scriptsize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Outer Theme %
+\useoutertheme{Wuppertal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mode<all>
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Bergischer Loewe:
+% % #1: Farbe
+% \newcommand{\BUWLoewe}[1]{
+%     \definecolor{buw-loewe-color}{named}{#1}
+%     \input{./logos/buw-loewe}
+% }
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Uni Logo:
+% % #1: Farbe
+% \newcommand{\BUWLogo}[1]{
+%     \definecolor{buw-logo-color}{named}{#1}
+%     \input{./logos/buw-logo}
+% }
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % IMACM Logo:
+% % #1: Farbe
+% \newcommand{\IMACMLogo}[1]{
+%     \definecolor{imacm-logo-color}{named}{#1}
+%     \input{./logos/imacm/imacm-logo}
+% }
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % IMACM Logo mit Text:
+% % #1: Farbe
+% \newcommand{\IMACMLogoText}[1]{
+%     \definecolor{imacm-logo-text-color}{named}{#1}
+%     \input{./logos/imacm/imacm-logo-text}
+% }
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % AI Logo:
+% % #3: Farben (grid,boarder,tiles)
+% \newcommand{\AILogo}[3]{
+%     \definecolor{ai-logo-color-grid}{named}{#1}
+%     \definecolor{ai-logo-color-boarder}{named}{#2}
+%     \definecolor{ai-logo-color-tiles}{named}{#3}
+%     \input{./logos/ai/ai-logo-clean}
+% }
+% 

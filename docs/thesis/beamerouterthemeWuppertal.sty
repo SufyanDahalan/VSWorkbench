@@ -1,0 +1,264 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wuppertal Outer Theme 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karsten Kahl, 26.01.2017
+%               09.12.2017
+% kkahl@math.uni-wuppertal.de
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\beamertemplatenavigationsymbolsempty
+
+\def\maketitle{
+    {
+        \usebackgroundtemplate{
+            \begin{tikzpicture}[overlay, remember picture] % Scale factor width/height : 3.15602836879
+                \node[inner sep=0pt,outer sep=0pt] (ghost) at (0,0) {};
+                \fill[TitleBackground] (ghost) rectangle (\paperwidth,-\paperheight);
+                \draw (ghost) +(\paperwidth-11.5pt,-.5\paperheight) node {\resizebox{!}{177pt}{\includegraphics{buw-loewe-white.pdf}}};
+                \draw (ghost) +(\paperwidth+.5pt,-\paperheight+23.5pt) node[fill=WtalUniGruen,inner ysep=3.5pt,inner xsep=3.5pt,anchor=south east,align=left] (buwlogo) {\resizebox{!}{15.828pt}{\includegraphics{buw-logo-white.pdf}}\rule{11.5pt}{0pt}};
+                \if@doIMACM
+                \node[inner sep=3.5pt,fill=WtalFakVierBlauD,left=3.5pt of buwlogo.west,anchor=east] (imacmlogo) {\resizebox{!}{15.828pt}{\includegraphics{imacm-logo-text-white.pdf}}};
+                \node[inner sep=0pt,left=3.5pt of imacmlogo.west, anchor=east] {\inserttitlegraphic};
+                \else
+                \node[inner sep=0pt,left=3.5pt of buwlogo.west, anchor=east] {\inserttitlegraphic};
+                \fi
+            \end{tikzpicture}
+        }
+        \begin{frame}[plain]
+            \titlepage
+        \end{frame}
+        \addtocounter{framenumber}{-1}
+    }
+}
+
+\setbeamertemplate{title page}
+{
+    \vfill
+    {\centering\Large\inserttitle
+    
+    }\medskip
+    {\centering\insertsubtitle
+    
+    }\vfill
+    {\centering\insertauthor
+    
+    }\medskip
+    {\centering\scriptsize\insertinstitute
+    
+    }
+    \vfill
+    \vfill
+%    {\centering\tiny\insertdate
+%        
+%    }\vfill
+}
+
+\usebackgroundtemplate{
+    \begin{tikzpicture}[overlay, remember picture] % Scale factor width/height : 3.15602836879
+        \node[inner sep=0pt,outer sep=0pt] (ghost) at (0,0) {};
+        \if@doLogo
+        \draw (ghost) +(\paperwidth+.5pt,-\paperheight+23.5pt) node[fill=LogoBackground,inner ysep=3.5pt,inner xsep=3.5pt,anchor=south east,align=left] {\resizebox{!}{15.828pt}{\includegraphics{buw-logo-white.pdf}}\rule{11.5pt}{0pt}};
+        \fi
+        \if@doLion
+        \draw (ghost) +(\paperwidth-4.5pt,-\paperheight+42.5pt) node {\resizebox{!}{60pt}{\BUWLoewe{LoeweBackground}}};
+        \fi
+        \if@doBigLion
+        \definecolor{BigLionColor}{RGB}{216.75,216.75,216.75}
+        \draw (ghost) +(\paperwidth-12.75pt,-.5\paperheight) node {\resizebox{!}{177pt}{\BUWLoewe{TitleBackground}}};
+        \fi
+\end{tikzpicture}
+}
+
+% Defines the space above the baseline of the title.
+\def \abovestrut {\vrule height 2.2ex depth 0ex width 0ex}
+% Defines the space below the baseline of the title.
+\def \belowstrut {\vrule height 0ex depth 0.6ex width 0ex}
+% Those two are needed to keep the headline at the same size.
+
+\if@doNoTotal
+% Do not show total page numbers, but only current page number
+\setbeamertemplate{footline}{
+    \begin{beamercolorbox}[sep=2pt]{footline}
+        \abovestrut\hspace{1em}\insertshortauthor\\ \textit{\insertshorttitle} \hfill
+        \insertframenumber \hspace{2pt}\belowstrut
+    \end{beamercolorbox}
+}
+\else
+% Show total page numbers and current page number
+\setbeamertemplate{footline}{
+    \begin{beamercolorbox}[sep=2pt]{footline}
+        \abovestrut\hspace{1em}\insertshortauthor\\ \textit{\insertshorttitle} \hfill
+        \insertframenumber/\inserttotalframenumber \hspace{2pt}\belowstrut
+    \end{beamercolorbox}
+}
+\fi
+
+\setbeamerfont{frametitle}{size=\Large}
+\setbeamertemplate{frametitle}
+{
+    \nointerlineskip
+    \begin{beamercolorbox}[sep=2pt,leftskip=2pt,rightskip=0pt,wd=\paperwidth]{frametitle}
+        \usebeamerfont{frametitle}%
+        \abovestrut\insertframetitle%
+        {\ifx\insertframesubtitle\@empty
+            {\belowstrut\par}%
+            \else%
+            {\par\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\belowstrut\par}
+            \fi
+        }%
+    \end{beamercolorbox}
+    \nointerlineskip
+}
+
+%%% Bibliography appearance
+\setbeamertemplate{bibliography item}[text]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Style specific changes
+\if@doLecture
+% Lecture style with elaborate bookkeeping of parts, sections and subsections
+\usesectionheadtemplate
+{\hfill\insertsectionhead}
+{\hfill\color{fg!50!bg}\insertsectionhead}
+
+\setbeamertemplate{headline}{%
+    \leavevmode%
+    \@tempdimb=2.4375ex%
+    \@tempdima=0pt%
+    \ifnum\beamer@subsectionmax<\beamer@sectionmax%
+    \multiply\@tempdimb by\beamer@sectionmax%
+    \else%
+    \multiply\@tempdimb by\beamer@subsectionmax%
+    \fi%
+    \ifdim\@tempdimb>0pt%
+    \advance\@tempdimb by 1.125ex%
+    \ifnum\beamer@sectionmax>3% If there are at least 4 sections
+    \@tempdima=.5\paperwidth%
+    \advance\@tempdima by -32ex%
+    \fi%
+    \ifnum\beamer@subsectionmax>3% If there are at least 4 subsections
+    \@tempdima=.5\paperwidth%
+    \advance\@tempdima by -72pt%
+    \fi%
+    \ifdim\@tempdima>0pt%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=\@tempdimb]{section in head/foot}%        
+        %
+        \if@doIMACM
+        \hbox to 72pt{\hskip.167\@tempdimb\vbox to\@tempdimb{\vskip.167\@tempdimb\resizebox{!}{.666\@tempdimb}{\includegraphics{imacm-logo-white.pdf}}}}%
+        \else
+        \hbox to 72pt{\hskip.167\@tempdimb\vbox to\@tempdimb{\vskip.167\@tempdimb\resizebox{!}{.666\@tempdimb}{\includegraphics{buw-logo-white.pdf}}}}%
+        \fi
+        \hbox to .5\paperwidth{\vbox to\@tempdimb{\insertsectionnavigation{\@tempdima}\vfil}}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=\@tempdimb]{subsection in head/foot}%
+        \hbox to \@tempdima{\vbox to\@tempdimb{\insertsubsectionnavigation{.50\paperwidth}\vfil}}%
+    \end{beamercolorbox}%
+    \else%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=\@tempdimb]{section in head/foot}%
+        \vbox to\@tempdimb{\insertsectionnavigation{.50\paperwidth}\vfil\vrule}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=\@tempdimb]{subsection in head/foot}%
+        \vbox to\@tempdimb{\insertsubsectionnavigation{.50\paperwidth}\vfil}%
+    \end{beamercolorbox}%
+    \fi%
+    \fi%
+}
+\fi
+
+\if@doTalk
+% Minimalistic style
+\usesectionheadtemplate
+{\hfill\insertsectionhead}
+{\hfill\color{fg!50!bg}\insertsectionhead}
+
+\setbeamertemplate{headline}{%
+    \begin{beamercolorbox}[wd=\paperwidth,sep=2pt]{headline}%
+        {\insertsectionnavigationhorizontal{\paperwidth}{\hskip3pt}{\hfill}}%
+    \end{beamercolorbox}%
+}
+\fi
+\if@doPresentation
+% Automatically showing Outline
+\AtBeginSection[] % Do nothing for \section* 
+{
+    \begin{frame}[plain]
+        \if@doGerman
+        \frametitle{Inhalt}         
+        \else
+        \frametitle{Outline} 
+        \fi
+        \tableofcontents[currentsection]
+    \end{frame}
+    \addtocounter{framenumber}{-1}
+}
+\fi
+
+\if@doTalkExt
+% Minimalistic style with logo in the header
+\usesectionheadtemplate
+{\hfill\insertsectionhead}
+{\hfill\color{fg!50!bg}\insertsectionhead}
+
+\setbeamertemplate{headline}{%
+    \if@doIMACM
+    \@tempdima=48pt%
+    \@tempdimb=\paperwidth%
+    \advance\@tempdimb by -\@tempdima%
+    \leavevmode%
+    \hbox to \@tempdima{%\hskip-0pt
+        \begin{beamercolorbox}[wd=\@tempdima,ht=15ex]{section in head/foot}%            
+            \hbox to \@tempdima{\hskip2.5ex \vbox to 15ex{\vfill\resizebox{!}{10ex}{\includegraphics{imacm-logo-white.pdf}}\vfill}}
+        \end{beamercolorbox}%
+    }%
+    \else
+    \@tempdima=104pt%
+    \@tempdimb=\paperwidth%
+    \advance\@tempdimb by -\@tempdima%
+    \advance\@tempdimb by 5pt%
+    \leavevmode%
+    \hbox to \@tempdima{%\hskip-0pt
+        \begin{beamercolorbox}[wd=\@tempdima,ht=15ex]{section in head/foot}%
+            \hbox to \@tempdima{\hskip2.5ex \vbox to 15ex{\vfill\resizebox{!}{10ex}{\includegraphics{buw-logo-white.pdf}}\vfill}}
+        \end{beamercolorbox}%
+    }%
+    \fi
+    \vskip-15ex \hbox to \@tempdimb{\hskip\@tempdima
+        \begin{beamercolorbox}[wd=\@tempdimb,sep=2pt]{subsection in head/foot}%
+            {\insertsectionnavigationhorizontal{\@tempdimb}{\hskip-5pt}{\hfill}}%
+        \end{beamercolorbox}%
+    }%
+    \hbox to \@tempdimb{\hskip\@tempdima
+        \begin{beamercolorbox}[ht=29pt,leftskip=2pt,rightskip=0pt,wd=\@tempdimb]{frametitle}
+        \end{beamercolorbox}
+    }%
+}%
+
+\setbeamerfont{frametitle}{size=\large}
+\setbeamertemplate{frametitle}{%
+    \if@doIMACM
+    \@tempdima=50pt%
+    \else
+    \@tempdima=104pt%
+    \fi
+    \@tempdimb=\paperwidth%
+    \advance\@tempdimb by -\@tempdima%
+    
+    \nointerlineskip
+    \vskip-29pt \hbox to \@tempdima{\hskip\@tempdima
+        \begin{beamercolorbox}[sep=1pt,leftskip=-25pt,rightskip=0pt,wd=\@tempdimb]{}
+            %\raggedleft
+            \usebeamerfont{frametitle}%
+            \abovestrut\insertframetitle%
+            {\ifx\insertframesubtitle\@empty
+                {\belowstrut\par\vskip.7ex}%
+                \else%
+                {\par\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\vskip-2pt\insertframesubtitle\belowstrut\par\vskip-1ex}
+                \fi
+            }%
+        \end{beamercolorbox}
+    }
+    \nointerlineskip
+}
+\fi
+
+\setbeamertemplate{blocks}[rounded][shadow=false] 
