@@ -1,16 +1,17 @@
 # Introduction
 
-Software has its roots in the scientific communities and largely most of its early application in research. 
-As Software found its way into commercialization, free from most hardware limitations, and was made generally available to the public through the Internet,
-the demand for programmers and software developers soared in a way that made it hard to keep up with demand. This great demand and meager supply of programmers 
-made it a highly vital task to squeeze efficiency out of the very few programmers available. Hence developer tools. 
+Software development saw most of its early application in big governmentally funded projects such as the NASA Apollo 11 and the ARPANET. In these settings, the budget was huge\cite{APOLLO}, which translates to the financial ability to hiring train new software developers.
+As Software found its way into commercialization and was made generally available to the public through the Internet,
+the demand for software developers and software developers soared in a way that made it hard to keep up with demand. This great demand and meager supply of software developers 
+made it a highly vital task to increase the efficiency of the very few software developers available. Hence developer tools. 
 
 Developer tools aim to assist developers with all various, enabling developers to cooperate on a higher scale (communication software, e.g. teams, zoom, email, 
 collaboration tools for technical, e.g. Jira, Trello, Atlassian Confluence, collaboration tools for technical userss that touch on many different 
 subjects, e.g. Git, GitLab, GitHub, time saving tools made to accelerate software development, e.g. CI/CD, GitLab CI, GitHub Actions, error reduction tools, e.g.
 automated testing frameworks like Cypress and Playwright).
 
-These developer tools are essential in the work life of a programmer. Use them fluently and efficiently, and your productivity will increase \cite{article}.
+These developer tools are essential in the work life of a software developer. Use them fluently and efficiently, and your productivity will increase \cite{article}.
+
 
 # Problem and Goal
 
@@ -48,17 +49,12 @@ In the phase of development, NPM (\ref{node-package-manager}) package manager wa
 To promote open source contributions, Docusaurus (\ref{docusaurus-and-gitlab-ci.}) will be used to host code documentation and contribution tutorials. 
 
 Figure (\ref{TechStackVisualized}) visualizes the tech stack used relative to each other.
-<!-- ## Tech Stack -->
-
-<!-- ![Tech Stack Visualized](./Medien/TechStackVisualized.png){#TechStackVisualized} -->
 
 ### HTML
 
 HTML (HyperText Markup Language) is the standard  language used to used to create hypertext documents that are platform independent, usually rendered on a browser. HTML documents can be used with generic semantics to represent information from a wide range of domains, including but not limited to: mail, hypermedia, news, documentation, or simple structured documents with inlined graphics. \cite{RFC:1866}
 HTML in its current form traces its origins to a Request For Comment [^1] by Tim Berners-Lee and has ever since been developed by a [set of companies](https://www.w3.org/Consortium/Member/List) (for \gls{WHATWG}: Apple, Google, Mozilla, Microsoft) under the umbrella of the [W3C](https://www.w3c.org) and the [WHATWG](https://whatwg.org).
-<!-- Latest HTML version is HTML5, which is a name used for a living standard instead of a  -->
 HTML is a living standard, meaning changes occur without maintaining or incrementing a version number. Informally , however, the HTML living standard is called HTML5.
-<!-- It was created when different standards created by different companies where joined together in 2016? and work on the next/upcoming HTML standards is now managed and organized by a a [joint committe](link to website of this committee, link to their work and rfc, maybe a link to email list) -->
 
 [^1]: An RFC is a document that contains technical specifications and organizational notes for the Internet. For more information see https://www.ietf.org/standards/rfcs/.
 
@@ -110,7 +106,7 @@ and HTTP POST methods. The HTTP GET method is used to retrieve data from an API.
 `Authentication` header, enabled by the generic nature of HTTP. An HTTP POST method is used to transfer data back to the API, e.g. to perform a set of operations
 based on the data transferred or to simply save it.
 
-REST defines a standard for how web services should communicate, defining which HTTP methods to use for which operations (e.g. HTTP PUT for queries) and what norms to follow (e.g. HTTP GET methods should allow no HTTP body)  \R{todo }
+REST defines a standard for how web services should communicate, introducing constraints that would define behaviour and improve performance of web services \cite{fielding2000architectural}.
 
 
 \begin{lstlisting}[caption={Examples of API Requests}]
@@ -716,7 +712,6 @@ through the \gls{vscode} command palette as seen in figure \ref{VSWorkbenchVSCod
 To prepare for declaring commands, the developer has to create a declaration in the `package.json` file. Secondly, the function will be implemented in code, and 
 lastly registered with \gls{vscode} via the API.
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}
 ...
 "contributes":
@@ -730,7 +725,6 @@ lastly registered with \gls{vscode} via the API.
 \end{lstlisting}
 
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[caption={Registering a funtion or method as an extension command.}]
 vscode.commands.registerCommand
 ("VSWorkbench.updatePersonalAccessToken",async () => {
@@ -738,7 +732,6 @@ vscode.commands.registerCommand
 })
 \end{lstlisting}
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[caption={GlobalFunctions.settings Function Registered.}]
 
 export async function settings(globalState: vscode.ExtensionContext["globalState"]) {
@@ -791,7 +784,6 @@ export async function settings(globalState: vscode.ExtensionContext["globalState
 
 
 ## Publishing on Visual Studio Marketplace
-<!-- langauge=yml,  -->
 \begin{lstlisting}[caption={CI Workflow used to publish VSWorkbench to Visual Studio Marketplace.}, label={s3}]
 name: Publish Extension
 on:
@@ -828,7 +820,6 @@ The script will run the `vscode:prepublish` NPM script in the background, which 
 will be available to users in the Marketplace.
 
 
-<!-- [langauge=json] -->
 \begin{lstlisting}[caption = {`npm run deploy` script} ]
 ...
 "scripts": {
@@ -854,7 +845,6 @@ of the referencing code snippet.
 JSDOC facilitates the steps of maintaining, refactoring and extending software.
 
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[label={s4}]
 /**
  * Issues Query
@@ -900,10 +890,9 @@ Additionally, \gls{vscode} has trouble rendering big files, as opposed to C/C++ 
 Therefore, it is vital to make smart decisions when possible in order to not slow down the user's \gls{vscode} instance, or worse the user's operating system.
 
 
-To lower memory expense, the API was implemented using the singleton design pattern \cite{SINGLETON}. 
+To lower memory expense, the API was implemented using the singleton design pattern. 
 
-<!-- [langauge=typescript] -->
-\begin{lstlisting}[caption = {API Singleton Object Instantiation.}]
+\begin{lstlisting}[caption = {API Singleton Object Instantiatabion.}]
 public static get Instance() {
 		if (!this.instance) {
 			this.instance = new Api();
@@ -918,7 +907,6 @@ and the webview views.
 
 This contributes to minimizing resources consumed in total by an already resource heavy application that is \gls{vscode}.
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[caption={API Singleton Usage Example }]
 import { Api } from "../../api";
 let api = Api.Instance;
@@ -984,8 +972,6 @@ The performance data mentioned in this section was generated on a machine with t
 
 
 
-<!-- ## write about making it look native, aka resemble GitLab very well (goal) -->
-
 
 
 
@@ -1023,7 +1009,6 @@ A further step made to offer guidance for contributors is the `CONTRIBUTION.md` 
 
 Additionally, the contributor can opt for a standalone plugin that will has to be installed seperately. To facilitate this process, an API will be exposed that 
 will register the new functionalities through VSWorkbench.
-<!-- langauge=TypeScript -->
 \begin{lstlisting}[caption={registerPlugin API exposed by VSWorkbench}]
 export function registerPlugin(plugin: {TreeViews: vscode.TreeView<any>[], Commands: {description: string, callback: (...args: any[]) => any, thisArg?: any}[]}){
     for(const treeView of plugin.TreeViews)
@@ -1042,7 +1027,3 @@ comments.
 
 In order to reduce errors, tests have to be written and integrated into the already existing CI pipelines.
 This will be essential to speed development and automate deployment and publishment of new contributions to users.
-<!-- 
-telemetry
-
-currenlty the extensions servers as a POC, terefore thje #1 goal moving forward is smoothung the edges. -->
