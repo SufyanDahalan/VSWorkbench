@@ -503,7 +503,7 @@ this parameter.
 ![The groupView Tree View in VSWorkbench](./Medien/groupView.png){#xid1 .xclass width=350px height=416px}
 
 
-### Webview 
+### Webview Component 
 
 The Webview component is a visual component that is used to utilize the editor space, demonstrated in figure \ref{ExtensionAnatomy}, by adding an editor tab. 
 It is used by VSWorkbench to display snippets and wiki pages of a specific project. 
@@ -979,7 +979,7 @@ The goal of this this bachelor's thesis came to light due to the scarcity of dev
 
 The implementation of VSWorkbench is heavily influenced by the extensible nature of software surrounding the development of VSWorkbench, VSCode and the internet for instance.
 
-VSWorkbench was built upon the already internet technologies, ranging from the HTML (\ref{html}), CSS (\ref{css}) and Javascript (\ref{javascript}) standards to CI tools (\ref{html}), Git (\ref{version-control-software-and-git}) and VSCode (\ref{vscode-and-electronjs}).  
+VSWorkbench was built upon the established internet technologies, ranging from the HTML (\ref{html}), CSS (\ref{css}) and Javascript (\ref{javascript}) standards to CI tools (\ref{html}), Git (\ref{version-control-software-and-git}) and VSCode (\ref{vscode-and-electronjs}).  
 
 Furthermore, due to its nature being an extension, it was build on top of the APIs provided by VSCode, as explained in chapter 4\ref{implementation}.
 
