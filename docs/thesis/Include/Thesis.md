@@ -50,7 +50,7 @@ To promote open source contributions, Docusaurus (\ref{docusaurus-and-gitlab-ci.
 
 Figure (\ref{TechStackVisualized}) visualizes the tech stack used relative to each other.
 
-### HTML
+## HTML
 
 HTML (HyperText Markup Language) is the standard  language used to used to create hypertext documents that are platform independent, usually rendered on a browser. HTML documents can be used with generic semantics to represent information from a wide range of domains, including but not limited to: mail, hypermedia, news, documentation, or simple structured documents with inlined graphics. \cite{RFC:1866}
 HTML in its current form traces its origins to a Request For Comment [^1] by Tim Berners-Lee and has ever since been developed by a [set of companies](https://www.w3.org/Consortium/Member/List) (for \gls{WHATWG}: Apple, Google, Mozilla, Microsoft) under the umbrella of the [W3C](https://www.w3c.org) and the [WHATWG](https://whatwg.org).
@@ -59,14 +59,14 @@ HTML is a living standard, meaning changes occur without maintaining or incremen
 [^1]: An RFC is a document that contains technical specifications and organizational notes for the Internet. For more information see https://www.ietf.org/standards/rfcs/.
 
 
-### \gls{css}
+## \gls{css}
 
 \gls{css} is a style sheet mechanism that allows web page authors and readers to attach style \cite{RFC:CSS}. Using \gls{css}, a developer can, among other things, specify 
 fonts, colors and spacing. The latest \gls{css} standard is CSS3, put forward by the W3C \cite{RFC:CSS}. It has also been standardized in 1996 when the W3C released its 
 first standard. \gls{css}'s progress and future development is managed collaboratively a set of 
 companies^[See (CSS Working Group Members)[https://www.w3.org/Style/CSS/members]] under the umbrella of the W3C.
 
-### Javascript
+## Javascript
 
 Javascript (often abbreviated JS) is an event driven language developed to be used in browsers. It features JIT, or just-in-time-compilation, which means that
 the Javascript files received by the browser will be compiled and run simultaneously. 
@@ -75,7 +75,7 @@ manipulation libraries with it, CommonJS is developed for server-side use, there
 hardware, including but not limited to IO, template engines, and object relational mappers \cite{COMMONJS}.
 The Javascript variant used in this project is EcmaScript.
 
-### Typescript
+## Typescript
 
 Typecript is a statically typed subset of JS, developed and maintained by Microsoft. While there were multiple trials to create a 
 statically typed language that transpiles to Javascript, Typescript is the langauge that saw the most adoption by the community, consistently scoring 
@@ -85,7 +85,7 @@ making it the 48th most starred repository on GitHub\cite{TS:GH:RANKING}.
 
 
 
-### Client-Server Architecture
+## Client-Server Architecture
 
 The client-server architecture describes the relationship between the device of a website owner (server) and the devices of users (client). It has its roots in
 the early ARPANET days in the 1970s where the Stanford researchers worked toward creating interactive programms that function across computer networks 
@@ -97,7 +97,7 @@ must take care of business logic required to retrieve data requested by the clie
 in a way that follows common API specifications such as ReST or GraphQL.
 The client then takes care of building a user friendly interface to hold the information given back by the server.  
 
-### HTTP methods, REST, GraphQL
+## HTTP methods, REST, GraphQL
 
 HTTP \cite{RFC:2616} is an application-level protocol for distributed, collaborative information systems. It is a generic, stateless, protocol which
 can be used for many tasks beyond its use for hypertext through extension of its request methods, error codes and headers. It defines the specification through
@@ -152,7 +152,7 @@ Iframes are used by \gls{vscode} to implement the \gls{vscode} Webview and Webvi
 or web app to \gls{vscode} through their extension.
 
 
-### \gls{vscode} and ElectronJS
+## \gls{vscode} and ElectronJS
 
 
 ElectronJS was started in 2013 \cite{FC:ELECTRONJS} to enable web developer to build cross platform desktop applications in a familiar way to web development. 
@@ -172,7 +172,7 @@ extensions developed by major companies. Each and every extension of these is a 
 developers' workplace and tools into one workbench.
 
 
-### Authentication, Authorization and Personal Access Tokens
+## Authentication, Authorization and Personal Access Tokens
 
 \R{do i need the next line?}
 Authentication is the process of ensuring the identity of the user is correct.
@@ -199,7 +199,7 @@ If authentication information is not valid or is missing, GitLab API returns an 
 
 
 
-### Version Control Software and Git
+## Version Control Software and Git
 
 As projects grow in complexity and software teams grow in size, a coordination and communication overhead starts to take place. One of the developer tools
 used to minimize this overhead is Source Code Management (short: SCM).  
@@ -216,7 +216,7 @@ Kernel. It was developed with the intent to keep it open source, in contrary to 
 Git was designed to be fast and efficient. As it follows the unix philosophy of programming \cite{UNIXPHILOSOPHY}, its functionality can also be extended. 
 A good example of that is Git Flow ^[see [Git Flow](https://GitHub.com/nvie/gitflow)].
 
-### GitLab
+## GitLab
 
 As Git started to gain traction, multiple efforts to introduce a graphical user interface where made. The most successful were web app based user interfaces, 
 which implies the existence of a central repository (or a central source of truth). Most notable examples are GitHub, GitLab, and BitBucket. 
@@ -253,7 +253,7 @@ curl "https://git.uni-wuppertal.de/api/v4/projects"
 
 
 
-### Module Bundlers and Webpack
+## Module Bundlers and Webpack
 
 Module bundlers are tools that combine multiple JS files into one. They can additionally minimize the file (by e.g. ommiting extra spaces and using 
 shorter names for variables and functions). In addition to that, the output file can have a concatenated hash in its name in order to support better caching.
@@ -263,7 +263,7 @@ A famous module bundler is Webpack. Webpack was started in 2014 by Tobias Kopper
 HTML, \gls{css} and JS. Webpack is used in VSWorkbench to seperately build the extension and the three vanilla Typescript apps in a way that facilitates them working 
 as one unit.
 
-### Docusaurus and GitLab CI.
+## Docusaurus and GitLab CI.
 
 VSWorkbench aims to be open source and will be extended through collaboration by the open source community. To enable this and make the contribution process as
 frictionless as possible, documentation has to be tackled. 
