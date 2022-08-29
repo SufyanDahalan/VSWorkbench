@@ -39,8 +39,8 @@ interruptions and hightening developer's productivity.
 
 # Fundamentals
 
-To implement VSWorkbench, web content is represented in HTMl (\ref{html}), styled in CSS (\ref{section}) and relies on JS (\ref{javascript})/TS (\ref{typescript}) to 
-communicated to VSCode for display through the VSCode API (\ref{api}). VSWorkbench relies on the GitLab server (\ref{gitlab}) 
+To implement VSWorkbench, web content is represented in HTMl (\ref{html}), styled in CSS (\ref{css}) and relies on JS (\ref{javascript})/TS (\ref{typescript}) to 
+communicated to VSCode for display through the VSCode API (\ref{vscode-api}). VSWorkbench relies on the GitLab server (\ref{gitlab}) 
 (\ref{version-control-software-and-git}), utilizing Rest (\ref{http-methods-rest-graphql}) 
 and GraphQL (\ref{http-methods-rest-graphql}) endpoints for data exchange (\ref{client-server-architecture}). In case 
 authorization (\ref{authentication-authorization-and-personal-access-tokens}) is required, GitLab issued PATs are used to confirm identity and check priviliges. 
@@ -48,7 +48,6 @@ VSWorkbench is then bundled and packaged using webpack (\ref{module-bundlers-and
 In the phase of development, NPM (\ref{node-package-manager}) package manager was used to run workflows, such as packaging the extension using webpack.
 To promote open source contributions, Docusaurus (\ref{docusaurus-and-gitlab-ci.}) will be used to host code documentation and contribution tutorials. 
 
-Figure (\ref{TechStackVisualized}) visualizes the tech stack used relative to each other.
 
 ## HTML
 
@@ -59,7 +58,7 @@ HTML is a living standard, meaning changes occur without maintaining or incremen
 [^1]: An RFC is a document that contains technical specifications and organizational notes for the Internet. For more information see https://www.ietf.org/standards/rfcs/.
 
 
-## \gls{css}
+## CSS
 
 \gls{css} is a style sheet mechanism that allows web page authors and readers to attach style \cite{RFC:CSS}. Using \gls{css}, a developer can, among other things, specify 
 fonts, colors and spacing. The latest \gls{css} standard is CSS3, put forward by the W3C \cite{RFC:CSS}. It has also been standardized in 1996 when the W3C released its 
@@ -152,7 +151,7 @@ Iframes are used by \gls{vscode} to implement the \gls{vscode} Webview and Webvi
 or web app to \gls{vscode} through their extension.
 
 
-## \gls{vscode} and ElectronJS
+## VSCode and ElectronJS
 
 
 ElectronJS was started in 2013 \cite{FC:ELECTRONJS} to enable web developer to build cross platform desktop applications in a familiar way to web development. 
@@ -174,7 +173,6 @@ developers' workplace and tools into one workbench.
 
 ## Authentication, Authorization and Personal Access Tokens
 
-\R{do i need the next line?}
 Authentication is the process of ensuring the identity of the user is correct.
 Authorization is the process of checking priviliges of a user during the processing of an action started by the user.
 
@@ -358,10 +356,11 @@ a CI pipeline or a job.
 - Quick access to CI: 
     Users can access key GitLab CI information such as pipelines, stages, and runner logs. From there, they can quickly access GitLab UI for a more comprehensive 
     view. Users can also retry a job or delete it. 
-- Quick access to Snippets and Wiki: \R{(WIP)}
+- Quick access to Snippets and Wiki:
+    Users can access to GitLab projects' wikis and snippets through VSWorkbench.
 
 
-## \gls{vscode} API
+## VSCode API
 
 To facilitate the process of extending the functionality of \gls{vscode}, an API is exposed that can be used by the extension developer.
 The API provided by \gls{vscode} provides visual and functional components.
@@ -530,9 +529,8 @@ hidden, or when the user switches to another tab.
 Moreover, the webview panel is instantiated without any HTML assigned. Therefore, the developer has to assign it HTML. 
 
 
-The HTML is assigned to the webview using the follow function.
+The HTML is assigned to the webview using the following function.
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[label={webview}]
 private getHTML(webview: vscode.Webview): string {
     const scriptUri = webview.asWebviewUri(
@@ -975,6 +973,22 @@ The performance data mentioned in this section was generated on a machine with t
 
 
 
+# Summary
+
+The goal of this this bachelor's thesis came to light due to the scarcity of developers and the to increase the productivity of already existing developers, as stated in chapter 1\ref{introduction}.
+
+The implementation of VSWorkbench is heavily influenced by the extensible nature of software surrounding the development of VSWorkbench, VSCode and the internet for instance.
+
+VSWorkbench was built upon the already internet technologies, ranging from the HTML (\ref{html}), CSS (\ref{css}) and Javascript (\ref{javascript}) standards to CI tools (\ref{html}), Git (\ref{version-control-software-and-git}) and VSCode (\ref{vscode-and-electronjs}).  
+
+Furthermore, due to its nature being an extension, it was build on top of the APIs provided by VSCode, as explained in chapter 4\ref{implementation}.
+
+Despite being in an early stage of its active development with alot of work planned ahead, as described in chapter \ref{future-goals}, VSWorkbench was installed 53 times as of the date of submitting this bachelor's thesis (\ref{html}), according to data provided by Visual Studio Marketplace in figure \ref{UserAcquisition}.
+
+![User Acquisition](./Medien/User Acquisition.png){#UserAcquisition .class width=675px height=243px}
+
+Ultimately, the initial baby steps taken in this bachelor's thesis and the date provided by Visual Studio Marketplace shown in figure \ref{UserAcquisition} underlines that future development, refinement and extension on VSWorkbench is worth undertaking.
+
 
 # Future Goals
 
@@ -1027,3 +1041,4 @@ comments.
 
 In order to reduce errors, tests have to be written and integrated into the already existing CI pipelines.
 This will be essential to speed development and automate deployment and publishment of new contributions to users.
+
