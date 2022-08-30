@@ -13,7 +13,6 @@ automated testing frameworks like Cypress and Playwright).
 These developer tools are essential in the work life of a software developer. Use them fluently and efficiently, and your productivity will increase \cite{article}.
 
 
-# Problem and Goal
 
 ## Effects of Context Switching on Developer Productivity
 
@@ -51,9 +50,9 @@ To promote open source contributions, Docusaurus (\ref{docusaurus-and-gitlab-ci.
 
 ## HTML
 
-HTML (HyperText Markup Language) is the standard  language used to used to create hypertext documents that are platform independent, usually rendered on a browser. HTML documents can be used with generic semantics to represent information from a wide range of domains, including but not limited to: mail, hypermedia, news, documentation, or simple structured documents with inlined graphics. \cite{RFC:1866}
+HTML (HyperText Markup Language) is the standard language used to used to create hypertext documents that are platform independent, usually rendered on a browser. HTML documents can be used with generic semantics to represent information from a wide range of domains, including but not limited to: mail, hypermedia, news, documentation, or simple structured documents with inlined graphics. \cite{RFC:1866}
 HTML in its current form traces its origins to a Request For Comment [^1] by Tim Berners-Lee and has ever since been developed by a [set of companies](https://www.w3.org/Consortium/Member/List) (for \gls{WHATWG}: Apple, Google, Mozilla, Microsoft) under the umbrella of the [W3C](https://www.w3c.org) and the [WHATWG](https://whatwg.org).
-HTML is a living standard, meaning changes occur without maintaining or incrementing a version number. Informally , however, the HTML living standard is called HTML5.
+HTML is a living standard, meaning changes occur without maintaining or incrementing a version number. Informally, however, the HTML living standard is called HTML5.
 
 [^1]: An RFC is a document that contains technical specifications and organizational notes for the Internet. For more information see https://www.ietf.org/standards/rfcs/.
 
@@ -76,7 +75,7 @@ The Javascript variant used in this project is EcmaScript.
 
 ## Typescript
 
-Typecript is a statically typed subset of JS, developed and maintained by Microsoft. While there were multiple trials to create a 
+Typescript is a statically typed subset of JS, developed and maintained by Microsoft. While there were multiple trials to create a 
 statically typed language that transpiles to Javascript, Typescript is the langauge that saw the most adoption by the community, consistently scoring 
 high on StackOverflow Developer Surveys \cite{TS:STACKOVERFLOW:21}\cite{TS:STACKOVERFLOW:22}. Typescript currently has approximately 82.9k stars on GitHub, 
 making it the 48th most starred repository on GitHub\cite{TS:GH:RANKING}.
@@ -94,11 +93,11 @@ data, usually as JSON or raw text data.
 The client-server architecture is used as an abstraction to simplify the workflow of clients. The client does not need to know about the business logic. Conversely, the server
 must take care of business logic required to retrieve data requested by the client, and return an internet package, containing the response,
 in a way that follows common API specifications such as ReST or GraphQL.
-The client then takes care of building a user friendly interface to hold the information given back by the server.  
+The client then takes care of building a user friendly interface to hold the information given back by the server.
 
 ## HTTP methods, REST, GraphQL
 
-HTTP \cite{RFC:2616} is an application-level protocol for distributed, collaborative information systems. It is a generic, stateless, protocol which
+HTTP \cite{RFC:2616} is an application-level protocol for distributed, collaborative information systems. It is a generic, stateless protocol which
 can be used for many tasks beyond its use for hypertext through extension of its request methods, error codes and headers. It defines the specification through
 which common internet communication between systems happens. It sets standards for interactions between different systems, most notabely the HTTP GET 
 and HTTP POST methods. The HTTP GET method is used to retrieve data from an API. In case authentication is required, it is achieved through a special 
@@ -126,8 +125,8 @@ getProjectIssues(project_id: number): Promise<AxiosResponse> {
 
 GraphQL is a technology that defines a way to query data from the server, enabling the developer to get exactly the data they needs, nothing more 
 and nothing less \cite{GRAPHQL}. 
-GraphQL is a project released by developed by Facebook and released to the open source community in 2015. Since then, its further development has been a 
-collaboration between Facebook and volunteers from the open source community. 
+GraphQL is a project released by developed by Facebook and released to the open source community in 2015. Its further development has been a 
+collaboration between Facebook and volunteers from the open source community ever since. 
 
 <!-- It abstracts some stuff and make shit easier blablabla -->
 GraphQL enables a frontend developer, who is mainly responsible for the visual elements of a website, to describe the data that they requires.
@@ -157,12 +156,12 @@ or web app to \gls{vscode} through their extension.
 ElectronJS was started in 2013 \cite{FC:ELECTRONJS} to enable web developer to build cross platform desktop applications in a familiar way to web development. 
 Electron apps (such as Microsoft Teams, VSCode and others) are bundled together with the NodeJS runtime and chromium browser engine, causing a simple hello world 
 programm to reach hundreds of Megabytes in size. Electron, however, allows developers to benefit from the already existing cross platform compatibility of 
-browsers and lowers the bar for companies building desktop apps by allowing them to tap into the abundant web developer talent.  
+browsers and lowers the bar for companies building desktop apps by allowing them to tap into the abundant web developer talent.
 ElectronJS essentially proposed a new perspective into desktop app development. Its wide adoption, inspite of its lack of performance compared to traditional 
 technologies, speaks for its success.
 
 \gls{vscode} is an open source cross platform language agnostic extendible code editor started in 2015 by Microsoft \cite{FC:VSCODE}. 
-It was intended to be part of Microsoft's trend towards open source. It is based in its core on open source/open standard technologies such as HTML,
+It was intended to be part of Microsoft's trend towards open source. It is based in its core on open standard technologies such as HTML,
 \gls{css}, Javascript and ElectronJS, with all developers as end users in mind. Its extensibility makes it appealing to web developers and Vim and Emacs users.
 
 Furthermore, major companies have endorsed VSCode by writing language or platform specific extensions for it and offering them free of charge. Examples of 
@@ -184,11 +183,10 @@ issued by the user to never expire.
 PATs are used to gain access to APIs and services ^[see [https://docs.GitLab.com/ee/api/index.HTML](https://docs.GitLab.com/ee/api/index.HTML)]. 
 The GitLab API, in its self-hosted version as well as the \gls{SAAS} version, checks if the user has enough priviliges before executing the action, and provides 
 an HTTP response based on the result.
-If authentication information is not valid or is missing, GitLab API returns an error message with a status code of 401:
+If authentication information is not valid or is missing, GitLab API returns an error message with a status code of 401, shown in figure \ref{401-message}.
 
 
-<!-- [language=Javascript] -->
-\begin{lstlisting}
+\begin{lstlisting}[label={401-message}]
 {
     "message": "401 Unauthorized"
 }
@@ -258,7 +256,7 @@ shorter names for variables and functions). In addition to that, the output file
 The end result will be automatic inclusion of new JS code from new files into the build per the config of the module bundler.
 
 A famous module bundler is Webpack. Webpack was started in 2014 by Tobias Koppers in order to simplify bundling and compilation workflow of web projects based on 
-HTML, \gls{css} and JS. Webpack is used in VSWorkbench to seperately build the extension and the three vanilla Typescript apps in a way that facilitates them working 
+HTML, \gls{css} and JS. Webpack is used in VSWorkbench to seperately build the extension and the three vanilla Javascript/Typescript apps in a way that facilitates them working 
 as one unit.
 
 ## Docusaurus and GitLab CI.
@@ -273,9 +271,9 @@ maintenance and will incur costs. The static build can also be deployed on GitLa
 The process is as follows:
 
 1. The developer defines a GitLab CI job^[Jobs are the smallest CI units consisting of commands and operations. Multiple CI jobs make up a CI pipeline], named `pages`, in the repository's `.gitLab-ci.yml` file.
-2. When a commit is pushed into the remote Git repository on the GitLab server, the `pages` job automatically runs on the repository. It builds the website according to the steps predefined in the GitLab CI job and saves the build in an artifact
+2. When a commit is pushed into the remote Git repository on the GitLab server, the `pages` job automatically runs on the repository. It builds the website according to the steps predefined in the GitLab CI job and saves the build in an artifact.
 3. The GitLab CI artifact, which contains the website build, will then be accessible by the end users through a domain made availabe by GitLab. It usually follows the syntax [GitLab username].GitLab.io/[repository name].
-Alternatively, the developer can bind the artifact to a domain name of his own choosing, e.g. VSWorkbench.Dahalan.De
+Alternatively, the developer can bind the artifact to a domain name of his own choosing (e.g. VSWorkbench.Dahalan.De).
 
 4. When an end user navigates to the url to which the artifact is mapped, the GitLab servers send a reply with the artifact. The artifact will contain
 HTML, \gls{css}, JS, and possibly assets (images, pdfs, etc.) that the end user's browser can parse and build the website from. 
@@ -296,9 +294,8 @@ An example for meta data is defining the repository link in the `package.json` f
 quick access to the repository in case it is open-sourced. An extension publisher can also define different tags that will help users in Visual Studio 
 Marketplace to search and find their package.
 
-<!-- The `package.json` file furthermore allows the developer to define custom reusable scripts in the sections block.  -->
+The `package.json` file furthermore allows the developer to define custom reusable scripts in the scripts block, as seen in code snippet \ref{package.json}. 
 
-<!-- [language=json] -->
 \begin{lstlisting}[label={package.json}]
 	"scripts": {
 		"vscode:prepublish": "npm run package",
@@ -329,7 +326,6 @@ tree that represents the `node_modules` file in order to build the exact depende
 always have 
 the same dependencies with the same versions installed. To build the dependency tree using the `package-lock.json` file, a developer has to run 
 
-<!-- [language=bash] -->
 \begin{lstlisting}
 npm ci;
 \end{lstlisting}
@@ -367,7 +363,8 @@ The API provided by \gls{vscode} provides visual and functional components.
 
 ### Tree View
 
-The Tree View API is a visual component exposed by \gls{vscode}. To utilized it, a class (as seen in code snippet \ref{groupView Class}) that inherits and implements the `vscode.TreeDataProvider` class and  its functions has to be defined. An object of this newly created class has to be created. This object will be used to communicate to the \gls{vscode} UI and embed visual elements into it. The developer also has to define an entry for the implemented class in the `package.json` file(see \ref{groupView Declaration}).
+The Tree View API is a visual component exposed by \gls{vscode}. To utilized it, a class (as seen in code snippet \ref{groupView Class}) that inherits and implements the `vscode.TreeDataProvider` class and  its functions has to be defined. An object of this newly created class has to be created. This object will be used to communicate to the \gls{vscode} UI and embed visual elements into it. The developer also has to define an entry for the implemented class in the `package.json` file (see \ref{groupView Declaration}).
+\newpage
 
 \begin{lstlisting}[caption={The GroupTreeDataProvidor Class which inherits from the vscode.TreeDataProvidor class}, label={groupView Class}]
 export class GroupTreeDataProvider implements vscode.TreeDataProvider<GroupNode>, vscode.TreeDragAndDropController<GroupNode> {
@@ -433,29 +430,38 @@ The `views` entry refers to containers of visual componets, such as the containe
 an array of components, e.g. the `groupView` as seen in code snippet \ref{groupView Declaration}.
 The `GitLabCode-activityBar` component container will then be embedded, also declaratively, into the VSCode activity bar. 
 
-The following picture visualizes the anatomy and components of \gls{vscode} visually.
+The following picture visualizes the anatomy and components of \gls{vscode}.
 
-![VSCode Extension Anatomy](./Medien/Extension Anatomy.png){#ExtensionAnatomy .xclass width=auto height=551.5px}
+<!-- ![VSCode Extension Anatomy](./Medien/Extension Anatomy.png){#ExtensionAnatomy .xclass width=auto height=551.5px} -->
+\newpage
+\begin{figure}
+\hypertarget{ExtensionAnatomy}{%
+\centerline{
+\includegraphics[width=\textwidth,height=5.73958in]{./Medien/Extension Anatomy.png}
+}
+\caption{VSCode Extension Anatomy}\label{ExtensionAnatomy}
+}
+\end{figure}
+
+\par\bigskip 
+
+The Drap and Drop API is used by implementing two functions for the drag and drop functionality in the `GroupTreeDataProvider` that are inhereted from the `vscode.TreeDragAndDropController` class. 
 
 
-The Drap and Drop API is used by implementing two functions for the drag and drop functionality in the `GroupTreeDataProvider` that are 
-inhereted from the `vscode.TreeDragAndDropController` class. 
-
-<!-- [langauge=Javascript] -->
 \begin{lstlisting}
-	public async handleDrag(source: GroupNode[], treeDataTransfer: vscode.DataTransfer,
+public async handleDrag(source: GroupNode[], treeDataTransfer: vscode.DataTransfer,
 
-     _token: vscode.CancellationToken): Promise<void> {
-		if (source[0].contextValue !== "user") {
-			treeDataTransfer.set("application/vnd.code.tree.groupView",
-             new vscode.DataTransferItem(source));
-		}
-	}
-	public async handleDrop(target: GroupNode | undefined, sources: vscode.DataTransfer,
+    _token: vscode.CancellationToken): Promise<void> {
+    if (source[0].contextValue !== "user") {
+        treeDataTransfer.set("application/vnd.code.tree.groupView",
+            new vscode.DataTransferItem(source));
+    }
+}
+public async handleDrop(target: GroupNode | undefined, sources: vscode.DataTransfer,
 
-     _token: vscode.CancellationToken): Promise<void> {
-		const transferItem = sources.get("application/vnd.code.tree.groupView");
-		...
+    _token: vscode.CancellationToken): Promise<void> {
+    const transferItem = sources.get("application/vnd.code.tree.groupView");
+    ...
 \end{lstlisting}
 
 
@@ -478,7 +484,6 @@ Moreover, the user can convert groups into subgroups by moving them into other g
 
 The functions that will be called depending on the source and target nodes are defined in the `api.ts` file and have the following declarations:
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}
 
 transferGroup(id: number, group_id?: number): Promise<AxiosResponse> {
@@ -500,10 +505,18 @@ The `transferGroup` function accepts two arguments, the id of the group (id), an
 The reason behind making the `group_id` parameter optional is to enable converting subgroups to top level groups, i.e. not nested in other groups, depending on 
 this parameter.
 
-![The groupView Tree View in VSWorkbench](./Medien/groupView.png){#xid1 .xclass width=350px height=416px}
+\begin{figure}
+\hypertarget{xid1}{%
+\begin{center}
+\includegraphics[width=3.64583in,height=4.33333in]{./Medien/groupView.png}
+\end{center}
+\caption{The groupView Tree View in VSWorkbench}\label{xid1}
+}
+\end{figure}
 
+<!-- ![The groupView Tree View in VSWorkbench](./Medien/groupView.png){#xid1 .xclass width=350px height=416px} -->
 
-### Webview Component 
+### Webview API 
 
 The Webview component is a visual component that is used to utilize the editor space, demonstrated in figure \ref{ExtensionAnatomy}, by adding an editor tab. 
 It is used by VSWorkbench to display snippets and wiki pages of a specific project. 
@@ -513,7 +526,6 @@ instantly delete the previous content of the container, evaluate the new content
 
 To utilize the Webview API exposed by \gls{vscode}, an instance of the class vscode.WebviewPanel must be instantiated by utilizing the {vscode.window.createWebviewPanel} function.
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}
 let panel = vscode.window.createWebviewPanel(this.viewType, `${name} | ${ViewEvents[type]}`, vscode.ViewColumn.One, {
         enableScripts: true,
@@ -558,8 +570,7 @@ import * as vscode from "vscode";
 \end{lstlisting}
 
 The function `getHTML` first locates the extension in order to locate the Javascript file used for dynamic HTML and \gls{css} content and assigns the value to the 
-variable `scriptUri`. Secondly, the function embeds the `scriptUri` variable in an HTML script tag so that the HTML document that is hardcoded in the extension  can access the  
-Javascript file designated to it. Lastly, the function assigns the \gls{vscode} API to a variable named `window.vscode` that will later be used for communication between the 
+variable `scriptUri`. Secondly, the function embeds the `scriptUri` variable in an HTML script tag so that the HTML document that is hardcoded in the extension  can access the Javascript file designated to it. Lastly, the function assigns the \gls{vscode} API to a variable named `window.vscode` that will later be used for communication between the 
 Webview embedded HTML document and the extension context. 
 
 To prevent any confusion, the \gls{vscode} API that is assigned to `window.vscode` in snippet \ref{webview} refers to an API that can merely send messages back and forth between the 
@@ -587,11 +598,10 @@ The webview view API is used by VSWorkbench to render two child contexts that ar
 
 To create a webview view, a class inhereting `vscode.WebviewViewProvider` must be implemented. The class's constructor takes the extension context as a paramater in 
 order to register the new child context. Registering the webview view requires a unique id for the webview view, which also has to be configured in the `package.json`
-file under the contributions entry. Additionally, the constructor will register the new wbeview view context as a subscriber/listener to the event emitter that is 
-configured by the tree view, in order to recieve updates about the currently selected/focused group node. Moreover, a function inherited from 
+file under the contributions entry. Additionally, the constructor will register the new wbeview view context as a subscriber or a listener to the event emitter that is 
+configured by the tree view, in order to recieve or send updates about the currently selected group node. Moreover, a function inherited from 
 `vscode.WebviewViewProvider` will be called when the webview view is brought into focus, which ensures the creation of the document to be shown and appends it in its rightful location, the \gls{vscode} panel. 
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}
 constructor(context: vscode.ExtensionContext) {
     changeValidEmitter.event(this.eventCallback, this);
@@ -620,7 +630,6 @@ and jobs data regarding a project. Next, the execution of the script will depend
 storing the GitLab instance URL and the authentication token of the user to \gls{vscode}.
 
 
-<!-- [langauge=typescript, caption={Setting specific entries for sync, effectively saving them in the VSCode global state}] -->
 \begin{lstlisting}
 function initStorage(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([AUTH_TOKEN_KEY]);
@@ -631,7 +640,6 @@ function initStorage(context: vscode.ExtensionContext) {
 
 
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[label={s1}]
 context.globalState.update(AUTH_TOKEN_KEY, gitlabAuthToken); // call to update an entry
 context.globalState.get(AUTH_TOKEN_KEY) // call to get an entry of a specific key 
@@ -650,7 +658,6 @@ An example of this is the `vscode.git` extension, a default extension that ships
 
 The `vscode.git` extension is used by VSWorkbench to enable the user to clone projects or groups available to them. 
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[label={s2}]
 	async cloneNameSpace(): Promise<any> {
 		if (this.contextValue === "project") {
@@ -677,8 +684,7 @@ The `vscode.git` extension is used by VSWorkbench to enable the user to clone pr
 
 
 
-The code snippet seen in \ref{s2} demonstrates the function used by VSWorkbench to clone groups. VSWorkbench first checks that the node, on which the function was called / 
-the button was clicked is indeed a group node. Thereafter VSWorkbench either returns an error message via the \gls{vscode} UI API, or proceeds to fetch the information 
+The code snippet seen in \ref{s2} demonstrates the function used by VSWorkbench to clone groups. VSWorkbench first checks that the node whose button was clicked is indeed a group node. Thereafter, VSWorkbench either returns an error message via the \gls{vscode} UI API, or proceeds to fetch the information 
 of the child projects of the group chosen by the user. Once the information is fetched, \gls{vscode} UI API is once again used to open an ElectronJS dialog asking the 
 user to choose a directory on their PC, onto which the projects will be cloned. 
 Once a folder is chosen, VSWorkbench proceeds to clone the active, i.e., non archived projects on which development is ongoing, one by one.
@@ -691,7 +697,6 @@ After cloning the projects successfully, the \gls{vscode} Git extension will dis
 
 
 
-<!-- [langauge=typescript] -->
 \begin{lstlisting}[label={executeCommands}]
 export async function cloneFromGitLab(url: string, path: string): Promise<any> {
     return await vscode.commands.executeCommand('git.clone', url, path) 
@@ -699,7 +704,7 @@ export async function cloneFromGitLab(url: string, path: string): Promise<any> {
 \end{lstlisting}
 
 
-The snippet of code \ref{executeCommands} shows how to execute commands through the commands api implemented by vscode. in this short snippet the Git extension is called with the clone command. The URL of the repository and the path onto which the project will be cloned are also specified. 
+The snippet of code \ref{executeCommands} shows how to execute commands through the commands api implemented by \gls{vscode}. In this short snippet the Git extension is called with the clone command. The URL of the repository and the path onto which the project will be cloned are also specified. 
 
 
 Alternative to executing \gls{vscode} commands in code, the developer can also define their own commands. Common uses for this is for calls through the `package.json` file, enabling users to call the commands directly 
@@ -832,7 +837,7 @@ will be available to users in the Marketplace.
 ## Online Documentation and JSDOC Code Documentation
 
 
-JSDOC is an API documentation generator for Javascript, that utilizes comments to generate websites, output documentation to JSON format, and add documentation on hover on code editors and IDEs like \gls{vscode}.
+JSDOC is an API documentation generator for Javascript that utilizes comments to generate websites, output documentation to JSON format, and add documentation on hover on code editors and IDEs like \gls{vscode} (\ref{sid}).
 
 ![Documentation on Hover](./Medien/Documentation on Hover.png){#sid .sclass width=516px height=163px}
 
@@ -868,7 +873,7 @@ It will be visualized in \gls{vscode} to developers at hover will be represented
 
 The NPM package `jsdoc-to-markdown` is a package that enables the developer to extract JSDOC comments into markdown files. It takes a minimum of one paramater,
 specifying the files from which the documentation is to be extracted.  
-To automate documentation and build of the documentation website,  the NPM package `jsdoc-to-markdown` was utilized, wrapped in an NPM script that extracts JSDOC documentation from the specified files into a markdown file. 
+To automate documentation and build of the documentation website,  the NPM package `jsdoc-to-markdown` was utilized; wrapped in an NPM script that extracts JSDOC documentation from the specified files into a markdown file. 
 
 This markdown file will then be streamed into the Docusaurus build pipeline, where it will be rendered in its own tab. 
 Docusaurus, built on react, will build HTML files out of the markdown documents available and create a client side rendered web app. 
@@ -948,18 +953,32 @@ Ultimately, another optimization done was opting for web native, unicode emoji i
 unicode emoji bring is that they are universally available, provided by the operating system, thus they do not have to be packaged, as what's included is merely
 a reference, while the responsibility falls on the operating system to provide them.
 
+<!-- ![GitLab Workflow Startup Overhead](./Medien/Startup Performance GitLab Workflow.png){#StartupPerformanceGitLabWorkflow .class width=700px height=31.5px} -->
+\begin{figure}
+\centerline{
+\includegraphics[width=7.29167in,height=0.32292in]{./Medien/Startup Performance GitLab Workflow.png}
+}\caption{GitLab Workflow Startup
+Performance}\label{StartupPerformanceGitLabWorkflow}
+\end{figure}
 
-![GitLab Workflow Startup Overhead](./Medien/Startup Performance GitLab Workflow.png){#StartupPerformanceGitLabWorkflow .class width=700px height=31.5px}
 
-![VSWorkbench Startup Performance](./Medien/VSWorkbench Startup Performance.png){#VSWorkbenchStartupPerformance .class width=700px height=123px}
+\begin{figure}
+\hypertarget{VSWorkbenchStartupPerformance}{%
+\centerline{
+\includegraphics[width=7.29167in,height=1.28125in]{./Medien/VSWorkbench Startup Performance.png}
+}
+\caption{VSWorkbench Startup
+Performance}\label{VSWorkbenchStartupPerformance}
+}
+\end{figure}
 
+
+<!-- ![VSWorkbench Startup Performance](./Medien/VSWorkbench Startup Performance.png){#VSWorkbenchStartupPerformance .class width=700px height=123px} -->
 
 
 The two figures \ref{VSWorkbenchStartupPerformance} and \ref{StartupPerformanceGitLabWorkflow} show the big difference in resources overhead the two extensions GitLab Workflow and VSWorkbench bring. While GitLab Workflow needs 87ms 
 for activation, which inevitably translate in an 87ms slower \gls{vscode} startup time, VSWorkbench needs only 10ms, which makes it as fast as some of the native 
-\gls{vscode} extensions.
-
-The performance data mentioned in this section was generated on a machine with the following technical specifications
+\gls{vscode} extensions. The performance data mentioned in this section was generated on a machine with the following technical specifications:
 
 
 - OS: linux(5.15.0-46-generic)
@@ -973,11 +992,11 @@ The performance data mentioned in this section was generated on a machine with t
 
 
 
-# Summary
+# Conclusion
 
 The goal of this this bachelor's thesis came to light due to the scarcity of developers and the to increase the productivity of already existing developers, as stated in chapter 1\ref{introduction}.
 
-The implementation of VSWorkbench is heavily influenced by the extensible nature of software surrounding the development of VSWorkbench, VSCode and the internet for instance.
+The implementation of VSWorkbench is heavily influenced by the extensible nature of software surrounding the development of VSWorkbench; VSCode and the internet for instance.
 
 VSWorkbench was built upon the established internet technologies, ranging from the HTML (\ref{html}), CSS (\ref{css}) and Javascript (\ref{javascript}) standards to CI tools (\ref{html}), Git (\ref{version-control-software-and-git}) and VSCode (\ref{vscode-and-electronjs}).  
 
@@ -987,20 +1006,16 @@ Despite being in an early stage of its active development with alot of work plan
 
 ![User Acquisition](./Medien/User Acquisition.png){#UserAcquisition .class width=675px height=243px}
 
-Ultimately, the initial baby steps taken in this bachelor's thesis and the date provided by Visual Studio Marketplace shown in figure \ref{UserAcquisition} underlines that future development, refinement and extension on VSWorkbench is worth undertaking.
+Ultimately, the initial steps taken in this bachelor's thesis and the date provided by Visual Studio Marketplace shown in figure \ref{UserAcquisition} underlines that future development, refinement and extension on VSWorkbench is worth undertaking.
 
 
 # Future Goals
 
-
-As a famous saying goes, software is never finished, it is only released. 
-
-Therefore, further development to integrate more platforms into developers' primary workbench and to improve the already existing tools offered in this toolbox will continue. 
-
+As a famous saying goes, software is never finished, it is only released. Therefore, further development to integrate more platforms into developers' primary workbench and to improve the already existing tools offered in this toolbox will continue. 
 
 ## Development Targeting Platforms 
 
-VSWorkbench is not intended to target only GitLab. Lots of other software tools used by developers make great candidates for further development. Therefore it 
+VSWorkbench is not intended to target only GitLab. Plenty of other software tools used by developers make great candidates for further development. Therefore, it 
 is essential to make VSWorkbench extensible in order to support more platforms and tools in the future. 
 
 A contributor who intends to extend VSWorkbench can either extend it directly, or through a standalone plugin that has to be installed seperately. 
