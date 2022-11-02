@@ -176,7 +176,7 @@ export class GroupNode extends Node {
 		}
 		res.data.forEach(async (project: any) => {
 			if (!project.archived) {
-				await cloneFromGitLab(project.http_url_to_repo, path![0].path);
+				await cloneFromGitLab(project.http_url_to_repo, path![0].fsPath);
 			}
 		});
 		return true;
@@ -193,7 +193,7 @@ export class GroupNode extends Node {
 		if (path === undefined || path[0] === undefined) {
 			return vscode.window.showErrorMessage("Please choose a folder to clone into");
 		}
-		return await cloneFromGitLab(this.url.toString(), path[0].path);
+		return await cloneFromGitLab(this.url.toString(), path[0].fsPath);
 	}
 	openWiki() {
 		editorView.open(ViewEvents.Wiki, this.contextValue === "group", this.node_id, this.label);

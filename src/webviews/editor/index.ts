@@ -1,4 +1,4 @@
-import { ViewEvents } from "../../globals";
+import { ViewEvents } from "../../globals/constants";
 import * as vscode from "vscode";
 
 export class EditorView {
